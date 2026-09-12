@@ -1247,7 +1247,48 @@ document
 
   }
 );
+/* زر إظهار وإخفاء الجملة */
 
+const originalShowLesson = showLesson;
+
+showLesson = function(){
+
+  originalShowLesson();
+
+  const sentence = document.getElementById("sentence");
+  const button = document.querySelector(".action.hide");
+
+  if(sentence.style.visibility === "hidden"){
+    button.innerHTML = "👁️ إظهار الجملة";
+  }else{
+    button.innerHTML = "🙈 إخفاء الجملة";
+  }
+};
+
+
+toggleSentence = function(){
+
+  const sentence = document.getElementById("sentence");
+  const arabic = document.getElementById("arabic");
+  const button = document.querySelector(".action.hide");
+
+  if(sentence.style.visibility === "hidden"){
+
+    sentence.style.visibility = "visible";
+    arabic.style.visibility = "visible";
+
+    button.innerHTML = "🙈 إخفاء الجملة";
+
+  }else{
+
+    sentence.style.visibility = "hidden";
+    arabic.style.visibility = "hidden";
+
+    button.innerHTML = "👁️ إظهار الجملة";
+
+  }
+
+};
 </script>
 
 </body>
