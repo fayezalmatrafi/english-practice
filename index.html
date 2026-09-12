@@ -3,79 +3,404 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#16213e">
+<meta name="theme-color" content="#172554">
 
 <title>English Practice</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  font-family:Arial,sans-serif;
   min-height:100vh;
-  background:
-    linear-gradient(145deg,#0f172a,#172554 55%,#312e81);
+  background:linear-gradient(145deg,#0f172a,#172554 55%,#312e81);
   color:white;
-  padding:22px 16px;
+  padding:20px;
 }
 
 .app{
-  max-width:520px;
+  max-width:600px;
   margin:auto;
 }
 
 .header{
   text-align:center;
-  margin:15px 0 25px;
+  margin-bottom:20px;
 }
 
 .header h1{
-  margin:0;
+  margin:5px;
   font-size:30px;
-  font-weight:800;
 }
 
 .header p{
-  margin-top:8px;
-  color:#cbd5e1;
-  font-size:15px;
+  opacity:.8;
 }
 
-.progress-box{
-  background:rgba(255,255,255,.12);
-  border-radius:20px;
-  padding:14px 16px;
-  margin-bottom:18px;
-}
-
-.progress-info{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:9px;
-  font-size:14px;
-}
-
-.progress-track{
-  height:8px;
+.progress{
   background:rgba(255,255,255,.15);
-  border-radius:10px;
+  height:9px;
+  border-radius:20px;
   overflow:hidden;
+  margin:15px 0 25px;
 }
 
-.progress-bar{
+#bar{
   height:100%;
   width:20%;
-  background:linear-gradient(90deg,#38bdf8,#818cf8);
-  border-radius:10px;
+  background:#60a5fa;
   transition:.3s;
 }
 
 .card{
-  background:rgba(255,255,255,.96);
+  background:white;
   color:#0f172a;
   border-radius:28px;
   padding:28px 20px;
-  box-shadow:0 
+  text-align:center;
+  box-shadow:0 20px 50px rgba(0,0,0,.25);
+}
+
+.number{
+  font-size:14px;
+  color:#64748b;
+}
+
+.word{
+  font-size:38px;
+  font-weight:bold;
+  color:#1d4ed8;
+  margin:12px 0 4px;
+}
+
+.type{
+  color:#64748b;
+  margin-bottom:8px;
+}
+
+.meaning{
+  font-size:21px;
+  font-weight:bold;
+  margin-bottom:24px;
+}
+
+.sentence{
+  direction:ltr;
+  font-size:23px;
+  font-weight:bold;
+  line-height:1.5;
+  min-height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.arabic{
+  font-size:19px;
+  color:#475569;
+  margin:10px 0 22px;
+  min-height:30px;
+}
+
+.buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+button{
+  border:0;
+  border-radius:14px;
+  padding:14px 8px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.listen{background:#dbeafe;color:#1e40af}
+.hide{background:#ede9fe;color:#5b21b6}
+
+input{
+  width:100%;
+  padding:15px;
+  margin-top:18px;
+  border:2px solid #cbd5e1;
+  border-radius:14px;
+  font-size:17px;
+  direction:ltr;
+  text-align:left;
+}
+
+.check{
+  width:100%;
+  background:#22c55e;
+  color:white;
+  margin-top:10px;
+}
+
+#result{
+  min-height:35px;
+  padding:10px;
+  font-size:18px;
+  font-weight:bold;
+}
+
+.navigation{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:5px;
+}
+
+.nav{
+  background:#e2e8f0;
+  color:#0f172a;
+}
+
+.counter{
+  text-align:center;
+  margin-top:18px;
+  opacity:.8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <div class="header">
+    <h1>English Practice 🇬🇧</h1>
+    <p>استماع • كتابة • مراجعة</p>
+  </div>
+
+  <div class="progress">
+    <div id="bar"></div>
+  </div>
+
+  <div class="card">
+
+    <div class="number" id="number"></div>
+
+    <div class="word" id="word"></div>
+
+    <div class="type" id="type"></div>
+
+    <div class="meaning" id="meaning"></div>
+
+    <div class="sentence" id="sentence"></div>
+
+    <div class="arabic" id="arabic"></div>
+
+    <div class="buttons">
+      <button class="listen" onclick="speak()">🔊 استمع للجملة</button>
+      <button class="hide" onclick="hideSentence()">🙈 إخفاء الجملة</button>
+    </div>
+
+    <input
+      id="answer"
+      type="text"
+      placeholder="اكتب الجملة الإنجليزية التي سمعتها"
+      autocomplete="off"
+    >
+
+    <button class="check" onclick="checkAnswer()">
+      ✅ تحقق من الإجابة
+    </button>
+
+    <div id="result"></div>
+
+    <div class="navigation">
+      <button class="nav" onclick="previousSentence()">السابق</button>
+      <button class="nav" onclick="nextSentence()">التالي</button>
+    </div>
+
+  </div>
+
+  <div class="counter" id="counter"></div>
+
+</div>
+
+<script>
+
+const lessons = [
+  {
+    word:"about",
+    type:"Adverb",
+    meaning:"حوالي / تقريبًا",
+    sentence:"It costs about 20 dollars.",
+    arabic:"يكلف حوالي 20 دولار."
+  },
+  {
+    word:"about",
+    type:"Preposition",
+    meaning:"عن",
+    sentence:"Tell me about yourself.",
+    arabic:"أخبرني عن نفسك."
+  },
+  {
+    word:"above",
+    type:"Adverb",
+    meaning:"أعلاه / في الأعلى",
+    sentence:"See the example given above.",
+    arabic:"انظر إلى المثال المذكور أعلاه."
+  },
+  {
+    word:"above",
+    type:"Preposition",
+    meaning:"فوق",
+    sentence:"He lives above me.",
+    arabic:"هو يعيش فوقي."
+  },
+  {
+    word:"across",
+    type:"Preposition",
+    meaning:"عبر",
+    sentence:"Swim across the river.",
+    arabic:"اسبح عبر النهر."
+  }
+];
+
+let current = 0;
+
+function show(){
+
+  const lesson = lessons[current];
+
+  document.getElementById("number").innerText =
+    "الجملة " + (current + 1) + " من " + lessons.length;
+
+  document.getElementById("word").innerText = lesson.word;
+
+  document.getElementById("type").innerText = lesson.type;
+
+  document.getElementById("meaning").innerText = lesson.meaning;
+
+  document.getElementById("sentence").innerText = lesson.sentence;
+
+  document.getElementById("arabic").innerText = lesson.arabic;
+
+  document.getElementById("answer").value = "";
+
+  document.getElementById("result").innerText = "";
+
+  document.getElementById("counter").innerText =
+    (current + 1) + " / " + lessons.length;
+
+  document.getElementById("bar").style.width =
+    ((current + 1) / lessons.length * 100) + "%";
+}
+
+function speak(){
+
+  speechSynthesis.cancel();
+
+  const speech =
+    new SpeechSynthesisUtterance(lessons[current].sentence);
+
+  speech.lang = "en-US";
+  speech.rate = 0.82;
+
+  speechSynthesis.speak(speech);
+}
+
+function hideSentence(){
+
+  const sentence =
+    document.getElementById("sentence");
+
+  const arabic =
+    document.getElementById("arabic");
+
+  if(sentence.style.visibility === "hidden"){
+
+    sentence.style.visibility = "visible";
+    arabic.style.visibility = "visible";
+
+  }else{
+
+    sentence.style.visibility = "hidden";
+    arabic.style.visibility = "hidden";
+  }
+}
+
+function clean(text){
+
+  return text
+    .toLowerCase()
+    .replace(/[.,!?]/g,"")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+function checkAnswer(){
+
+  const answer =
+    document.getElementById("answer").value;
+
+  const correct =
+    lessons[current].sentence;
+
+  const result =
+    document.getElementById("result");
+
+  if(clean(answer) === clean(correct)){
+
+    result.innerHTML =
+      "🎉 ممتاز! إجابتك صحيحة";
+
+    result.style.color = "green";
+
+  }else{
+
+    result.innerHTML =
+      "❌ حاول مرة أخرى واستمع للجملة";
+
+    result.style.color = "red";
+  }
+}
+
+function nextSentence(){
+
+  if(current < lessons.length - 1){
+
+    current++;
+
+  }else{
+
+    current = 0;
+
+    alert("🎉 ممتاز! أنهيت الجمل الخمس");
+  }
+
+  show();
+}
+
+function previousSentence(){
+
+  if(current > 0){
+    current--;
+  }else{
+    current = lessons.length - 1;
+  }
+
+  show();
+}
+
+document
+.getElementById("answer")
+.addEventListener("keydown",function(event){
+
+  if(event.key === "Enter"){
+    checkAnswer();
+  }
+
+});
+
+show();
+
+</script>
+
+</body>
+</html>
