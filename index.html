@@ -103,10 +103,16 @@ body{
   min-height:30px;
 }
 
-.buttons{
+.buttons,
+.extra-buttons,
+.navigation{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
+}
+
+.extra-buttons{
+  margin-top:10px;
 }
 
 button{
@@ -118,32 +124,11 @@ button{
   cursor:pointer;
 }
 
-.listen{
-  background:#dbeafe;
-  color:#1e40af;
-}
-
-.hide{
-  background:#ede9fe;
-  color:#5b21b6;
-}
-
-.speakBtn{
-  background:#fee2e2;
-  color:#991b1b;
-}
-
-.downloadBtn{
-  background:#fef3c7;
-  color:#92400e;
-}
-
-.extra-buttons{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:10px;
-}
+.listen{background:#dbeafe;color:#1e40af}
+.hide{background:#ede9fe;color:#5b21b6}
+.speakBtn{background:#fee2e2;color:#991b1b}
+.downloadBtn{background:#fef3c7;color:#92400e}
+.nav{background:#e2e8f0;color:#0f172a}
 
 input{
   width:100%;
@@ -173,29 +158,27 @@ input{
 #speechResult{
   display:none;
   margin-top:12px;
-  padding:13px;
+  padding:14px;
   background:#f8fafc;
   border-radius:12px;
   border:1px solid #e2e8f0;
-  font-size:16px;
 }
 
 #heardText{
   direction:ltr;
   font-weight:bold;
-  margin-top:7px;
+  font-size:18px;
+  margin:8px 0;
+}
+
+#pronunciationResult{
+  font-size:18px;
+  font-weight:bold;
+  line-height:1.6;
 }
 
 .navigation{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
   margin-top:5px;
-}
-
-.nav{
-  background:#e2e8f0;
-  color:#0f172a;
 }
 
 .counter{
@@ -222,25 +205,15 @@ input{
   <div class="card">
 
     <div class="number" id="number"></div>
-
     <div class="word" id="word"></div>
-
     <div class="type" id="type"></div>
-
     <div class="meaning" id="meaning"></div>
-
     <div class="sentence" id="sentence"></div>
-
     <div class="arabic" id="arabic"></div>
 
     <div class="buttons">
-      <button class="listen" onclick="speak()">
-        🔊 استمع للجملة
-      </button>
-
-      <button class="hide" onclick="hideSentence()">
-        🙈 إخفاء الجملة
-      </button>
+      <button class="listen" onclick="speak()">🔊 استمع للجملة</button>
+      <button class="hide" onclick="hideSentence()">🙈 إخفاء الجملة</button>
     </div>
 
     <div class="extra-buttons">
@@ -392,13 +365,107 @@ function hideSentence(){
   }
 }
 
+/* تنظيف النص وتوحيد الأرقام */
+
 function clean(text){
 
-  return text
-    .toLowerCase()
-    .replace(/[.,!?]/g,"")
+  let value = text.toLowerCase();
+
+  const replacements = {
+    "0":"zero",
+    "1":"one",
+    "2":"two",
+    "3":"three",
+    "4":"four",
+    "5":"five",
+    "6":"six",
+    "7":"seven",
+    "8":"eight",
+    "9":"nine",
+    "10":"ten",
+    "11":"eleven",
+    "12":"twelve",
+    "13":"thirteen",
+    "14":"fourteen",
+    "15":"fifteen",
+    "16":"sixteen",
+    "17":"seventeen",
+    "18":"eighteen",
+    "19":"nineteen",
+    "20":"twenty",
+    "30":"thirty",
+    "40":"forty",
+    "50":"fifty",
+    "60":"sixty",
+    "70":"seventy",
+    "80":"eighty",
+    "90":"ninety",
+    "100":"one hundred"
+  };
+
+  value = value.replace(/\b\d+\b/g, function(number){
+    return replacements[number] || number;
+  });
+
+  return value
+    .replace(/[^a-z0-9\s]/g,"")
     .replace(/\s+/g," ")
     .trim();
+}
+
+/* حساب مدى التشابه بين جملتين */
+
+function similarity(first, second){
+
+  first = clean(first);
+  second = clean(second);
+
+  if(first === second){
+    return 100;
+  }
+
+  const a = first.split(" ");
+  const b = second.split(" ");
+
+  const rows = a.length + 1;
+  const cols = b.length + 1;
+
+  const matrix = [];
+
+  for(let i = 0; i < rows; i++){
+    matrix[i] = [];
+    matrix[i][0] = i;
+  }
+
+  for(let j = 0; j < cols; j++){
+    matrix[0][j] = j;
+  }
+
+  for(let i = 1; i < rows; i++){
+
+    for(let j = 1; j < cols; j++){
+
+      const cost =
+        a[i - 1] === b[j - 1] ? 0 : 1;
+
+      matrix[i][j] = Math.min(
+        matrix[i - 1][j] + 1,
+        matrix[i][j - 1] + 1,
+        matrix[i - 1][j - 1] + cost
+      );
+    }
+  }
+
+  const distance =
+    matrix[a.length][b.length];
+
+  const longest =
+    Math.max(a.length,b.length);
+
+  return Math.max(
+    0,
+    Math.round((1 - distance / longest) * 100)
+  );
 }
 
 function checkAnswer(){
@@ -428,9 +495,7 @@ function checkAnswer(){
   }
 }
 
-/* =========================
-   التحدث بالجملة
-========================= */
+/* التحقق الصوتي المرن */
 
 let recognition = null;
 
@@ -450,21 +515,24 @@ function startSpeaking(){
   }
 
   if(recognition){
+
     try{
       recognition.stop();
     }catch(e){}
   }
 
-  recognition = new SpeechRecognition();
+  recognition =
+    new SpeechRecognition();
 
   recognition.lang = "en-US";
   recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
+  recognition.maxAlternatives = 3;
 
   const button =
     document.getElementById("speakButton");
 
-  button.innerHTML = "🔴 أستمع إليك الآن...";
+  button.innerHTML =
+    "🔴 أستمع إليك الآن...";
 
   recognition.onstart = function(){
 
@@ -473,36 +541,69 @@ function startSpeaking(){
 
     document.getElementById("heardText").innerText =
       "تحدث الآن...";
+
+    document.getElementById("pronunciationResult").innerText =
+      "";
   };
 
   recognition.onresult = function(event){
 
-    const spoken =
-      event.results[0][0].transcript;
-
     const correct =
       lessons[current].sentence;
 
-    const heard =
-      document.getElementById("heardText");
+    let bestText = "";
+    let bestScore = 0;
+
+    const results =
+      event.results[0];
+
+    for(let i = 0; i < results.length; i++){
+
+      const text =
+        results[i].transcript;
+
+      const score =
+        similarity(text,correct);
+
+      if(score > bestScore){
+
+        bestScore = score;
+        bestText = text;
+      }
+    }
+
+    document.getElementById("heardText").innerText =
+      bestText;
 
     const pronunciation =
       document.getElementById("pronunciationResult");
 
-    heard.innerText = spoken;
-
-    if(clean(spoken) === clean(correct)){
+    if(bestScore >= 90){
 
       pronunciation.innerHTML =
-        "🎉 ممتاز! نطقت الجملة بشكل صحيح";
+        "🎉 ممتاز! الجملة صحيحة<br>نسبة التطابق: " +
+        bestScore +
+        "%";
 
       pronunciation.style.color =
-        "green";
+        "#16a34a";
+
+    }else if(bestScore >= 75){
+
+      pronunciation.innerHTML =
+        "👏 قريب جدًا! حاول مرة أخرى<br>نسبة التطابق: " +
+        bestScore +
+        "%";
+
+      pronunciation.style.color =
+        "#d97706";
 
     }else{
 
       pronunciation.innerHTML =
-        "🔄 حاول مرة أخرى<br>الجملة المطلوبة:<br><b dir='ltr'>" +
+        "🔄 حاول مرة أخرى<br>نسبة التطابق: " +
+        bestScore +
+        "%<br>الجملة المطلوبة:<br><b dir='ltr'>" +
         correct +
         "</b>";
 
@@ -553,9 +654,7 @@ function startSpeaking(){
   }
 }
 
-/* =========================
-   تحميل صورة الجمل
-========================= */
+/* تحميل صورة الجمل */
 
 function downloadSentences(){
 
@@ -594,9 +693,13 @@ function nextSentence(){
 function previousSentence(){
 
   if(current > 0){
+
     current--;
+
   }else{
-    current = lessons.length - 1;
+
+    current =
+      lessons.length - 1;
   }
 
   show();
