@@ -1,124 +1,81 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#16213e">
+
 <title>English Practice</title>
+
 <style>
-body{font-family:Arial,sans-serif;background:#f3f8ff;margin:0;padding:15px;color:#123;text-align:center}
-.app{max-width:600px;margin:auto}
-h1{background:#1769aa;color:white;padding:18px;border-radius:20px}
-.card{background:white;padding:22px;border-radius:20px;margin-top:15px;box-shadow:0 4px 15px #ccc}
-.word{font-size:36px;font-weight:bold;color:#124b8c}
-.sentence{font-size:23px;font-weight:bold;margin:20px 0;direction:ltr}
-.arabic{font-size:20px;margin:15px}
-button{padding:15px;margin:6px;border:0;border-radius:14px;font-size:18px;font-weight:bold}
-.listen{background:#a9edb5}
-.hide{background:#d7b9ff}
-.check{background:#ffd071}
-.next{background:#b8dcff}
-input{width:90%;padding:15px;font-size:18px;border:2px solid #bdd1e8;border-radius:12px;margin:15px 0;direction:ltr}
-#result{font-size:19px;font-weight:bold;min-height:30px}
-</style>
-</head>
-
-<body>
-<div class="app">
-<h1>English Practice<br><small>الجمل 1–5</small></h1>
-
-<div class="card">
-<div id="number"></div>
-<div class="word" id="word"></div>
-<div id="meaning"></div>
-
-<div class="sentence" id="sentence"></div>
-<div class="arabic" id="arabic"></div>
-
-<button class="listen" onclick="speak()">🔊 استمع</button>
-<button class="hide" onclick="hideSentence()">🙈 إخفاء الجملة</button>
-
-<br>
-
-<input id="answer" placeholder="اكتب الجملة التي سمعتها">
-
-<br>
-
-<button class="check" onclick="checkAnswer()">✅ تحقق</button>
-
-<div id="result"></div>
-
-<button class="next" onclick="nextSentence()">التالي ←</button>
-</div>
-
-<p id="progress"></p>
-</div>
-
-<script>
-const lessons=[
-["about","حوالي / تقريبًا","It costs about twenty dollars.","يكلف حوالي عشرين دولارًا."],
-["about","عن","Tell me about yourself.","أخبرني عن نفسك."],
-["above","أعلاه","See the example given above.","انظر إلى المثال المذكور أعلاه."],
-["above","فوق","He lives above me.","هو يعيش فوقي."],
-["across","عبر","Swim across the river.","اسبح عبر النهر."]
-];
-
-let current=0;
-let score=0;
-
-function show(){
-number.innerHTML="الجملة "+(current+1)+" من 5";
-word.innerHTML=lessons[current][0];
-meaning.innerHTML=lessons[current][1];
-sentence.innerHTML=lessons[current][2];
-arabic.innerHTML=lessons[current][3];
-sentence.style.visibility="visible";
-answer.value="";
-result.innerHTML="";
-progress.innerHTML="التقدم: "+(current+1)+" / 5";
+*{
+  box-sizing:border-box;
 }
 
-function speak(){
-speechSynthesis.cancel();
-let voice=new SpeechSynthesisUtterance(lessons[current][2]);
-voice.lang="en-US";
-voice.rate=0.8;
-speechSynthesis.speak(voice);
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  min-height:100vh;
+  background:
+    linear-gradient(145deg,#0f172a,#172554 55%,#312e81);
+  color:white;
+  padding:22px 16px;
 }
 
-function hideSentence(){
-sentence.style.visibility="hidden";
+.app{
+  max-width:520px;
+  margin:auto;
 }
 
-function clean(text){
-return text.toLowerCase()
-.replace(/[.,!?]/g,"")
-.replace(/\s+/g," ")
-.trim();
+.header{
+  text-align:center;
+  margin:15px 0 25px;
 }
 
-function checkAnswer(){
-if(clean(answer.value)===clean(lessons[current][2])){
-result.innerHTML="✅ ممتاز! إجابتك صحيحة";
-result.style.color="green";
-score++;
-}else{
-result.innerHTML="❌ حاول مرة أخرى واستمع للجملة";
-result.style.color="red";
-}
+.header h1{
+  margin:0;
+  font-size:30px;
+  font-weight:800;
 }
 
-function nextSentence(){
-if(current<4){
-current++;
-show();
-}else{
-alert("انتهيت من الجمل الخمس 🎉");
-current=0;
-show();
-}
+.header p{
+  margin-top:8px;
+  color:#cbd5e1;
+  font-size:15px;
 }
 
-show();
-</script>
-</body>
-</html>
+.progress-box{
+  background:rgba(255,255,255,.12);
+  border-radius:20px;
+  padding:14px 16px;
+  margin-bottom:18px;
+}
+
+.progress-info{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:9px;
+  font-size:14px;
+}
+
+.progress-track{
+  height:8px;
+  background:rgba(255,255,255,.15);
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.progress-bar{
+  height:100%;
+  width:20%;
+  background:linear-gradient(90deg,#38bdf8,#818cf8);
+  border-radius:10px;
+  transition:.3s;
+}
+
+.card{
+  background:rgba(255,255,255,.96);
+  color:#0f172a;
+  border-radius:28px;
+  padding:28px 20px;
+  box-shadow:0 
