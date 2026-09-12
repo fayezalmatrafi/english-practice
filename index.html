@@ -118,8 +118,32 @@ button{
   cursor:pointer;
 }
 
-.listen{background:#dbeafe;color:#1e40af}
-.hide{background:#ede9fe;color:#5b21b6}
+.listen{
+  background:#dbeafe;
+  color:#1e40af;
+}
+
+.hide{
+  background:#ede9fe;
+  color:#5b21b6;
+}
+
+.speakBtn{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.downloadBtn{
+  background:#fef3c7;
+  color:#92400e;
+}
+
+.extra-buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:10px;
+}
 
 input{
   width:100%;
@@ -144,6 +168,22 @@ input{
   padding:10px;
   font-size:18px;
   font-weight:bold;
+}
+
+#speechResult{
+  display:none;
+  margin-top:12px;
+  padding:13px;
+  background:#f8fafc;
+  border-radius:12px;
+  border:1px solid #e2e8f0;
+  font-size:16px;
+}
+
+#heardText{
+  direction:ltr;
+  font-weight:bold;
+  margin-top:7px;
 }
 
 .navigation{
@@ -172,7 +212,7 @@ input{
 
   <div class="header">
     <h1>English Practice 🇬🇧</h1>
-    <p>استماع • كتابة • مراجعة</p>
+    <p>استماع • كتابة • تحدث • مراجعة</p>
   </div>
 
   <div class="progress">
@@ -194,8 +234,36 @@ input{
     <div class="arabic" id="arabic"></div>
 
     <div class="buttons">
-      <button class="listen" onclick="speak()">🔊 استمع للجملة</button>
-      <button class="hide" onclick="hideSentence()">🙈 إخفاء الجملة</button>
+      <button class="listen" onclick="speak()">
+        🔊 استمع للجملة
+      </button>
+
+      <button class="hide" onclick="hideSentence()">
+        🙈 إخفاء الجملة
+      </button>
+    </div>
+
+    <div class="extra-buttons">
+
+      <button
+        id="speakButton"
+        class="speakBtn"
+        onclick="startSpeaking()">
+        🎙️ تحدث بالجملة
+      </button>
+
+      <button
+        class="downloadBtn"
+        onclick="downloadSentences()">
+        📥 تحميل الجمل
+      </button>
+
+    </div>
+
+    <div id="speechResult">
+      <div>🎤 سمعت منك:</div>
+      <div id="heardText"></div>
+      <div id="pronunciationResult"></div>
     </div>
 
     <input
@@ -272,18 +340,20 @@ function show(){
     "الجملة " + (current + 1) + " من " + lessons.length;
 
   document.getElementById("word").innerText = lesson.word;
-
   document.getElementById("type").innerText = lesson.type;
-
   document.getElementById("meaning").innerText = lesson.meaning;
-
   document.getElementById("sentence").innerText = lesson.sentence;
-
   document.getElementById("arabic").innerText = lesson.arabic;
 
-  document.getElementById("answer").value = "";
+  document.getElementById("sentence").style.visibility = "visible";
+  document.getElementById("arabic").style.visibility = "visible";
 
+  document.getElementById("answer").value = "";
   document.getElementById("result").innerText = "";
+
+  document.getElementById("speechResult").style.display = "none";
+  document.getElementById("heardText").innerText = "";
+  document.getElementById("pronunciationResult").innerText = "";
 
   document.getElementById("counter").innerText =
     (current + 1) + " / " + lessons.length;
@@ -307,11 +377,8 @@ function speak(){
 
 function hideSentence(){
 
-  const sentence =
-    document.getElementById("sentence");
-
-  const arabic =
-    document.getElementById("arabic");
+  const sentence = document.getElementById("sentence");
+  const arabic = document.getElementById("arabic");
 
   if(sentence.style.visibility === "hidden"){
 
@@ -359,6 +426,153 @@ function checkAnswer(){
 
     result.style.color = "red";
   }
+}
+
+/* =========================
+   التحدث بالجملة
+========================= */
+
+let recognition = null;
+
+function startSpeaking(){
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if(!SpeechRecognition){
+
+    alert(
+      "ميزة التعرف على الصوت غير مدعومة في هذا المتصفح. جرّب Chrome أو Edge."
+    );
+
+    return;
+  }
+
+  if(recognition){
+    try{
+      recognition.stop();
+    }catch(e){}
+  }
+
+  recognition = new SpeechRecognition();
+
+  recognition.lang = "en-US";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  const button =
+    document.getElementById("speakButton");
+
+  button.innerHTML = "🔴 أستمع إليك الآن...";
+
+  recognition.onstart = function(){
+
+    document.getElementById("speechResult").style.display =
+      "block";
+
+    document.getElementById("heardText").innerText =
+      "تحدث الآن...";
+  };
+
+  recognition.onresult = function(event){
+
+    const spoken =
+      event.results[0][0].transcript;
+
+    const correct =
+      lessons[current].sentence;
+
+    const heard =
+      document.getElementById("heardText");
+
+    const pronunciation =
+      document.getElementById("pronunciationResult");
+
+    heard.innerText = spoken;
+
+    if(clean(spoken) === clean(correct)){
+
+      pronunciation.innerHTML =
+        "🎉 ممتاز! نطقت الجملة بشكل صحيح";
+
+      pronunciation.style.color =
+        "green";
+
+    }else{
+
+      pronunciation.innerHTML =
+        "🔄 حاول مرة أخرى<br>الجملة المطلوبة:<br><b dir='ltr'>" +
+        correct +
+        "</b>";
+
+      pronunciation.style.color =
+        "#dc2626";
+    }
+  };
+
+  recognition.onerror = function(event){
+
+    const pronunciation =
+      document.getElementById("pronunciationResult");
+
+    if(event.error === "not-allowed"){
+
+      pronunciation.innerHTML =
+        "🎤 اسمح للموقع باستخدام الميكروفون ثم حاول مرة أخرى.";
+
+    }else if(event.error === "no-speech"){
+
+      pronunciation.innerHTML =
+        "لم أسمع صوتًا. اضغط الزر وتحدث مرة أخرى.";
+
+    }else{
+
+      pronunciation.innerHTML =
+        "تعذر التعرف على الصوت. حاول مرة أخرى.";
+    }
+
+    pronunciation.style.color =
+      "#dc2626";
+  };
+
+  recognition.onend = function(){
+
+    button.innerHTML =
+      "🎙️ تحدث بالجملة";
+  };
+
+  try{
+
+    recognition.start();
+
+  }catch(error){
+
+    button.innerHTML =
+      "🎙️ تحدث بالجملة";
+  }
+}
+
+/* =========================
+   تحميل صورة الجمل
+========================= */
+
+function downloadSentences(){
+
+  const link =
+    document.createElement("a");
+
+  link.href =
+    encodeURI("الجمل.jpeg");
+
+  link.download =
+    "English-Practice-1-5.jpeg";
+
+  document.body.appendChild(link);
+
+  link.click();
+
+  document.body.removeChild(link);
 }
 
 function nextSentence(){
