@@ -8,280 +8,657 @@
 
 <style>
 *{box-sizing:border-box}
+
 :root{
+  --navy:#0b1533;
+  --navy2:#12235a;
+  --cream:#f7f3ea;
+  --gold:#c9a227;
   --blue:#2563eb;
-  --blue2:#3b82f6;
-  --purple:#7c3aed;
-  --purple2:#9333ea;
-  --dark:#08132e;
-  --card:#fff;
   --text:#0f172a;
   --muted:#64748b;
+  --card:#fff;
 }
+
 body{
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
   min-height:100vh;
-  background:linear-gradient(160deg,#061126,#12235a 55%,#312e81);
-  color:white;
+  background:linear-gradient(145deg,#08132e,#12235a 58%,#0b1533);
+  color:#fff;
 }
-button,input{font:inherit}
-button{cursor:pointer}
+
+button,input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
 .app{
   width:100%;
-  max-width:480px;
+  max-width:520px;
   min-height:100vh;
   margin:auto;
   padding:20px 18px 35px;
 }
 
-/* الصفحات */
-.page{display:none;min-height:calc(100vh - 55px)}
-.page.active{display:flex;flex-direction:column}
-
-/* الشعار */
-.logo{
-  width:86px;height:86px;
-  margin:0 auto 18px;
-  border-radius:26px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:42px;
-  background:linear-gradient(135deg,#3b82f6,#8b5cf6);
-  box-shadow:0 18px 50px rgba(59,130,246,.35);
+.page{
+  display:none;
+  min-height:calc(100vh - 55px);
 }
-.brand{text-align:center}
-.brand h1{font-size:34px;margin:0 0 7px}
-.brand p{margin:0;color:#bfdbfe;font-size:17px}
 
-/* ترحيب */
-#welcomePage{justify-content:center}
+.page.active{
+  display:flex;
+  flex-direction:column;
+}
+
+.logo{
+  width:78px;
+  height:78px;
+  margin:0 auto 16px;
+  border-radius:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:34px;
+  background:linear-gradient(135deg,#c9a227,#f1d36a);
+  box-shadow:0 18px 50px rgba(201,162,39,.25);
+}
+
+.brand{
+  text-align:center;
+}
+
+.brand h1{
+  font-size:32px;
+  margin:0 0 6px;
+}
+
+.brand p{
+  margin:0;
+  color:#dbe4ff;
+  font-size:16px;
+}
+
+#welcomePage{
+  justify-content:center;
+}
+
 .heroText{
   text-align:center;
   color:#cbd5e1;
   line-height:1.8;
   margin:22px 10px;
 }
-.primary{
+
+.primary,
+.authButton{
   width:100%;
   border:0;
-  border-radius:18px;
-  padding:17px;
+  border-radius:17px;
+  padding:16px;
   color:#fff;
-  font-size:18px;
   font-weight:800;
-  background:linear-gradient(135deg,#2563eb,#7c3aed);
-  box-shadow:0 12px 35px rgba(37,99,235,.3);
+  background:linear-gradient(135deg,#c9a227,#e2bf48);
+  box-shadow:0 12px 35px rgba(201,162,39,.22);
 }
 
-/* تسجيل الدخول */
-#authPage{justify-content:center}
+#authPage{
+  justify-content:center;
+}
+
 .authCard{
-  background:white;
+  background:var(--cream);
   color:var(--text);
-  border-radius:30px;
-  padding:25px 20px;
+  border-radius:28px;
+  padding:24px 20px;
   box-shadow:0 25px 60px rgba(0,0,0,.3);
 }
-.authCard h2{text-align:center;margin:0 0 7px;font-size:26px}
-.authSub{text-align:center;color:var(--muted);margin-bottom:22px}
+
+.authCard h2{
+  text-align:center;
+  margin:0 0 7px;
+  font-size:25px;
+}
+
+.authSub{
+  text-align:center;
+  color:var(--muted);
+  margin-bottom:20px;
+}
+
 .fieldLabel{
   display:block;
   font-size:14px;
   font-weight:700;
   margin:12px 2px 7px;
 }
+
 .authInput{
   width:100%;
   border:2px solid #e2e8f0;
-  border-radius:15px;
-  padding:14px;
+  border-radius:14px;
+  padding:13px;
   direction:ltr;
   text-align:left;
   outline:none;
   font-size:16px;
+  background:#fff;
 }
-.authInput:focus{border-color:#3b82f6}
+
+.authInput:focus{
+  border-color:#c9a227;
+}
+
 .authButton{
-  width:100%;
-  border:0;
-  border-radius:15px;
-  padding:15px;
-  margin-top:17px;
-  color:white;
-  font-weight:800;
-  background:linear-gradient(135deg,#2563eb,#7c3aed);
+  margin-top:16px;
 }
+
 .switchAuth{
   text-align:center;
-  margin-top:16px;
+  margin-top:15px;
   color:#64748b;
 }
+
 .linkBtn{
-  border:0;background:none;color:#2563eb;font-weight:bold;
-}
-#authMessage{
-  text-align:center;
-  min-height:24px;
-  margin-top:12px;
-  font-weight:bold;
-}
-.skip{
-  display:block;
-  margin:15px auto 0;
-  border:0;background:none;color:#cbd5e1;
+  border:0;
+  background:none;
+  color:#2563eb;
   font-weight:bold;
 }
 
-/* الرئيسية */
-#homePage{padding-top:15px}
+.authMessage{
+  text-align:center;
+  min-height:25px;
+  margin-top:11px;
+  font-weight:bold;
+  line-height:1.6;
+}
+
+#registerOnly{
+  display:none;
+}
+
 .homeHeader{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:20px;
+  margin-bottom:18px;
 }
+
 .miniLogo{
-  width:48px;height:48px;border-radius:15px;
-  display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,#3b82f6,#8b5cf6);
-  font-size:25px;
+  width:48px;
+  height:48px;
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#c9a227;
+  font-size:22px;
 }
-.userBox{text-align:right;flex:1;margin-right:12px}
-.userBox small{color:#bfdbfe}
-.userBox strong{display:block;font-size:18px}
+
+.userBox{
+  text-align:right;
+  flex:1;
+  margin-right:12px;
+}
+
+.userBox small{
+  color:#bfdbfe;
+}
+
+.userBox strong{
+  display:block;
+  font-size:17px;
+}
+
 .logout{
-  border:0;border-radius:12px;padding:9px 11px;
-  background:rgba(255,255,255,.12);color:white;
+  border:0;
+  border-radius:12px;
+  padding:9px 11px;
+  background:rgba(255,255,255,.12);
+  color:#fff;
 }
+
 .welcomeCard{
-  padding:22px;
-  border-radius:25px;
+  padding:21px;
+  border-radius:24px;
   background:rgba(255,255,255,.1);
   border:1px solid rgba(255,255,255,.14);
   backdrop-filter:blur(12px);
-  margin-bottom:15px;
+  margin-bottom:14px;
 }
-.welcomeCard h2{margin:0 0 7px;font-size:26px}
-.welcomeCard p{margin:0;color:#cbd5e1;line-height:1.6}
-.mode{
-  width:100%;border:0;border-radius:22px;
-  padding:20px;margin:0 0 13px;color:white;
-  display:flex;align-items:center;gap:15px;text-align:right;
-}
-.learnMode{background:linear-gradient(135deg,#2563eb,#3b82f6)}
-.practiceMode{background:linear-gradient(135deg,#7c3aed,#9333ea)}
-.modeIcon{
-  width:58px;height:58px;border-radius:18px;
-  background:rgba(255,255,255,.18);
-  display:flex;align-items:center;justify-content:center;
-  font-size:30px;flex-shrink:0;
-}
-.modeText strong{display:block;font-size:22px;margin-bottom:5px}
-.modeText span{font-size:14px;opacity:.9;line-height:1.5}
-.goal{
-  background:rgba(255,255,255,.09);
-  border-radius:20px;padding:16px;text-align:center;
-  color:#e2e8f0;
-}
-.goal strong{color:#fbbf24}
 
-/* الدرس */
-.topbar{
-  display:flex;align-items:center;justify-content:space-between;
-  margin:8px 0 12px;
+.welcomeCard h2{
+  margin:0 0 7px;
+  font-size:24px;
 }
-.back{
-  border:0;border-radius:12px;padding:10px 12px;
-  background:rgba(255,255,255,.14);color:white;font-weight:bold;
+
+.welcomeCard p{
+  margin:0;
+  color:#cbd5e1;
+  line-height:1.6;
 }
-.pageTitle{font-size:19px;font-weight:bold}
-.progress{
+
+.mode{
+  width:100%;
+  border:0;
+  border-radius:21px;
+  padding:19px;
+  margin:0 0 12px;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  text-align:right;
+}
+
+.learnMode{
+  background:linear-gradient(135deg,#173d91,#2563eb);
+}
+
+.practiceMode{
+  background:linear-gradient(135deg,#18366b,#8b6b19);
+}
+
+.modeIcon{
+  width:55px;
+  height:55px;
+  border-radius:17px;
   background:rgba(255,255,255,.15);
-  height:9px;border-radius:20px;overflow:hidden;
-  margin:8px 0 17px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:27px;
+  flex-shrink:0;
 }
-#bar{height:100%;background:#60a5fa;transition:.3s}
-.card{
-  background:white;color:var(--text);
-  border-radius:28px;padding:24px 18px;text-align:center;
-  box-shadow:0 22px 55px rgba(0,0,0,.28);
+
+.modeText strong{
+  display:block;
+  font-size:21px;
+  margin-bottom:4px;
 }
-.practiceNote{
-  display:none;background:#eff6ff;color:#1e40af;
-  padding:11px;border-radius:13px;margin-bottom:14px;
-  font-weight:bold;
-}
-.number{font-size:14px;color:#64748b}
-.word{font-size:38px;font-weight:900;color:#1d4ed8;margin:9px 0 2px}
-.type{color:#64748b;margin-bottom:6px}
-.meaning{font-size:20px;font-weight:bold;margin-bottom:17px}
-.sentence{
-  direction:ltr;font-size:22px;font-weight:800;
-  min-height:55px;display:flex;align-items:center;justify-content:center;
+
+.modeText span{
+  font-size:13px;
+  opacity:.9;
   line-height:1.5;
 }
-.arabic{font-size:17px;color:#475569;margin:7px 0 18px;min-height:26px}
+
+.panel{
+  background:rgba(255,255,255,.09);
+  border-radius:20px;
+  padding:16px;
+  margin-top:2px;
+}
+
+.panel h3{
+  margin:0 0 10px;
+}
+
+.panel p{
+  margin:0;
+  color:#dbe4ff;
+  line-height:1.7;
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:8px 0 12px;
+}
+
+.back{
+  border:0;
+  border-radius:12px;
+  padding:10px 12px;
+  background:rgba(255,255,255,.14);
+  color:#fff;
+  font-weight:bold;
+}
+
+.pageTitle{
+  font-size:19px;
+  font-weight:bold;
+}
+
+.progress{
+  background:rgba(255,255,255,.15);
+  height:9px;
+  border-radius:20px;
+  overflow:hidden;
+  margin:8px 0 17px;
+}
+
+#bar{
+  height:100%;
+  background:#c9a227;
+  transition:.3s;
+}
+
+.card{
+  background:#fff;
+  color:var(--text);
+  border-radius:28px;
+  padding:23px 18px;
+  text-align:center;
+  box-shadow:0 22px 55px rgba(0,0,0,.28);
+}
+
+.practiceNote{
+  display:none;
+  background:#eff6ff;
+  color:#1e40af;
+  padding:11px;
+  border-radius:13px;
+  margin-bottom:14px;
+  font-weight:bold;
+}
+
+.number{
+  font-size:14px;
+  color:#64748b;
+}
+
+.word{
+  font-size:38px;
+  font-weight:900;
+  color:#1d4ed8;
+  margin:9px 0 2px;
+}
+
+.type{
+  color:#64748b;
+  margin-bottom:6px;
+}
+
+.meaning{
+  font-size:20px;
+  font-weight:bold;
+  margin-bottom:17px;
+}
+
+.sentence{
+  direction:ltr;
+  font-size:22px;
+  font-weight:800;
+  min-height:55px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  line-height:1.5;
+}
+
+.arabic{
+  font-size:17px;
+  color:#475569;
+  margin:7px 0 18px;
+  min-height:26px;
+}
+
 .grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:9px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
 }
+
 .action{
-  border:0;border-radius:14px;padding:14px 6px;
-  font-size:14px;font-weight:800;
+  border:0;
+  border-radius:14px;
+  padding:14px 6px;
+  font-size:14px;
+  font-weight:800;
 }
-.listen{background:#dbeafe;color:#1e40af}
-.hide{background:#ede9fe;color:#5b21b6}
-.speak{background:#fee2e2;color:#991b1b}
-.download{background:#fef3c7;color:#92400e}
-.extra{margin-top:9px}
 
-/* كتابة */
-#writingArea{margin-top:14px}
+.listen{
+  background:#dbeafe;
+  color:#1e40af;
+}
+
+.hide{
+  background:#ede9fe;
+  color:#5b21b6;
+}
+
+.speak{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.extra{
+  margin-top:9px;
+}
+
+#writingArea{
+  margin-top:14px;
+}
+
 #answer{
-  width:100%;padding:14px;border:2px solid #cbd5e1;
-  border-radius:14px;font-size:16px;direction:ltr;text-align:left;
+  width:100%;
+  padding:14px;
+  border:2px solid #cbd5e1;
+  border-radius:14px;
+  font-size:16px;
+  direction:ltr;
+  text-align:left;
 }
+
 .check{
-  width:100%;border:0;border-radius:14px;background:#22c55e;
-  color:white;padding:14px;margin-top:9px;font-size:16px;font-weight:bold;
+  width:100%;
+  border:0;
+  border-radius:14px;
+  background:#22c55e;
+  color:#fff;
+  padding:14px;
+  margin-top:9px;
+  font-size:16px;
+  font-weight:bold;
 }
-#result{min-height:25px;padding:7px;font-weight:bold}
 
-/* الصوت */
+#result{
+  min-height:25px;
+  padding:7px;
+  font-weight:bold;
+}
+
 #speechResult{
-  display:none;margin-top:14px;padding:15px;
-  border-radius:17px;border:3px solid #cbd5e1;
+  display:none;
+  margin-top:14px;
+  padding:15px;
+  border-radius:17px;
+  border:3px solid #cbd5e1;
 }
-.good{background:#dcfce7;border-color:#22c55e!important}
-.closeResult{background:#ffedd5;border-color:#f97316!important}
-.bad{background:#fee2e2;border-color:#ef4444!important}
-#speechTitle{font-size:20px;font-weight:bold}
-#score{font-size:27px;font-weight:bold;margin:7px 0}
-.heardLabel{font-size:13px;color:#64748b;margin-top:7px}
-#heardText{direction:ltr;font-size:17px;font-weight:bold;margin:5px 0}
-#expectedText{direction:ltr;margin-top:7px;font-size:14px}
-.retry{
-  display:none;width:100%;border:0;border-radius:13px;
-  background:#2563eb;color:white;padding:13px;margin-top:10px;font-weight:bold;
-}
-.navigation{margin-top:9px}
-.nav{
-  border:0;border-radius:14px;background:#e2e8f0;color:#0f172a;
-  padding:13px;font-size:16px;font-weight:bold;
-}
-.counter{text-align:center;margin-top:13px;opacity:.8}
 
-/* إنجاز */
+.good{
+  background:#dcfce7;
+  border-color:#22c55e!important;
+}
+
+.closeResult{
+  background:#ffedd5;
+  border-color:#f97316!important;
+}
+
+.bad{
+  background:#fee2e2;
+  border-color:#ef4444!important;
+}
+
+#speechTitle{
+  font-size:20px;
+  font-weight:bold;
+}
+
+#score{
+  font-size:27px;
+  font-weight:bold;
+  margin:7px 0;
+}
+
+.heardLabel{
+  font-size:13px;
+  color:#64748b;
+  margin-top:7px;
+}
+
+#heardText{
+  direction:ltr;
+  font-size:17px;
+  font-weight:bold;
+  margin:5px 0;
+}
+
+#expectedText{
+  direction:ltr;
+  margin-top:7px;
+  font-size:14px;
+}
+
+.retry{
+  display:none;
+  width:100%;
+  border:0;
+  border-radius:13px;
+  background:#2563eb;
+  color:#fff;
+  padding:13px;
+  margin-top:10px;
+  font-weight:bold;
+}
+
+.navigation{
+  margin-top:9px;
+}
+
+.nav{
+  border:0;
+  border-radius:14px;
+  background:#e2e8f0;
+  color:#0f172a;
+  padding:13px;
+  font-size:16px;
+  font-weight:bold;
+}
+
+.counter{
+  text-align:center;
+  margin-top:13px;
+  opacity:.8;
+}
+
 .completeBox{
   display:none;
   text-align:center;
-  background:#f0fdf4;color:#166534;
-  padding:15px;border-radius:17px;margin-top:12px;font-weight:bold;
+  background:#f0fdf4;
+  color:#166534;
+  padding:15px;
+  border-radius:17px;
+  margin-top:12px;
+  font-weight:bold;
+}
+
+.adminCard{
+  background:#fff;
+  color:var(--text);
+  border-radius:25px;
+  padding:18px;
+  box-shadow:0 22px 55px rgba(0,0,0,.25);
+}
+
+.adminRow{
+  border:1px solid #e2e8f0;
+  border-radius:15px;
+  padding:13px;
+  margin:9px 0;
+}
+
+.adminRow strong{
+  display:block;
+}
+
+.adminRow small{
+  color:#64748b;
+  display:block;
+  margin:4px 0 9px;
+}
+
+.adminActions{
+  display:flex;
+  gap:8px;
+}
+
+.approve,
+.reject{
+  flex:1;
+  border:0;
+  border-radius:11px;
+  padding:10px;
+  font-weight:800;
+}
+
+.approve{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.reject{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.empty{
+  text-align:center;
+  color:#64748b;
+  padding:22px;
+}
+
+.adminBadge{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:99px;
+  background:#fef3c7;
+  color:#92400e;
+  font-size:12px;
+  font-weight:bold;
+}
+
+@media(min-width:800px){
+  .app{
+    max-width:1100px;
+    padding:35px;
+  }
+
+  .page.active{
+    min-height:calc(100vh - 70px);
+  }
+
+  #homePage .welcomeCard{
+    padding:30px;
+  }
+
+  .mode{
+    max-width:650px;
+  }
+
+  .card{
+    max-width:760px;
+    margin:auto;
+    width:100%;
+  }
 }
 
 @media(max-width:360px){
-  .app{padding-left:12px;padding-right:12px}
-  .home-title{font-size:30px}
-  .word{font-size:34px}
+  .app{
+    padding-left:12px;
+    padding-right:12px;
+  }
+
+  .word{
+    font-size:34px;
+  }
 }
 </style>
 </head>
@@ -290,9 +667,10 @@ button{cursor:pointer}
 
 <div class="app">
 
-<!-- الترحيب -->
 <section id="welcomePage" class="page active">
-  <div class="logo">🇬🇧</div>
+
+  <div class="logo">EP</div>
+
   <div class="brand">
     <h1>English Practice</h1>
     <p>تعلّم الإنجليزية بطريقة ذكية</p>
@@ -300,161 +678,452 @@ button{cursor:pointer}
 
   <div class="heroText">
     استمع • تحدث • اكتب • راجع<br>
-    تدريب يومي بسيط يساعدك على تثبيت الجمل وتحسين النطق.
+    تدريبك على الجمل خطوة بخطوة.
   </div>
 
-  <button class="primary" onclick="openAuth()">ابدأ الآن 🚀</button>
+  <button class="primary" onclick="openAuth()">
+    ابدأ الآن
+  </button>
+
 </section>
 
 
-<!-- تسجيل الدخول -->
 <section id="authPage" class="page">
 
-  <div class="logo">🇬🇧</div>
+  <div class="logo">EP</div>
 
   <div class="authCard">
-    <h2 id="authTitle">مرحبًا بعودتك 👋</h2>
-    <div class="authSub" id="authSub">سجّل دخولك لمتابعة التدريب</div>
 
-    <label class="fieldLabel">البريد الإلكتروني</label>
-    <input id="email" class="authInput" type="email"
-           placeholder="name@example.com">
+    <h2 id="authTitle">مرحبًا بعودتك</h2>
 
-    <label class="fieldLabel">كلمة المرور</label>
-    <input id="password" class="authInput" type="password"
-           placeholder="••••••••">
+    <div class="authSub" id="authSub">
+      سجّل دخولك لمتابعة التدريب
+    </div>
 
-    <button id="authButton" class="authButton" onclick="handleAuth()">
+    <div id="registerOnly">
+
+      <label class="fieldLabel">
+        اسم المستخدم
+      </label>
+
+      <input
+        id="username"
+        class="authInput"
+        type="text"
+        placeholder="اسم المستخدم"
+        autocomplete="username"
+      >
+
+    </div>
+
+    <label class="fieldLabel">
+      البريد الإلكتروني
+    </label>
+
+    <input
+      id="email"
+      class="authInput"
+      type="email"
+      placeholder="name@example.com"
+      autocomplete="email"
+    >
+
+    <label class="fieldLabel">
+      كلمة المرور
+    </label>
+
+    <input
+      id="password"
+      class="authInput"
+      type="password"
+      placeholder="••••••••"
+      autocomplete="current-password"
+    >
+
+    <button
+      id="authButton"
+      class="authButton"
+      onclick="handleAuth()"
+    >
       تسجيل الدخول
     </button>
 
-    <div id="authMessage"></div>
+    <div id="authMessage" class="authMessage"></div>
 
     <div class="switchAuth">
-      <span id="switchText">ليس لديك حساب؟</span>
-      <button id="switchButton" class="linkBtn" onclick="toggleAuthMode()">
+
+      <span id="switchText">
+        ليس لديك حساب؟
+      </span>
+
+      <button
+        id="switchButton"
+        class="linkBtn"
+        onclick="toggleAuthMode()"
+      >
         إنشاء حساب
       </button>
+
     </div>
+
   </div>
 
-  <button class="skip" onclick="guestMode()">الدخول كضيف</button>
 </section>
 
 
-<!-- الرئيسية -->
 <section id="homePage" class="page">
 
   <div class="homeHeader">
-    <div class="miniLogo">🇬🇧</div>
+
+    <div class="miniLogo">
+      EP
+    </div>
 
     <div class="userBox">
-      <small>مرحبًا بك</small>
-      <strong id="userName">متعلّم الإنجليزية</strong>
+
+      <small>
+        مرحبًا بك
+      </small>
+
+      <strong id="userName">
+        متعلّم الإنجليزية
+      </strong>
+
     </div>
 
-    <button class="logout" onclick="logout()">خروج</button>
+    <button
+      class="logout"
+      onclick="logout()"
+    >
+      خروج
+    </button>
+
   </div>
+
 
   <div class="welcomeCard">
-    <h2>جاهز لتدريب اليوم؟ 🔥</h2>
+
+    <h2>
+      جاهز لتدريب اليوم؟
+    </h2>
+
     <p>
-      اختر طريقة التدريب وابدأ بخمس جمل.
-      الاستمرارية أهم من كثرة الدروس.
+      اختر طريقة التدريب وابدأ بالجمل الموجودة في البرنامج.
     </p>
+
   </div>
 
-  <button class="mode learnMode" onclick="startMode('learn')">
-    <div class="modeIcon">📚</div>
-    <div class="modeText">
-      <strong>نتعلّم</strong>
-      <span>الكلمة والمعنى والجملة والاستماع للنطق</span>
+
+  <button
+    class="mode learnMode"
+    onclick="startMode('learn')"
+  >
+
+    <div class="modeIcon">
+      📚
     </div>
+
+    <div class="modeText">
+
+      <strong>
+        نتعلّم
+      </strong>
+
+      <span>
+        الكلمة والمعنى والجملة والاستماع للنطق
+      </span>
+
+    </div>
+
   </button>
 
-  <button class="mode practiceMode" onclick="startMode('practice')">
-    <div class="modeIcon">🎯</div>
-    <div class="modeText">
-      <strong>نتدرّب</strong>
-      <span>استماع وتحدث وكتابة ونسبة تطابق النطق</span>
+
+  <button
+    class="mode practiceMode"
+    onclick="startMode('practice')"
+  >
+
+    <div class="modeIcon">
+      🎯
     </div>
+
+    <div class="modeText">
+
+      <strong>
+        نتدرّب
+      </strong>
+
+      <span>
+        استماع وتحدث وكتابة والتحقق من الإجابة
+      </span>
+
+    </div>
+
   </button>
 
-  <div class="goal">
-    🔥 هدف اليوم: <strong>10 جمل</strong><br>
-    ابدأ بخمس جمل ثم راجعها
+
+  <div
+    id="adminPanelButton"
+    class="panel"
+    style="display:none"
+  >
+
+    <h3>
+      لوحة الإدارة
+    </h3>
+
+    <p>
+      إدارة المستخدمين الذين ينتظرون الموافقة.
+    </p>
+
+    <button
+      class="primary"
+      style="margin-top:12px"
+      onclick="openAdmin()"
+    >
+      إدارة المستخدمين
+    </button>
+
   </div>
 
 </section>
 
 
-<!-- الدرس -->
 <section id="lessonPage" class="page">
 
   <div class="topbar">
-    <button class="back" onclick="goHome()">← الرئيسية</button>
-    <div class="pageTitle" id="modeTitle">📚 نتعلّم</div>
+
+    <button
+      class="back"
+      onclick="goHome()"
+    >
+      ← الرئيسية
+    </button>
+
+    <div
+      class="pageTitle"
+      id="modeTitle"
+    >
+      📚 نتعلّم
+    </div>
+
   </div>
 
-  <div class="progress"><div id="bar"></div></div>
+
+  <div class="progress">
+
+    <div id="bar"></div>
+
+  </div>
+
 
   <div class="card">
 
-    <div class="practiceNote" id="practiceNote">
-      🎯 حاول أولًا قبل كشف الجملة.
+    <div
+      class="practiceNote"
+      id="practiceNote"
+    >
+      حاول أولًا قبل كشف الجملة.
     </div>
 
-    <div class="number" id="number"></div>
-    <div class="word" id="word"></div>
-    <div class="type" id="type"></div>
-    <div class="meaning" id="meaning"></div>
-    <div class="sentence" id="sentence"></div>
-    <div class="arabic" id="arabic"></div>
+
+    <div
+      class="number"
+      id="number"
+    ></div>
+
+
+    <div
+      class="word"
+      id="word"
+    ></div>
+
+
+    <div
+      class="type"
+      id="type"
+    ></div>
+
+
+    <div
+      class="meaning"
+      id="meaning"
+    ></div>
+
+
+    <div
+      class="sentence"
+      id="sentence"
+    ></div>
+
+
+    <div
+      class="arabic"
+      id="arabic"
+    ></div>
+
 
     <div class="grid">
-      <button class="action listen" onclick="playSentence()">🔊 استمع للجملة</button>
-      <button class="action hide" id="hideButton" onclick="toggleSentence()">🙈 إخفاء الجملة</button>
+
+      <button
+        class="action listen"
+        onclick="playSentence()"
+      >
+        🔊 استمع للجملة
+      </button>
+
+      <button
+        class="action hide"
+        id="hideButton"
+        onclick="toggleSentence()"
+      >
+        🙈 إخفاء الإنجليزية
+      </button>
+
     </div>
+
 
     <div class="grid extra">
-      <button id="speakButton" class="action speak" onclick="startSpeaking()">🎙️ تحدث بالجملة</button>
-      <button class="action download" onclick="downloadSentences()">📥 تحميل الجمل</button>
+
+      <button
+        id="speakButton"
+        class="action speak"
+        onclick="startSpeaking()"
+      >
+        🎙️ تحدث بالجملة
+      </button>
+
+      <button
+        class="action"
+        style="background:#fef3c7;color:#92400e"
+        onclick="resetHidden()"
+      >
+        ↺ إعادة العرض
+      </button>
+
     </div>
+
 
     <div id="speechResult">
+
       <div id="speechTitle"></div>
+
       <div id="score"></div>
 
-      <div class="heardLabel">🎤 سمعت منك:</div>
+      <div class="heardLabel">
+        🎤 سمعت منك:
+      </div>
+
       <div id="heardText"></div>
+
       <div id="expectedText"></div>
 
-      <button id="retryButton" class="retry" onclick="startSpeaking()">
+      <button
+        id="retryButton"
+        class="retry"
+        onclick="startSpeaking()"
+      >
         🎙️ حاول مرة أخرى
       </button>
+
     </div>
+
 
     <div id="writingArea">
-      <input id="answer" type="text"
-             placeholder="اكتب الجملة الإنجليزية التي سمعتها"
-             autocomplete="off">
 
-      <button class="check" onclick="checkAnswer()">✅ تحقق من الإجابة</button>
+      <input
+        id="answer"
+        type="text"
+        placeholder="اكتب الجملة الإنجليزية"
+        autocomplete="off"
+      >
+
+      <button
+        class="check"
+        onclick="checkAnswer()"
+      >
+        ✅ تحقق من الإجابة
+      </button>
+
       <div id="result"></div>
+
     </div>
+
 
     <div class="grid navigation">
-      <button class="nav" onclick="previousSentence()">السابق</button>
-      <button class="nav" onclick="nextSentence()">التالي</button>
+
+      <button
+        class="nav"
+        onclick="previousSentence()"
+      >
+        السابق
+      </button>
+
+      <button
+        class="nav"
+        onclick="nextSentence()"
+      >
+        التالي
+      </button>
+
     </div>
 
-    <div id="completeBox" class="completeBox">
-      🎉 ممتاز! أنهيت الجمل الخمس.
+
+    <div
+      id="completeBox"
+      class="completeBox"
+    >
+      أنهيت الجمل الحالية.
     </div>
 
   </div>
 
-  <div class="counter" id="counter"></div>
+
+  <div
+    class="counter"
+    id="counter"
+  ></div>
+
+</section>
+
+
+<section id="adminPage" class="page">
+
+  <div class="topbar">
+
+    <button
+      class="back"
+      onclick="goHome()"
+    >
+      ← الرئيسية
+    </button>
+
+    <div class="pageTitle">
+      إدارة المستخدمين
+    </div>
+
+  </div>
+
+
+  <div class="adminCard">
+
+    <h2 style="margin-top:0">
+      طلبات التسجيل
+    </h2>
+
+    <p style="color:#64748b">
+      المستخدمون الذين ينتظرون موافقة الإدارة.
+    </p>
+
+    <div id="pendingUsers">
+
+      <div class="empty">
+        جاري التحميل...
+      </div>
+
+    </div>
+
+  </div>
 
 </section>
 
@@ -463,12 +1132,11 @@ button{cursor:pointer}
 
 <script type="module">
 
-/* =========================
-   Firebase
-========================= */
-
-import { initializeApp }
+import {
+  initializeApp
+}
 from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
 
 import {
   getAuth,
@@ -480,172 +1148,75 @@ import {
 from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAE4ZGGS8zwAIpLJ8c5ej7L5WdWsFqVdWA",
-  authDomain: "english-practice-43ed4.firebaseapp.com",
-  projectId: "english-practice-43ed4",
-  storageBucket: "english-practice-43ed4.firebasestorage.app",
-  messagingSenderId: "716732837873",
-  appId: "1:716732837873:web:591785648234dab2639e50"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-let authMode = "login";
-let guest = false;
-
-
-/* =========================
-   الصفحات
-========================= */
-
-function showPage(id){
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc
 }
+from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-window.openAuth = function(){
-  showPage("authPage");
+
+const firebaseConfig={
+
+  apiKey:
+  "AIzaSyAE4ZGGS8zwAIpLJ8c5ej7L5WdWsFqVdWA",
+
+  authDomain:
+  "english-practice-43ed4.firebaseapp.com",
+
+  projectId:
+  "english-practice-43ed4",
+
+  storageBucket:
+  "english-practice-43ed4.firebasestorage.app",
+
+  messagingSenderId:
+  "716732837873",
+
+  appId:
+  "1:716732837873:web:591785648234dab2639e50"
+
 };
 
-window.guestMode = function(){
-  guest = true;
-  document.getElementById("userName").innerText = "ضيف";
-  showPage("homePage");
-};
+
+const app =
+initializeApp(firebaseConfig);
+
+const auth =
+getAuth(app);
+
+const db =
+getFirestore(app);
+
+
+/* حساب الأدمن */
+
+const ADMIN_EMAIL =
+"fayezalmatrafi1@gmail.com";
+
+
+let authMode="login";
+
+let current=0;
+
+let mode="learn";
+
+let recognition=null;
+
+let currentUserData=null;
 
 
 /* =========================
-   Firebase Authentication
+   الجمل الحالية
 ========================= */
 
-window.toggleAuthMode = function(){
-
-  const title = document.getElementById("authTitle");
-  const sub = document.getElementById("authSub");
-  const button = document.getElementById("authButton");
-  const switchText = document.getElementById("switchText");
-  const switchButton = document.getElementById("switchButton");
-  const message = document.getElementById("authMessage");
-
-  message.innerText = "";
-
-  if(authMode === "login"){
-    authMode = "register";
-    title.innerText = "إنشاء حساب جديد ✨";
-    sub.innerText = "أنشئ حسابك وابدأ التدريب";
-    button.innerText = "إنشاء الحساب";
-    switchText.innerText = "لديك حساب بالفعل؟";
-    switchButton.innerText = "تسجيل الدخول";
-  }else{
-    authMode = "login";
-    title.innerText = "مرحبًا بعودتك 👋";
-    sub.innerText = "سجّل دخولك لمتابعة التدريب";
-    button.innerText = "تسجيل الدخول";
-    switchText.innerText = "ليس لديك حساب؟";
-    switchButton.innerText = "إنشاء حساب";
-  }
-};
-
-
-window.handleAuth = async function(){
-
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  const message = document.getElementById("authMessage");
-  const button = document.getElementById("authButton");
-
-  if(!email || !password){
-    message.style.color = "#dc2626";
-    message.innerText = "أدخل البريد الإلكتروني وكلمة المرور.";
-    return;
-  }
-
-  if(password.length < 6){
-    message.style.color = "#dc2626";
-    message.innerText = "كلمة المرور يجب أن تكون 6 أحرف على الأقل.";
-    return;
-  }
-
-  button.disabled = true;
-  button.innerText = "جاري التحميل...";
-
-  try{
-
-    if(authMode === "login"){
-      await signInWithEmailAndPassword(auth,email,password);
-    }else{
-      await createUserWithEmailAndPassword(auth,email,password);
-    }
-
-    message.style.color = "#15803d";
-    message.innerText = "✅ تم بنجاح";
-
-  }catch(error){
-
-    message.style.color = "#dc2626";
-
-    if(error.code === "auth/invalid-credential"){
-      message.innerText = "❌ البريد أو كلمة المرور غير صحيحة.";
-    }
-    else if(error.code === "auth/email-already-in-use"){
-      message.innerText = "هذا البريد مسجل مسبقًا.";
-    }
-    else if(error.code === "auth/invalid-email"){
-      message.innerText = "البريد الإلكتروني غير صحيح.";
-    }
-    else{
-      message.innerText = "تعذر تسجيل الدخول. حاول مرة أخرى.";
-    }
-
-  }finally{
-
-    button.disabled = false;
-    button.innerText =
-      authMode === "login" ? "تسجيل الدخول" : "إنشاء الحساب";
-  }
-};
-
-
-window.logout = async function(){
-
-  if(guest){
-    guest = false;
-    showPage("welcomePage");
-    return;
-  }
-
-  try{
-    await signOut(auth);
-  }catch(e){}
-
-  showPage("welcomePage");
-};
-
-
-onAuthStateChanged(auth,user=>{
-
-  if(user){
-
-    guest = false;
-
-    const name =
-      user.email ? user.email.split("@")[0] : "متعلّم الإنجليزية";
-
-    document.getElementById("userName").innerText = name;
-
-    showPage("homePage");
-  }
-
-});
-
-
-/* =========================
-   الجمل
-========================= */
-
-const lessons = [
+const lessons=[
 
 {
   word:"about",
@@ -689,43 +1260,592 @@ const lessons = [
 
 ];
 
-let current = 0;
-let mode = "learn";
-let recognition = null;
+
+/* =========================
+   الصفحات
+========================= */
+
+function showPage(id){
+
+  document
+  .querySelectorAll(".page")
+  .forEach(
+    p=>p.classList.remove("active")
+  );
+
+  document
+  .getElementById(id)
+  .classList.add("active");
+
+}
+
+
+window.openAuth=function(){
+
+  showPage("authPage");
+
+};
+
+
+/* =========================
+   تغيير الدخول / التسجيل
+========================= */
+
+window.toggleAuthMode=function(){
+
+  authMode =
+  authMode==="login"
+  ?"register"
+  :"login";
+
+
+  const register =
+  document.getElementById("registerOnly");
+
+
+  register.style.display =
+  authMode==="register"
+  ?"block"
+  :"none";
+
+
+  document.getElementById("authTitle").innerText =
+  authMode==="login"
+  ?"مرحبًا بعودتك"
+  :"إنشاء حساب جديد";
+
+
+  document.getElementById("authSub").innerText =
+  authMode==="login"
+  ?"سجّل دخولك لمتابعة التدريب"
+  :"أنشئ حسابك ثم انتظر موافقة الإدارة";
+
+
+  document.getElementById("authButton").innerText =
+  authMode==="login"
+  ?"تسجيل الدخول"
+  :"إنشاء الحساب";
+
+
+  document.getElementById("switchText").innerText =
+  authMode==="login"
+  ?"ليس لديك حساب؟"
+  :"لديك حساب بالفعل؟";
+
+
+  document.getElementById("switchButton").innerText =
+  authMode==="login"
+  ?"إنشاء حساب"
+  :"تسجيل الدخول";
+
+
+  document.getElementById("authMessage").innerText="";
+
+};
+
+
+/* =========================
+   تسجيل الدخول / إنشاء حساب
+========================= */
+
+window.handleAuth=async function(){
+
+  const email =
+  document
+  .getElementById("email")
+  .value
+  .trim()
+  .toLowerCase();
+
+
+  const password =
+  document
+  .getElementById("password")
+  .value;
+
+
+  const message =
+  document.getElementById("authMessage");
+
+
+  const button =
+  document.getElementById("authButton");
+
+
+  message.innerText="";
+
+
+  if(!email || !password){
+
+    message.style.color="#dc2626";
+
+    message.innerText =
+    "أدخل البريد الإلكتروني وكلمة المرور.";
+
+    return;
+
+  }
+
+
+  if(password.length<6){
+
+    message.style.color="#dc2626";
+
+    message.innerText =
+    "كلمة المرور يجب أن تكون 6 أحرف على الأقل.";
+
+    return;
+
+  }
+
+
+  button.disabled=true;
+
+  button.innerText =
+  "جاري المعالجة...";
+
+
+  try{
+
+    /* =====================
+       تسجيل الدخول
+    ===================== */
+
+    if(authMode==="login"){
+
+      const credential =
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+
+      const user =
+      credential.user;
+
+
+      const snap =
+      await getDoc(
+        doc(db,"users",user.uid)
+      );
+
+
+      if(!snap.exists()){
+
+        await signOut(auth);
+
+        throw new Error(
+          "no-profile"
+        );
+
+      }
+
+
+      const data =
+      snap.data();
+
+
+      if(data.status!=="approved"){
+
+        await signOut(auth);
+
+
+        message.style.color =
+        data.status==="pending"
+        ?"#d97706"
+        :"#dc2626";
+
+
+        message.innerText =
+        data.status==="pending"
+        ?"⏳ حسابك بانتظار موافقة الإدارة."
+        :"❌ تم رفض طلب الحساب.";
+
+
+        return;
+
+      }
+
+
+      currentUserData=data;
+
+      setHomeUser(data);
+
+      showPage("homePage");
+
+    }
+
+
+    /* =====================
+       إنشاء حساب
+    ===================== */
+
+    else{
+
+      const username =
+      document
+      .getElementById("username")
+      .value
+      .trim();
+
+
+      if(username.length<3){
+
+        message.style.color="#dc2626";
+
+        message.innerText =
+        "اسم المستخدم يجب أن يكون 3 أحرف على الأقل.";
+
+        return;
+
+      }
+
+
+      const usernameQuery =
+      query(
+        collection(db,"users"),
+        where(
+          "username",
+          "==",
+          username
+        )
+      );
+
+
+      const usernameSnapshot =
+      await getDocs(
+        usernameQuery
+      );
+
+
+      if(!usernameSnapshot.empty){
+
+        message.style.color="#dc2626";
+
+        message.innerText =
+        "اسم المستخدم مستخدم مسبقًا.";
+
+        return;
+
+      }
+
+
+      const credential =
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+
+      const user =
+      credential.user;
+
+
+      await setDoc(
+        doc(
+          db,
+          "users",
+          user.uid
+        ),
+        {
+
+          uid:user.uid,
+
+          username:username,
+
+          email:email,
+
+          status:"pending",
+
+          createdAt:new Date(),
+
+          stats:{
+
+            trainingAttempts:0,
+
+            listeningAttempts:0,
+
+            speechAttempts:0,
+
+            speechCorrect:0,
+
+            writingAttempts:0,
+
+            writingCorrect:0
+
+          }
+
+        }
+      );
+
+
+      await signOut(auth);
+
+
+      message.style.color="#d97706";
+
+      message.innerText =
+      "✅ تم إنشاء الحساب. بانتظار موافقة الإدارة.";
+
+
+      document
+      .getElementById("username")
+      .value="";
+
+
+      document
+      .getElementById("email")
+      .value="";
+
+
+      document
+      .getElementById("password")
+      .value="";
+
+    }
+
+  }
+
+  catch(error){
+
+    console.error(error);
+
+    message.style.color="#dc2626";
+
+
+    if(
+      error.code==="auth/email-already-in-use"
+    ){
+
+      message.innerText =
+      "هذا البريد الإلكتروني مسجل مسبقًا.";
+
+    }
+
+    else if(
+      error.code==="auth/invalid-email"
+    ){
+
+      message.innerText =
+      "البريد الإلكتروني غير صحيح.";
+
+    }
+
+    else if(
+      error.code==="auth/weak-password"
+    ){
+
+      message.innerText =
+      "كلمة المرور ضعيفة.";
+
+    }
+
+    else if(
+      error.message==="no-profile"
+    ){
+
+      message.innerText =
+      "لا توجد بيانات مستخدم لهذا الحساب.";
+
+    }
+
+    else{
+
+      message.innerText =
+      "حدث خطأ. حاول مرة أخرى.";
+
+    }
+
+  }
+
+  finally{
+
+    button.disabled=false;
+
+    button.innerText =
+    authMode==="login"
+    ?"تسجيل الدخول"
+    :"إنشاء الحساب";
+
+  }
+
+};
+
+
+/* =========================
+   بيانات المستخدم
+========================= */
+
+function setHomeUser(data){
+
+  document
+  .getElementById("userName")
+  .innerText =
+  data.username ||
+  "متعلّم الإنجليزية";
+
+
+  const isAdmin =
+  data.email?.toLowerCase()
+  ===
+  ADMIN_EMAIL.toLowerCase();
+
+
+  document
+  .getElementById("adminPanelButton")
+  .style.display =
+  isAdmin
+  ?"block"
+  :"none";
+
+}
+
+
+/* =========================
+   مراقبة حالة الدخول
+========================= */
+
+onAuthStateChanged(
+  auth,
+  async user=>{
+
+    if(!user)return;
+
+
+    try{
+
+      const snap =
+      await getDoc(
+        doc(db,"users",user.uid)
+      );
+
+
+      if(!snap.exists()){
+
+        await signOut(auth);
+
+        return;
+
+      }
+
+
+      const data =
+      snap.data();
+
+
+      if(data.status!=="approved"){
+
+        await signOut(auth);
+
+        return;
+
+      }
+
+
+      currentUserData=data;
+
+      setHomeUser(data);
+
+      showPage("homePage");
+
+    }
+
+    catch(error){
+
+      console.error(error);
+
+      await signOut(auth);
+
+    }
+
+  }
+);
+
+
+/* =========================
+   تسجيل الخروج
+========================= */
+
+window.logout=async function(){
+
+  if(recognition){
+
+    try{
+      recognition.abort();
+    }
+    catch(e){}
+
+  }
+
+
+  speechSynthesis.cancel();
+
+
+  await signOut(auth);
+
+
+  currentUserData=null;
+
+
+  showPage("welcomePage");
+
+};
 
 
 /* =========================
    نتعلم / نتدرب
 ========================= */
 
-window.startMode = function(selectedMode){
+window.startMode=function(selected){
 
-  mode = selectedMode;
-  current = 0;
+  mode=selected;
+
+  current=0;
+
 
   showPage("lessonPage");
 
-  if(mode === "learn"){
-    document.getElementById("modeTitle").innerText = "📚 نتعلّم";
-    document.getElementById("practiceNote").style.display = "none";
-  }else{
-    document.getElementById("modeTitle").innerText = "🎯 نتدرّب";
-    document.getElementById("practiceNote").style.display = "block";
-  }
+
+  document
+  .getElementById("modeTitle")
+  .innerText =
+  mode==="learn"
+  ?"📚 نتعلّم"
+  :"🎯 نتدرّب";
+
+
+  document
+  .getElementById("practiceNote")
+  .style.display =
+  mode==="practice"
+  ?"block"
+  :"none";
+
 
   showLesson();
+
 };
 
 
-window.goHome = function(){
+window.goHome=function(){
 
   speechSynthesis.cancel();
 
+
   if(recognition){
-    try{recognition.abort();}catch(e){}
+
+    try{
+      recognition.abort();
+    }
+    catch(e){}
+
   }
 
+
   showPage("homePage");
+
 };
 
 
@@ -735,41 +1855,80 @@ window.goHome = function(){
 
 function showLesson(){
 
-  const lesson = lessons[current];
+  const lesson =
+  lessons[current];
 
-  document.getElementById("number").innerText =
-    "الجملة " + (current+1) + " من " + lessons.length;
 
-  document.getElementById("word").innerText = lesson.word;
-  document.getElementById("type").innerText = lesson.type;
-  document.getElementById("meaning").innerText = lesson.meaning;
-  document.getElementById("sentence").innerText = lesson.sentence;
-  document.getElementById("arabic").innerText = lesson.arabic;
+  document
+  .getElementById("number")
+  .innerText =
+  `الجملة ${current+1} من ${lessons.length}`;
 
-  document.getElementById("answer").value = "";
-  document.getElementById("result").innerText = "";
-  document.getElementById("speechResult").style.display = "none";
-  document.getElementById("completeBox").style.display = "none";
 
-  const sentence = document.getElementById("sentence");
-  const arabic = document.getElementById("arabic");
-  const hideButton = document.getElementById("hideButton");
+  document
+  .getElementById("word")
+  .innerText =
+  lesson.word;
 
-  if(mode === "practice"){
-    sentence.style.visibility = "hidden";
-    arabic.style.visibility = "hidden";
-    hideButton.innerHTML = "👁️ إظهار الجملة";
-  }else{
-    sentence.style.visibility = "visible";
-    arabic.style.visibility = "visible";
-    hideButton.innerHTML = "🙈 إخفاء الجملة";
-  }
 
-  document.getElementById("counter").innerText =
-    (current+1) + " / " + lessons.length;
+  document
+  .getElementById("type")
+  .innerText =
+  lesson.type;
 
-  document.getElementById("bar").style.width =
-    (((current+1)/lessons.length)*100) + "%";
+
+  document
+  .getElementById("meaning")
+  .innerText =
+  lesson.meaning;
+
+
+  document
+  .getElementById("sentence")
+  .innerText =
+  lesson.sentence;
+
+
+  document
+  .getElementById("arabic")
+  .innerText =
+  lesson.arabic;
+
+
+  document
+  .getElementById("answer")
+  .value="";
+
+
+  document
+  .getElementById("result")
+  .innerText="";
+
+
+  document
+  .getElementById("speechResult")
+  .style.display="none";
+
+
+  document
+  .getElementById("completeBox")
+  .style.display="none";
+
+
+  resetHidden();
+
+
+  document
+  .getElementById("counter")
+  .innerText =
+  `${current+1} / ${lessons.length}`;
+
+
+  document
+  .getElementById("bar")
+  .style.width =
+  `${((current+1)/lessons.length)*100}%`;
+
 }
 
 
@@ -777,42 +1936,97 @@ function showLesson(){
    الاستماع
 ========================= */
 
-window.playSentence = function(){
+window.playSentence=function(){
 
   speechSynthesis.cancel();
 
+
   const speech =
-    new SpeechSynthesisUtterance(lessons[current].sentence);
+  new SpeechSynthesisUtterance(
+    lessons[current].sentence
+  );
 
-  speech.lang = "en-US";
-  speech.rate = .82;
 
-  speechSynthesis.speak(speech);
+  speech.lang="en-US";
+
+  speech.rate=.82;
+
+
+  speechSynthesis.speak(
+    speech
+  );
+
 };
 
 
 /* =========================
-   إظهار / إخفاء
+   إخفاء الإنجليزية
 ========================= */
 
-window.toggleSentence = function(){
+window.toggleSentence=function(){
 
-  const sentence = document.getElementById("sentence");
-  const arabic = document.getElementById("arabic");
-  const button = document.getElementById("hideButton");
+  const sentence =
+  document.getElementById("sentence");
 
-  if(sentence.style.visibility === "hidden"){
 
-    sentence.style.visibility = "visible";
-    arabic.style.visibility = "visible";
-    button.innerHTML = "🙈 إخفاء الجملة";
+  const word =
+  document.getElementById("word");
 
-  }else{
 
-    sentence.style.visibility = "hidden";
-    arabic.style.visibility = "hidden";
-    button.innerHTML = "👁️ إظهار الجملة";
+  const button =
+  document.getElementById("hideButton");
+
+
+  const hidden =
+  sentence.style.visibility==="hidden";
+
+
+  if(hidden){
+
+    sentence.style.visibility="visible";
+
+    word.style.visibility="visible";
+
+    button.innerText =
+    "🙈 إخفاء الإنجليزية";
+
   }
+
+  else{
+
+    sentence.style.visibility="hidden";
+
+    word.style.visibility="hidden";
+
+    button.innerText =
+    "👁️ إظهار الإنجليزية";
+
+  }
+
+};
+
+
+/* =========================
+   إعادة العرض
+========================= */
+
+window.resetHidden=function(){
+
+  document
+  .getElementById("sentence")
+  .style.visibility="visible";
+
+
+  document
+  .getElementById("word")
+  .style.visibility="visible";
+
+
+  document
+  .getElementById("hideButton")
+  .innerText =
+  "🙈 إخفاء الإنجليزية";
+
 };
 
 
@@ -821,27 +2035,57 @@ window.toggleSentence = function(){
 ========================= */
 
 function cleanWriting(text){
+
   return text
-    .toLowerCase()
-    .replace(/[.,!?]/g,"")
-    .replace(/\s+/g," ")
-    .trim();
+  .toLowerCase()
+  .replace(/[.,!?]/g,"")
+  .replace(/\s+/g," ")
+  .trim();
+
 }
 
 
-window.checkAnswer = function(){
+window.checkAnswer=function(){
 
-  const answer = document.getElementById("answer").value;
-  const correct = lessons[current].sentence;
-  const result = document.getElementById("result");
+  const answer =
+  document
+  .getElementById("answer")
+  .value;
 
-  if(cleanWriting(answer) === cleanWriting(correct)){
-    result.innerHTML = "🎉 ممتاز! إجابتك صحيحة";
-    result.style.color = "#15803d";
-  }else{
-    result.innerHTML = "❌ يوجد خطأ، حاول مرة أخرى";
-    result.style.color = "#dc2626";
+
+  const correct =
+  lessons[current].sentence;
+
+
+  const result =
+  document
+  .getElementById("result");
+
+
+  if(
+    cleanWriting(answer)
+    ===
+    cleanWriting(correct)
+  ){
+
+    result.innerText =
+    "🎉 ممتاز! إجابتك صحيحة";
+
+    result.style.color =
+    "#15803d";
+
   }
+
+  else{
+
+    result.innerText =
+    "❌ يوجد خطأ، حاول مرة أخرى";
+
+    result.style.color =
+    "#dc2626";
+
+  }
+
 };
 
 
@@ -851,16 +2095,34 @@ window.checkAnswer = function(){
 
 function normalizeSpeech(text){
 
-  let value = text.toLowerCase();
+  return text
+  .toLowerCase()
+  .replace(
+    /\$\s*20\b/g,
+    "20 dollars"
+  )
+  .replace(
+    /\btwenty\b/g,
+    "20"
+  )
+  .replace(
+    /\bbucks?\b/g,
+    "dollars"
+  )
+  .replace(
+    /\bdollar\b/g,
+    "dollars"
+  )
+  .replace(
+    /[^a-z0-9\s]/g,
+    " "
+  )
+  .replace(
+    /\s+/g,
+    " "
+  )
+  .trim();
 
-  value = value.replace(/\$\s*20\b/g,"20 dollars");
-  value = value.replace(/\btwenty\b/g,"20");
-  value = value.replace(/\bbucks?\b/g,"dollars");
-  value = value.replace(/\bdollar\b/g,"dollars");
-  value = value.replace(/[^a-z0-9\s]/g," ");
-  value = value.replace(/\s+/g," ").trim();
-
-  return value;
 }
 
 
@@ -868,45 +2130,122 @@ function levenshtein(a,b){
 
   const matrix=[];
 
-  for(let i=0;i<=b.length;i++) matrix[i]=[i];
-  for(let j=0;j<=a.length;j++) matrix[0][j]=j;
 
-  for(let i=1;i<=b.length;i++){
+  for(
+    let i=0;
+    i<=b.length;
+    i++
+  ){
 
-    for(let j=1;j<=a.length;j++){
+    matrix[i]=[i];
 
-      if(b.charAt(i-1)===a.charAt(j-1)){
-        matrix[i][j]=matrix[i-1][j-1];
-      }else{
-        matrix[i][j]=Math.min(
-          matrix[i-1][j-1]+1,
-          matrix[i][j-1]+1,
-          matrix[i-1][j]+1
-        );
-      }
-    }
   }
 
+
+  for(
+    let j=0;
+    j<=a.length;
+    j++
+  ){
+
+    matrix[0][j]=j;
+
+  }
+
+
+  for(
+    let i=1;
+    i<=b.length;
+    i++
+  ){
+
+    for(
+      let j=1;
+      j<=a.length;
+      j++
+    ){
+
+      if(
+        b[i-1]===a[j-1]
+      ){
+
+        matrix[i][j] =
+        matrix[i-1][j-1];
+
+      }
+
+      else{
+
+        matrix[i][j] =
+        Math.min(
+
+          matrix[i-1][j-1]+1,
+
+          matrix[i][j-1]+1,
+
+          matrix[i-1][j]+1
+
+        );
+
+      }
+
+    }
+
+  }
+
+
   return matrix[b.length][a.length];
+
 }
 
 
-function speechSimilarity(spoken,correct){
+function speechSimilarity(
+  spoken,
+  correct
+){
 
-  const first=normalizeSpeech(spoken);
-  const second=normalizeSpeech(correct);
+  spoken =
+  normalizeSpeech(spoken);
 
-  if(first===second) return 100;
 
-  const distance=levenshtein(first,second);
-  const longest=Math.max(first.length,second.length);
+  correct =
+  normalizeSpeech(correct);
 
-  if(longest===0) return 100;
 
-  return Math.max(
-    0,
-    Math.round((1-distance/longest)*100)
+  if(
+    spoken===correct
+  ){
+
+    return 100;
+
+  }
+
+
+  const distance =
+  levenshtein(
+    spoken,
+    correct
   );
+
+
+  const longest =
+  Math.max(
+    spoken.length,
+    correct.length
+  );
+
+
+  return longest
+  ?
+  Math.max(
+    0,
+    Math.round(
+      (1-distance/longest)*100
+    )
+  )
+  :
+  100;
+
 }
 
 
@@ -914,189 +2253,599 @@ function speechSimilarity(spoken,correct){
    التحدث
 ========================= */
 
-window.startSpeaking = function(){
+window.startSpeaking=function(){
 
   const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
+
 
   if(!SpeechRecognition){
-    alert("التعرف على الصوت غير مدعوم في هذا المتصفح.");
+
+    alert(
+      "التعرف على الصوت غير مدعوم في هذا المتصفح."
+    );
+
     return;
+
   }
+
 
   if(recognition){
-    try{recognition.abort();}catch(e){}
+
+    try{
+      recognition.abort();
+    }
+    catch(e){}
+
   }
 
-  recognition=new SpeechRecognition();
-  recognition.lang="en-US";
-  recognition.interimResults=false;
-  recognition.maxAlternatives=5;
 
-  const box=document.getElementById("speechResult");
-  const button=document.getElementById("speakButton");
+  recognition =
+  new SpeechRecognition();
+
+
+  recognition.lang =
+  "en-US";
+
+
+  recognition.interimResults =
+  false;
+
+
+  recognition.maxAlternatives =
+  5;
+
+
+  const box =
+  document.getElementById(
+    "speechResult"
+  );
+
 
   box.style.display="block";
+
   box.className="";
 
-  document.getElementById("speechTitle").innerText="🎙️ تحدث الآن";
-  document.getElementById("score").innerText="";
-  document.getElementById("heardText").innerText="أستمع إليك...";
-  document.getElementById("expectedText").innerText="";
-  document.getElementById("retryButton").style.display="none";
 
-  button.innerText="🔴 أستمع إليك الآن...";
+  document
+  .getElementById("speechTitle")
+  .innerText =
+  "🎙️ تحدث الآن";
 
-  recognition.onresult=function(event){
 
-    const correct=lessons[current].sentence;
-    const alternatives=event.results[0];
+  document
+  .getElementById("score")
+  .innerText="";
 
-    let bestText="";
+
+  document
+  .getElementById("heardText")
+  .innerText =
+  "أستمع إليك...";
+
+
+  document
+  .getElementById("expectedText")
+  .innerText="";
+
+
+  document
+  .getElementById("retryButton")
+  .style.display="none";
+
+
+  recognition.onresult =
+  function(event){
+
+    let best="";
+
     let bestScore=-1;
 
-    for(let i=0;i<alternatives.length;i++){
 
-      const text=alternatives[i].transcript;
-      const score=speechSimilarity(text,correct);
+    for(
+      const alternative
+      of event.results[0]
+    ){
+
+      const text =
+      alternative.transcript;
+
+
+      const score =
+      speechSimilarity(
+        text,
+        lessons[current].sentence
+      );
+
 
       if(score>bestScore){
+
         bestScore=score;
-        bestText=text;
+
+        best=text;
+
       }
+
     }
 
-    displaySpeechResult(bestText,bestScore);
+
+    displaySpeechResult(
+      best,
+      bestScore
+    );
+
   };
 
 
-  recognition.onerror=function(){
+  recognition.onerror =
+  function(){
 
     box.className="bad";
 
-    document.getElementById("speechTitle").innerText=
-      "❌ لم أسمع الجملة بوضوح";
 
-    document.getElementById("score").innerText="";
-    document.getElementById("heardText").innerText=
-      "اضغط حاول مرة أخرى.";
-
-    document.getElementById("retryButton").style.display="block";
-  };
+    document
+    .getElementById("speechTitle")
+    .innerText =
+    "❌ لم أسمع الجملة بوضوح";
 
 
-  recognition.onend=function(){
-    button.innerText="🎙️ تحدث بالجملة";
+    document
+    .getElementById("heardText")
+    .innerText =
+    "اضغط حاول مرة أخرى.";
+
+
+    document
+    .getElementById("retryButton")
+    .style.display =
+    "block";
+
   };
 
 
   try{
+
     recognition.start();
-  }catch(e){
-    button.innerText="🎙️ تحدث بالجملة";
+
   }
+
+  catch(e){}
+
 };
 
 
-function displaySpeechResult(spoken,score){
+/* =========================
+   نتيجة النطق
+========================= */
 
-  const box=document.getElementById("speechResult");
-  const title=document.getElementById("speechTitle");
-  const scoreElement=document.getElementById("score");
-  const retry=document.getElementById("retryButton");
+function displaySpeechResult(
+  spoken,
+  score
+){
 
-  document.getElementById("heardText").innerText=spoken;
-  scoreElement.innerText=score+"% تطابق";
+  const box =
+  document.getElementById(
+    "speechResult"
+  );
+
+
+  const title =
+  document.getElementById(
+    "speechTitle"
+  );
+
+
+  const scoreElement =
+  document.getElementById(
+    "score"
+  );
+
+
+  const retry =
+  document.getElementById(
+    "retryButton"
+  );
+
+
+  document
+  .getElementById("heardText")
+  .innerText =
+  spoken;
+
+
+  scoreElement.innerText =
+  score+"% تطابق";
+
 
   if(score>=90){
 
     box.className="good";
-    title.innerText="✅ ممتاز! نطقك قريب جدًا";
-    scoreElement.style.color="#15803d";
-    retry.style.display="none";
-    document.getElementById("expectedText").innerText="";
 
-  }else if(score>=70){
 
-    box.className="closeResult";
-    title.innerText="🟠 قريب جدًا — يوجد فرق بسيط";
-    scoreElement.style.color="#c2410c";
-    retry.style.display="block";
+    title.innerText =
+    "✅ ممتاز! نطقك قريب جدًا";
 
-    document.getElementById("expectedText").innerText=
-      "الجملة: "+lessons[current].sentence;
 
-  }else{
+    scoreElement.style.color =
+    "#15803d";
 
-    box.className="bad";
-    title.innerText="❌ حاول مرة أخرى";
-    scoreElement.style.color="#dc2626";
-    retry.style.display="block";
 
-    document.getElementById("expectedText").innerText=
-      "الجملة: "+lessons[current].sentence;
+    retry.style.display =
+    "none";
+
+
+    document
+    .getElementById("expectedText")
+    .innerText="";
+
   }
+
+
+  else if(score>=70){
+
+    box.className =
+    "closeResult";
+
+
+    title.innerText =
+    "🟠 قريب جدًا — يوجد فرق بسيط";
+
+
+    scoreElement.style.color =
+    "#c2410c";
+
+
+    retry.style.display =
+    "block";
+
+
+    document
+    .getElementById("expectedText")
+    .innerText =
+    "الجملة: "+
+    lessons[current].sentence;
+
+  }
+
+
+  else{
+
+    box.className =
+    "bad";
+
+
+    title.innerText =
+    "❌ حاول مرة أخرى";
+
+
+    scoreElement.style.color =
+    "#dc2626";
+
+
+    retry.style.display =
+    "block";
+
+
+    document
+    .getElementById("expectedText")
+    .innerText =
+    "الجملة: "+
+    lessons[current].sentence;
+
+  }
+
 }
 
 
 /* =========================
-   تحميل صورة الجمل
+   التالي
 ========================= */
 
-window.downloadSentences = function(){
+window.nextSentence=function(){
 
-  const link=document.createElement("a");
+  if(
+    current<
+    lessons.length-1
+  ){
 
-  link.href=encodeURI("الجمل.jpeg");
-  link.download="English-Practice-1-5.jpeg";
+    current++;
 
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+    showLesson();
+
+  }
+
+  else{
+
+    document
+    .getElementById("completeBox")
+    .style.display =
+    "block";
+
+  }
+
 };
 
 
 /* =========================
-   التالي / السابق
+   السابق
 ========================= */
 
-window.nextSentence = function(){
+window.previousSentence=function(){
 
-  if(current < lessons.length-1){
+  current =
+  current>0
+  ?
+  current-1
+  :
+  lessons.length-1;
 
-    current++;
-    showLesson();
-
-  }else{
-
-    document.getElementById("completeBox").style.display="block";
-    document.getElementById("completeBox").scrollIntoView({
-      behavior:"smooth",
-      block:"nearest"
-    });
-  }
-};
-
-
-window.previousSentence = function(){
-
-  if(current>0){
-    current--;
-  }else{
-    current=lessons.length-1;
-  }
 
   showLesson();
+
 };
 
 
-/* Enter */
-document.getElementById("answer").addEventListener("keydown",function(event){
-  if(event.key==="Enter"){
-    window.checkAnswer();
+/* =========================
+   Enter للكتابة
+========================= */
+
+document
+.getElementById("answer")
+.addEventListener(
+  "keydown",
+  function(event){
+
+    if(event.key==="Enter"){
+
+      checkAnswer();
+
+    }
+
   }
-});
+);
+
+
+/* =========================
+   لوحة الإدارة
+========================= */
+
+window.openAdmin=async function(){
+
+  if(
+    !currentUserData ||
+    currentUserData.email?.toLowerCase()
+    !==
+    ADMIN_EMAIL.toLowerCase()
+  ){
+
+    alert("غير مصرح.");
+
+    return;
+
+  }
+
+
+  showPage("adminPage");
+
+  await loadPendingUsers();
+
+};
+
+
+async function loadPendingUsers(){
+
+  const box =
+  document.getElementById(
+    "pendingUsers"
+  );
+
+
+  box.innerHTML =
+  '<div class="empty">جاري التحميل...</div>';
+
+
+  try{
+
+    const q =
+    query(
+      collection(db,"users"),
+      where(
+        "status",
+        "==",
+        "pending"
+      )
+    );
+
+
+    const snapshot =
+    await getDocs(q);
+
+
+    if(snapshot.empty){
+
+      box.innerHTML =
+      '<div class="empty">لا توجد طلبات بانتظار الموافقة.</div>';
+
+      return;
+
+    }
+
+
+    box.innerHTML="";
+
+
+    snapshot.forEach(
+      snap=>{
+
+        const data =
+        snap.data();
+
+
+        const row =
+        document.createElement(
+          "div"
+        );
+
+
+        row.className =
+        "adminRow";
+
+
+        row.innerHTML = `
+
+          <strong>
+            ${escapeHtml(
+              data.username ||
+              "بدون اسم"
+            )}
+          </strong>
+
+          <small>
+            ${escapeHtml(
+              data.email ||
+              ""
+            )}
+          </small>
+
+          <span class="adminBadge">
+            بانتظار الموافقة
+          </span>
+
+          <div class="adminActions">
+
+            <button class="approve">
+              موافقة
+            </button>
+
+            <button class="reject">
+              رفض
+            </button>
+
+          </div>
+        `;
+
+
+        row
+        .querySelector(".approve")
+        .onclick =
+        ()=>
+        setUserStatus(
+          snap.id,
+          "approved"
+        );
+
+
+        row
+        .querySelector(".reject")
+        .onclick =
+        ()=>
+        setUserStatus(
+          snap.id,
+          "rejected"
+        );
+
+
+        box.appendChild(row);
+
+      }
+    );
+
+  }
+
+  catch(error){
+
+    console.error(error);
+
+
+    box.innerHTML =
+    '<div class="empty">تعذر تحميل الطلبات. تحقق من Firestore Rules.</div>';
+
+  }
+
+}
+
+
+/* =========================
+   موافقة / رفض
+========================= */
+
+window.setUserStatus=
+async function(
+  uid,
+  status
+){
+
+  if(
+    !currentUserData ||
+    currentUserData.email?.toLowerCase()
+    !==
+    ADMIN_EMAIL.toLowerCase()
+  ){
+
+    alert("غير مصرح.");
+
+    return;
+
+  }
+
+
+  try{
+
+    await updateDoc(
+      doc(
+        db,
+        "users",
+        uid
+      ),
+      {
+        status:status
+      }
+    );
+
+
+    await loadPendingUsers();
+
+  }
+
+  catch(error){
+
+    console.error(error);
+
+    alert(
+      "تعذر تحديث حالة المستخدم."
+    );
+
+  }
+
+};
+
+
+/* =========================
+   حماية عرض النصوص
+========================= */
+
+function escapeHtml(value){
+
+  return String(value)
+  .replace(
+    /[&<>"']/g,
+    function(match){
+
+      return {
+
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+
+      }[match];
+
+    }
+  );
+
+}
 
 </script>
 
