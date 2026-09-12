@@ -2,401 +2,286 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0f172a">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1533">
 <title>English Practice</title>
 
 <style>
 *{box-sizing:border-box}
-
+:root{
+  --blue:#2563eb;
+  --blue2:#3b82f6;
+  --purple:#7c3aed;
+  --purple2:#9333ea;
+  --dark:#08132e;
+  --card:#fff;
+  --text:#0f172a;
+  --muted:#64748b;
+}
 body{
   margin:0;
-  font-family:Arial,sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
   min-height:100vh;
-  background:linear-gradient(145deg,#07152e,#172554 55%,#312e81);
+  background:linear-gradient(160deg,#061126,#12235a 55%,#312e81);
   color:white;
-  padding:18px;
 }
-
+button,input{font:inherit}
+button{cursor:pointer}
 .app{
-  max-width:600px;
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
   margin:auto;
+  padding:20px 18px 35px;
 }
 
-/* الصفحة الرئيسية */
+/* الصفحات */
+.page{display:none;min-height:calc(100vh - 55px)}
+.page.active{display:flex;flex-direction:column}
 
-#homePage{
-  min-height:92vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
-
+/* الشعار */
 .logo{
-  width:85px;
-  height:85px;
+  width:86px;height:86px;
   margin:0 auto 18px;
-  border-radius:25px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  border-radius:26px;
+  display:flex;align-items:center;justify-content:center;
   font-size:42px;
   background:linear-gradient(135deg,#3b82f6,#8b5cf6);
-  box-shadow:0 15px 40px rgba(59,130,246,.35);
+  box-shadow:0 18px 50px rgba(59,130,246,.35);
 }
+.brand{text-align:center}
+.brand h1{font-size:34px;margin:0 0 7px}
+.brand p{margin:0;color:#bfdbfe;font-size:17px}
 
-.home-title{
-  text-align:center;
-  font-size:38px;
-  font-weight:bold;
-  margin:0;
-}
-
-.home-subtitle{
-  text-align:center;
-  font-size:20px;
-  color:#bfdbfe;
-  margin:10px 0 5px;
-  font-weight:bold;
-}
-
-.home-description{
+/* ترحيب */
+#welcomePage{justify-content:center}
+.heroText{
   text-align:center;
   color:#cbd5e1;
   line-height:1.8;
-  margin-bottom:28px;
+  margin:22px 10px;
 }
-
-.home-card{
-  background:rgba(255,255,255,.10);
-  border:1px solid rgba(255,255,255,.15);
-  backdrop-filter:blur(10px);
-  border-radius:28px;
-  padding:20px;
-  box-shadow:0 20px 50px rgba(0,0,0,.25);
-}
-
-.mode{
+.primary{
   width:100%;
-  border:none;
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:13px;
-  cursor:pointer;
-  text-align:right;
-  display:flex;
-  align-items:center;
-  gap:15px;
-}
-
-.learn-mode{
-  background:linear-gradient(135deg,#2563eb,#3b82f6);
-  color:white;
-}
-
-.practice-mode{
-  background:linear-gradient(135deg,#7c3aed,#9333ea);
-  color:white;
-}
-
-.mode-icon{
-  font-size:34px;
-}
-
-.mode-text strong{
-  display:block;
-  font-size:22px;
-  margin-bottom:5px;
-}
-
-.mode-text span{
-  font-size:14px;
-  opacity:.9;
-}
-
-.goal{
-  margin-top:8px;
-  background:rgba(255,255,255,.08);
+  border:0;
   border-radius:18px;
-  padding:15px;
-  text-align:center;
-  color:#e2e8f0;
-}
-
-.goal strong{
-  color:#fbbf24;
-}
-
-/* صفحة الجمل */
-
-#lessonPage{
-  display:none;
-}
-
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin:5px 0 15px;
-}
-
-.back{
-  border:0;
-  border-radius:12px;
-  padding:10px 14px;
-  background:rgba(255,255,255,.15);
-  color:white;
-  font-size:16px;
-  font-weight:bold;
-}
-
-.page-title{
-  font-size:19px;
-  font-weight:bold;
-}
-
-.progress{
-  background:rgba(255,255,255,.15);
-  height:9px;
-  border-radius:20px;
-  overflow:hidden;
-  margin:15px 0 20px;
-}
-
-#bar{
-  height:100%;
-  background:#60a5fa;
-  transition:.3s;
-}
-
-.card{
-  background:white;
-  color:#0f172a;
-  border-radius:28px;
-  padding:26px 20px;
-  text-align:center;
-  box-shadow:0 20px 50px rgba(0,0,0,.28);
-}
-
-.number{
-  font-size:14px;
-  color:#64748b;
-}
-
-.word{
-  font-size:38px;
-  font-weight:bold;
-  color:#1d4ed8;
-  margin:10px 0 3px;
-}
-
-.type{
-  color:#64748b;
-  margin-bottom:7px;
-}
-
-.meaning{
-  font-size:21px;
-  font-weight:bold;
-  margin-bottom:20px;
-}
-
-.sentence{
-  direction:ltr;
-  font-size:23px;
-  font-weight:bold;
-  line-height:1.5;
-  min-height:55px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.arabic{
+  padding:17px;
+  color:#fff;
   font-size:18px;
-  color:#475569;
-  margin:8px 0 20px;
-  min-height:28px;
+  font-weight:800;
+  background:linear-gradient(135deg,#2563eb,#7c3aed);
+  box-shadow:0 12px 35px rgba(37,99,235,.3);
 }
 
-.buttons,
-.extra-buttons,
-.navigation{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
+/* تسجيل الدخول */
+#authPage{justify-content:center}
+.authCard{
+  background:white;
+  color:var(--text);
+  border-radius:30px;
+  padding:25px 20px;
+  box-shadow:0 25px 60px rgba(0,0,0,.3);
 }
-
-.extra-buttons{
-  margin-top:10px;
+.authCard h2{text-align:center;margin:0 0 7px;font-size:26px}
+.authSub{text-align:center;color:var(--muted);margin-bottom:22px}
+.fieldLabel{
+  display:block;
+  font-size:14px;
+  font-weight:700;
+  margin:12px 2px 7px;
 }
-
-button{
-  cursor:pointer;
-}
-
-.action{
-  border:0;
-  border-radius:14px;
-  padding:14px 7px;
-  font-size:15px;
-  font-weight:bold;
-}
-
-.listen{
-  background:#dbeafe;
-  color:#1e40af;
-}
-
-.hide{
-  background:#ede9fe;
-  color:#5b21b6;
-}
-
-.speak{
-  background:#fee2e2;
-  color:#991b1b;
-}
-
-.download{
-  background:#fef3c7;
-  color:#92400e;
-}
-
-/* الكتابة */
-
-#writingArea{
-  margin-top:15px;
-}
-
-input{
+.authInput{
   width:100%;
-  padding:15px;
-  border:2px solid #cbd5e1;
-  border-radius:14px;
-  font-size:17px;
+  border:2px solid #e2e8f0;
+  border-radius:15px;
+  padding:14px;
   direction:ltr;
   text-align:left;
+  outline:none;
+  font-size:16px;
 }
-
-.check{
+.authInput:focus{border-color:#3b82f6}
+.authButton{
   width:100%;
   border:0;
-  border-radius:14px;
-  background:#22c55e;
+  border-radius:15px;
+  padding:15px;
+  margin-top:17px;
   color:white;
-  padding:14px;
-  margin-top:10px;
-  font-size:17px;
-  font-weight:bold;
+  font-weight:800;
+  background:linear-gradient(135deg,#2563eb,#7c3aed);
 }
-
-#result{
-  min-height:25px;
-  padding:8px;
-  font-size:17px;
-  font-weight:bold;
-}
-
-/* نتيجة الصوت */
-
-#speechResult{
-  display:none;
-  margin-top:15px;
-  padding:17px;
-  border-radius:18px;
-  border:3px solid #cbd5e1;
-}
-
-.good{
-  background:#dcfce7;
-  border-color:#22c55e !important;
-}
-
-.close{
-  background:#ffedd5;
-  border-color:#f97316 !important;
-}
-
-.bad{
-  background:#fee2e2;
-  border-color:#ef4444 !important;
-}
-
-#speechTitle{
-  font-size:22px;
-  font-weight:bold;
-}
-
-#score{
-  font-size:29px;
-  font-weight:bold;
-  margin:8px 0;
-}
-
-.heard-label{
-  font-size:13px;
-  color:#64748b;
-  margin-top:8px;
-}
-
-#heardText{
-  direction:ltr;
-  font-size:18px;
-  font-weight:bold;
-  margin:6px 0;
-}
-
-#expectedText{
-  direction:ltr;
-  margin-top:8px;
-  font-size:15px;
-}
-
-.retry{
-  display:none;
-  width:100%;
-  border:0;
-  border-radius:14px;
-  background:#2563eb;
-  color:white;
-  padding:14px;
-  margin-top:12px;
-  font-size:17px;
-  font-weight:bold;
-}
-
-/* التنقل */
-
-.navigation{
-  margin-top:8px;
-}
-
-.nav{
-  border:0;
-  border-radius:14px;
-  background:#e2e8f0;
-  color:#0f172a;
-  padding:14px;
-  font-size:17px;
-  font-weight:bold;
-}
-
-.counter{
+.switchAuth{
   text-align:center;
-  margin-top:15px;
-  opacity:.8;
+  margin-top:16px;
+  color:#64748b;
+}
+.linkBtn{
+  border:0;background:none;color:#2563eb;font-weight:bold;
+}
+#authMessage{
+  text-align:center;
+  min-height:24px;
+  margin-top:12px;
+  font-weight:bold;
+}
+.skip{
+  display:block;
+  margin:15px auto 0;
+  border:0;background:none;color:#cbd5e1;
+  font-weight:bold;
 }
 
-.practice-note{
-  display:none;
-  background:#eff6ff;
-  color:#1e40af;
-  padding:12px;
-  border-radius:14px;
+/* الرئيسية */
+#homePage{padding-top:15px}
+.homeHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+.miniLogo{
+  width:48px;height:48px;border-radius:15px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#3b82f6,#8b5cf6);
+  font-size:25px;
+}
+.userBox{text-align:right;flex:1;margin-right:12px}
+.userBox small{color:#bfdbfe}
+.userBox strong{display:block;font-size:18px}
+.logout{
+  border:0;border-radius:12px;padding:9px 11px;
+  background:rgba(255,255,255,.12);color:white;
+}
+.welcomeCard{
+  padding:22px;
+  border-radius:25px;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(12px);
   margin-bottom:15px;
+}
+.welcomeCard h2{margin:0 0 7px;font-size:26px}
+.welcomeCard p{margin:0;color:#cbd5e1;line-height:1.6}
+.mode{
+  width:100%;border:0;border-radius:22px;
+  padding:20px;margin:0 0 13px;color:white;
+  display:flex;align-items:center;gap:15px;text-align:right;
+}
+.learnMode{background:linear-gradient(135deg,#2563eb,#3b82f6)}
+.practiceMode{background:linear-gradient(135deg,#7c3aed,#9333ea)}
+.modeIcon{
+  width:58px;height:58px;border-radius:18px;
+  background:rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;
+  font-size:30px;flex-shrink:0;
+}
+.modeText strong{display:block;font-size:22px;margin-bottom:5px}
+.modeText span{font-size:14px;opacity:.9;line-height:1.5}
+.goal{
+  background:rgba(255,255,255,.09);
+  border-radius:20px;padding:16px;text-align:center;
+  color:#e2e8f0;
+}
+.goal strong{color:#fbbf24}
+
+/* الدرس */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin:8px 0 12px;
+}
+.back{
+  border:0;border-radius:12px;padding:10px 12px;
+  background:rgba(255,255,255,.14);color:white;font-weight:bold;
+}
+.pageTitle{font-size:19px;font-weight:bold}
+.progress{
+  background:rgba(255,255,255,.15);
+  height:9px;border-radius:20px;overflow:hidden;
+  margin:8px 0 17px;
+}
+#bar{height:100%;background:#60a5fa;transition:.3s}
+.card{
+  background:white;color:var(--text);
+  border-radius:28px;padding:24px 18px;text-align:center;
+  box-shadow:0 22px 55px rgba(0,0,0,.28);
+}
+.practiceNote{
+  display:none;background:#eff6ff;color:#1e40af;
+  padding:11px;border-radius:13px;margin-bottom:14px;
   font-weight:bold;
-  line-height:1.6;
+}
+.number{font-size:14px;color:#64748b}
+.word{font-size:38px;font-weight:900;color:#1d4ed8;margin:9px 0 2px}
+.type{color:#64748b;margin-bottom:6px}
+.meaning{font-size:20px;font-weight:bold;margin-bottom:17px}
+.sentence{
+  direction:ltr;font-size:22px;font-weight:800;
+  min-height:55px;display:flex;align-items:center;justify-content:center;
+  line-height:1.5;
+}
+.arabic{font-size:17px;color:#475569;margin:7px 0 18px;min-height:26px}
+.grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:9px;
+}
+.action{
+  border:0;border-radius:14px;padding:14px 6px;
+  font-size:14px;font-weight:800;
+}
+.listen{background:#dbeafe;color:#1e40af}
+.hide{background:#ede9fe;color:#5b21b6}
+.speak{background:#fee2e2;color:#991b1b}
+.download{background:#fef3c7;color:#92400e}
+.extra{margin-top:9px}
+
+/* كتابة */
+#writingArea{margin-top:14px}
+#answer{
+  width:100%;padding:14px;border:2px solid #cbd5e1;
+  border-radius:14px;font-size:16px;direction:ltr;text-align:left;
+}
+.check{
+  width:100%;border:0;border-radius:14px;background:#22c55e;
+  color:white;padding:14px;margin-top:9px;font-size:16px;font-weight:bold;
+}
+#result{min-height:25px;padding:7px;font-weight:bold}
+
+/* الصوت */
+#speechResult{
+  display:none;margin-top:14px;padding:15px;
+  border-radius:17px;border:3px solid #cbd5e1;
+}
+.good{background:#dcfce7;border-color:#22c55e!important}
+.closeResult{background:#ffedd5;border-color:#f97316!important}
+.bad{background:#fee2e2;border-color:#ef4444!important}
+#speechTitle{font-size:20px;font-weight:bold}
+#score{font-size:27px;font-weight:bold;margin:7px 0}
+.heardLabel{font-size:13px;color:#64748b;margin-top:7px}
+#heardText{direction:ltr;font-size:17px;font-weight:bold;margin:5px 0}
+#expectedText{direction:ltr;margin-top:7px;font-size:14px}
+.retry{
+  display:none;width:100%;border:0;border-radius:13px;
+  background:#2563eb;color:white;padding:13px;margin-top:10px;font-weight:bold;
+}
+.navigation{margin-top:9px}
+.nav{
+  border:0;border-radius:14px;background:#e2e8f0;color:#0f172a;
+  padding:13px;font-size:16px;font-weight:bold;
+}
+.counter{text-align:center;margin-top:13px;opacity:.8}
+
+/* إنجاز */
+.completeBox{
+  display:none;
+  text-align:center;
+  background:#f0fdf4;color:#166534;
+  padding:15px;border-radius:17px;margin-top:12px;font-weight:bold;
+}
+
+@media(max-width:360px){
+  .app{padding-left:12px;padding-right:12px}
+  .home-title{font-size:30px}
+  .word{font-size:34px}
 }
 </style>
 </head>
@@ -405,177 +290,360 @@ input{
 
 <div class="app">
 
-  <!-- الصفحة الرئيسية -->
-  <section id="homePage">
+<!-- الترحيب -->
+<section id="welcomePage" class="page active">
+  <div class="logo">🇬🇧</div>
+  <div class="brand">
+    <h1>English Practice</h1>
+    <p>تعلّم الإنجليزية بطريقة ذكية</p>
+  </div>
 
-    <div class="logo">🇬🇧</div>
+  <div class="heroText">
+    استمع • تحدث • اكتب • راجع<br>
+    تدريب يومي بسيط يساعدك على تثبيت الجمل وتحسين النطق.
+  </div>
 
-    <h1 class="home-title">English Practice</h1>
+  <button class="primary" onclick="openAuth()">ابدأ الآن 🚀</button>
+</section>
 
-    <div class="home-subtitle">
-      تعلّم الإنجليزية بطريقة ذكية
-    </div>
 
-    <div class="home-description">
-      استمع • تحدث • اكتب • راجع<br>
-      وتقدّم خطوة بخطوة كل يوم
-    </div>
+<!-- تسجيل الدخول -->
+<section id="authPage" class="page">
 
-    <div class="home-card">
+  <div class="logo">🇬🇧</div>
 
-      <button class="mode learn-mode" onclick="startMode('learn')">
-        <div class="mode-icon">📚</div>
-        <div class="mode-text">
-          <strong>نتعلّم</strong>
-          <span>تعرف على الكلمة والمعنى والجملة واستمع للنطق</span>
-        </div>
+  <div class="authCard">
+    <h2 id="authTitle">مرحبًا بعودتك 👋</h2>
+    <div class="authSub" id="authSub">سجّل دخولك لمتابعة التدريب</div>
+
+    <label class="fieldLabel">البريد الإلكتروني</label>
+    <input id="email" class="authInput" type="email"
+           placeholder="name@example.com">
+
+    <label class="fieldLabel">كلمة المرور</label>
+    <input id="password" class="authInput" type="password"
+           placeholder="••••••••">
+
+    <button id="authButton" class="authButton" onclick="handleAuth()">
+      تسجيل الدخول
+    </button>
+
+    <div id="authMessage"></div>
+
+    <div class="switchAuth">
+      <span id="switchText">ليس لديك حساب؟</span>
+      <button id="switchButton" class="linkBtn" onclick="toggleAuthMode()">
+        إنشاء حساب
       </button>
+    </div>
+  </div>
 
-      <button class="mode practice-mode" onclick="startMode('practice')">
-        <div class="mode-icon">🎯</div>
-        <div class="mode-text">
-          <strong>نتدرّب</strong>
-          <span>اختبر الاستماع والتحدث والكتابة ونسبة التطابق</span>
-        </div>
+  <button class="skip" onclick="guestMode()">الدخول كضيف</button>
+</section>
+
+
+<!-- الرئيسية -->
+<section id="homePage" class="page">
+
+  <div class="homeHeader">
+    <div class="miniLogo">🇬🇧</div>
+
+    <div class="userBox">
+      <small>مرحبًا بك</small>
+      <strong id="userName">متعلّم الإنجليزية</strong>
+    </div>
+
+    <button class="logout" onclick="logout()">خروج</button>
+  </div>
+
+  <div class="welcomeCard">
+    <h2>جاهز لتدريب اليوم؟ 🔥</h2>
+    <p>
+      اختر طريقة التدريب وابدأ بخمس جمل.
+      الاستمرارية أهم من كثرة الدروس.
+    </p>
+  </div>
+
+  <button class="mode learnMode" onclick="startMode('learn')">
+    <div class="modeIcon">📚</div>
+    <div class="modeText">
+      <strong>نتعلّم</strong>
+      <span>الكلمة والمعنى والجملة والاستماع للنطق</span>
+    </div>
+  </button>
+
+  <button class="mode practiceMode" onclick="startMode('practice')">
+    <div class="modeIcon">🎯</div>
+    <div class="modeText">
+      <strong>نتدرّب</strong>
+      <span>استماع وتحدث وكتابة ونسبة تطابق النطق</span>
+    </div>
+  </button>
+
+  <div class="goal">
+    🔥 هدف اليوم: <strong>10 جمل</strong><br>
+    ابدأ بخمس جمل ثم راجعها
+  </div>
+
+</section>
+
+
+<!-- الدرس -->
+<section id="lessonPage" class="page">
+
+  <div class="topbar">
+    <button class="back" onclick="goHome()">← الرئيسية</button>
+    <div class="pageTitle" id="modeTitle">📚 نتعلّم</div>
+  </div>
+
+  <div class="progress"><div id="bar"></div></div>
+
+  <div class="card">
+
+    <div class="practiceNote" id="practiceNote">
+      🎯 حاول أولًا قبل كشف الجملة.
+    </div>
+
+    <div class="number" id="number"></div>
+    <div class="word" id="word"></div>
+    <div class="type" id="type"></div>
+    <div class="meaning" id="meaning"></div>
+    <div class="sentence" id="sentence"></div>
+    <div class="arabic" id="arabic"></div>
+
+    <div class="grid">
+      <button class="action listen" onclick="playSentence()">🔊 استمع للجملة</button>
+      <button class="action hide" id="hideButton" onclick="toggleSentence()">🙈 إخفاء الجملة</button>
+    </div>
+
+    <div class="grid extra">
+      <button id="speakButton" class="action speak" onclick="startSpeaking()">🎙️ تحدث بالجملة</button>
+      <button class="action download" onclick="downloadSentences()">📥 تحميل الجمل</button>
+    </div>
+
+    <div id="speechResult">
+      <div id="speechTitle"></div>
+      <div id="score"></div>
+
+      <div class="heardLabel">🎤 سمعت منك:</div>
+      <div id="heardText"></div>
+      <div id="expectedText"></div>
+
+      <button id="retryButton" class="retry" onclick="startSpeaking()">
+        🎙️ حاول مرة أخرى
       </button>
-
-      <div class="goal">
-        🔥 هدف اليوم:
-        <strong>10 جمل</strong>
-        <br>
-        ابدأ بخمس جمل ثم راجعها
-      </div>
-
     </div>
 
-  </section>
+    <div id="writingArea">
+      <input id="answer" type="text"
+             placeholder="اكتب الجملة الإنجليزية التي سمعتها"
+             autocomplete="off">
 
-
-  <!-- صفحة الجمل -->
-  <section id="lessonPage">
-
-    <div class="topbar">
-
-      <button class="back" onclick="goHome()">
-        ← الرئيسية
-      </button>
-
-      <div class="page-title" id="modeTitle">
-        📚 نتعلّم
-      </div>
-
+      <button class="check" onclick="checkAnswer()">✅ تحقق من الإجابة</button>
+      <div id="result"></div>
     </div>
 
-    <div class="progress">
-      <div id="bar"></div>
+    <div class="grid navigation">
+      <button class="nav" onclick="previousSentence()">السابق</button>
+      <button class="nav" onclick="nextSentence()">التالي</button>
     </div>
 
-    <div class="card">
-
-      <div class="practice-note" id="practiceNote">
-        🎯 وضع التدريب: حاول أولًا قبل كشف الجملة.
-      </div>
-
-      <div class="number" id="number"></div>
-
-      <div class="word" id="word"></div>
-
-      <div class="type" id="type"></div>
-
-      <div class="meaning" id="meaning"></div>
-
-      <div class="sentence" id="sentence"></div>
-
-      <div class="arabic" id="arabic"></div>
-
-
-      <div class="buttons">
-
-        <button class="action listen" onclick="playSentence()">
-          🔊 استمع للجملة
-        </button>
-
-        <button class="action hide" onclick="toggleSentence()">
-          🙈 إخفاء الجملة
-        </button>
-
-      </div>
-
-
-      <div class="extra-buttons">
-
-        <button id="speakButton" class="action speak" onclick="startSpeaking()">
-          🎙️ تحدث بالجملة
-        </button>
-
-        <button class="action download" onclick="downloadSentences()">
-          📥 تحميل الجمل
-        </button>
-
-      </div>
-
-
-      <div id="speechResult">
-
-        <div id="speechTitle"></div>
-
-        <div id="score"></div>
-
-        <div class="heard-label">
-          🎤 سمعت منك:
-        </div>
-
-        <div id="heardText"></div>
-
-        <div id="expectedText"></div>
-
-        <button id="retryButton" class="retry" onclick="startSpeaking()">
-          🎙️ حاول مرة أخرى
-        </button>
-
-      </div>
-
-
-      <div id="writingArea">
-
-        <input
-          id="answer"
-          type="text"
-          placeholder="اكتب الجملة الإنجليزية التي سمعتها"
-          autocomplete="off"
-        >
-
-        <button class="check" onclick="checkAnswer()">
-          ✅ تحقق من الإجابة
-        </button>
-
-        <div id="result"></div>
-
-      </div>
-
-
-      <div class="navigation">
-
-        <button class="nav" onclick="previousSentence()">
-          السابق
-        </button>
-
-        <button class="nav" onclick="nextSentence()">
-          التالي
-        </button>
-
-      </div>
-
+    <div id="completeBox" class="completeBox">
+      🎉 ممتاز! أنهيت الجمل الخمس.
     </div>
 
-    <div class="counter" id="counter"></div>
+  </div>
 
-  </section>
+  <div class="counter" id="counter"></div>
+
+</section>
 
 </div>
 
 
-<script>
+<script type="module">
+
+/* =========================
+   Firebase
+========================= */
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut
+}
+from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAE4ZGGS8zwAIpLJ8c5ej7L5WdWsFqVdWA",
+  authDomain: "english-practice-43ed4.firebaseapp.com",
+  projectId: "english-practice-43ed4",
+  storageBucket: "english-practice-43ed4.firebasestorage.app",
+  messagingSenderId: "716732837873",
+  appId: "1:716732837873:web:591785648234dab2639e50"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+let authMode = "login";
+let guest = false;
+
+
+/* =========================
+   الصفحات
+========================= */
+
+function showPage(id){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+window.openAuth = function(){
+  showPage("authPage");
+};
+
+window.guestMode = function(){
+  guest = true;
+  document.getElementById("userName").innerText = "ضيف";
+  showPage("homePage");
+};
+
+
+/* =========================
+   Firebase Authentication
+========================= */
+
+window.toggleAuthMode = function(){
+
+  const title = document.getElementById("authTitle");
+  const sub = document.getElementById("authSub");
+  const button = document.getElementById("authButton");
+  const switchText = document.getElementById("switchText");
+  const switchButton = document.getElementById("switchButton");
+  const message = document.getElementById("authMessage");
+
+  message.innerText = "";
+
+  if(authMode === "login"){
+    authMode = "register";
+    title.innerText = "إنشاء حساب جديد ✨";
+    sub.innerText = "أنشئ حسابك وابدأ التدريب";
+    button.innerText = "إنشاء الحساب";
+    switchText.innerText = "لديك حساب بالفعل؟";
+    switchButton.innerText = "تسجيل الدخول";
+  }else{
+    authMode = "login";
+    title.innerText = "مرحبًا بعودتك 👋";
+    sub.innerText = "سجّل دخولك لمتابعة التدريب";
+    button.innerText = "تسجيل الدخول";
+    switchText.innerText = "ليس لديك حساب؟";
+    switchButton.innerText = "إنشاء حساب";
+  }
+};
+
+
+window.handleAuth = async function(){
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const message = document.getElementById("authMessage");
+  const button = document.getElementById("authButton");
+
+  if(!email || !password){
+    message.style.color = "#dc2626";
+    message.innerText = "أدخل البريد الإلكتروني وكلمة المرور.";
+    return;
+  }
+
+  if(password.length < 6){
+    message.style.color = "#dc2626";
+    message.innerText = "كلمة المرور يجب أن تكون 6 أحرف على الأقل.";
+    return;
+  }
+
+  button.disabled = true;
+  button.innerText = "جاري التحميل...";
+
+  try{
+
+    if(authMode === "login"){
+      await signInWithEmailAndPassword(auth,email,password);
+    }else{
+      await createUserWithEmailAndPassword(auth,email,password);
+    }
+
+    message.style.color = "#15803d";
+    message.innerText = "✅ تم بنجاح";
+
+  }catch(error){
+
+    message.style.color = "#dc2626";
+
+    if(error.code === "auth/invalid-credential"){
+      message.innerText = "❌ البريد أو كلمة المرور غير صحيحة.";
+    }
+    else if(error.code === "auth/email-already-in-use"){
+      message.innerText = "هذا البريد مسجل مسبقًا.";
+    }
+    else if(error.code === "auth/invalid-email"){
+      message.innerText = "البريد الإلكتروني غير صحيح.";
+    }
+    else{
+      message.innerText = "تعذر تسجيل الدخول. حاول مرة أخرى.";
+    }
+
+  }finally{
+
+    button.disabled = false;
+    button.innerText =
+      authMode === "login" ? "تسجيل الدخول" : "إنشاء الحساب";
+  }
+};
+
+
+window.logout = async function(){
+
+  if(guest){
+    guest = false;
+    showPage("welcomePage");
+    return;
+  }
+
+  try{
+    await signOut(auth);
+  }catch(e){}
+
+  showPage("welcomePage");
+};
+
+
+onAuthStateChanged(auth,user=>{
+
+  if(user){
+
+    guest = false;
+
+    const name =
+      user.email ? user.email.split("@")[0] : "متعلّم الإنجليزية";
+
+    document.getElementById("userName").innerText = name;
+
+    showPage("homePage");
+  }
+
+});
+
+
+/* =========================
+   الجمل
+========================= */
 
 const lessons = [
 
@@ -626,102 +694,90 @@ let mode = "learn";
 let recognition = null;
 
 
-/* دخول نتعلم أو نتدرب */
+/* =========================
+   نتعلم / نتدرب
+========================= */
 
-function startMode(selectedMode){
+window.startMode = function(selectedMode){
 
   mode = selectedMode;
   current = 0;
 
-  document.getElementById("homePage").style.display = "none";
-  document.getElementById("lessonPage").style.display = "block";
+  showPage("lessonPage");
 
   if(mode === "learn"){
-
     document.getElementById("modeTitle").innerText = "📚 نتعلّم";
     document.getElementById("practiceNote").style.display = "none";
-
   }else{
-
     document.getElementById("modeTitle").innerText = "🎯 نتدرّب";
     document.getElementById("practiceNote").style.display = "block";
-
   }
 
   showLesson();
-}
+};
 
 
-/* الرجوع للرئيسية */
-
-function goHome(){
+window.goHome = function(){
 
   speechSynthesis.cancel();
 
   if(recognition){
-    try{
-      recognition.abort();
-    }catch(e){}
+    try{recognition.abort();}catch(e){}
   }
 
-  document.getElementById("lessonPage").style.display = "none";
-  document.getElementById("homePage").style.display = "flex";
-}
+  showPage("homePage");
+};
 
 
-/* عرض الجملة */
+/* =========================
+   عرض الجملة
+========================= */
 
 function showLesson(){
 
   const lesson = lessons[current];
 
   document.getElementById("number").innerText =
-    "الجملة " + (current + 1) + " من " + lessons.length;
+    "الجملة " + (current+1) + " من " + lessons.length;
 
-  document.getElementById("word").innerText =
-    lesson.word;
-
-  document.getElementById("type").innerText =
-    lesson.type;
-
-  document.getElementById("meaning").innerText =
-    lesson.meaning;
-
-  document.getElementById("sentence").innerText =
-    lesson.sentence;
-
-  document.getElementById("arabic").innerText =
-    lesson.arabic;
+  document.getElementById("word").innerText = lesson.word;
+  document.getElementById("type").innerText = lesson.type;
+  document.getElementById("meaning").innerText = lesson.meaning;
+  document.getElementById("sentence").innerText = lesson.sentence;
+  document.getElementById("arabic").innerText = lesson.arabic;
 
   document.getElementById("answer").value = "";
   document.getElementById("result").innerText = "";
-
   document.getElementById("speechResult").style.display = "none";
+  document.getElementById("completeBox").style.display = "none";
 
-  document.getElementById("sentence").style.visibility = "visible";
-  document.getElementById("arabic").style.visibility = "visible";
-
-  /*
-    في التدريب نخفي الجملة والترجمة
-    لكن نبقي الكلمة والمعنى ظاهرين
-  */
+  const sentence = document.getElementById("sentence");
+  const arabic = document.getElementById("arabic");
+  const hideButton = document.getElementById("hideButton");
 
   if(mode === "practice"){
-    document.getElementById("sentence").style.visibility = "hidden";
-    document.getElementById("arabic").style.visibility = "hidden";
+    sentence.style.visibility = "hidden";
+    arabic.style.visibility = "hidden";
+    hideButton.innerHTML = "👁️ إظهار الجملة";
+  }else{
+    sentence.style.visibility = "visible";
+    arabic.style.visibility = "visible";
+    hideButton.innerHTML = "🙈 إخفاء الجملة";
   }
 
   document.getElementById("counter").innerText =
-    (current + 1) + " / " + lessons.length;
+    (current+1) + " / " + lessons.length;
 
   document.getElementById("bar").style.width =
-    (((current + 1) / lessons.length) * 100) + "%";
+    (((current+1)/lessons.length)*100) + "%";
 }
 
 
-/* الاستماع */
+/* =========================
+   الاستماع
+========================= */
 
-function playSentence(){
+window.playSentence = function(){
 
   speechSynthesis.cancel();
 
@@ -729,40 +785,42 @@ function playSentence(){
     new SpeechSynthesisUtterance(lessons[current].sentence);
 
   speech.lang = "en-US";
-  speech.rate = 0.82;
+  speech.rate = .82;
 
   speechSynthesis.speak(speech);
-}
+};
 
 
-/* إخفاء أو إظهار */
+/* =========================
+   إظهار / إخفاء
+========================= */
 
-function toggleSentence(){
+window.toggleSentence = function(){
 
-  const sentence =
-    document.getElementById("sentence");
-
-  const arabic =
-    document.getElementById("arabic");
+  const sentence = document.getElementById("sentence");
+  const arabic = document.getElementById("arabic");
+  const button = document.getElementById("hideButton");
 
   if(sentence.style.visibility === "hidden"){
 
     sentence.style.visibility = "visible";
     arabic.style.visibility = "visible";
+    button.innerHTML = "🙈 إخفاء الجملة";
 
   }else{
 
     sentence.style.visibility = "hidden";
     arabic.style.visibility = "hidden";
-
+    button.innerHTML = "👁️ إظهار الجملة";
   }
-}
+};
 
 
-/* تنظيف الكتابة */
+/* =========================
+   الكتابة
+========================= */
 
 function cleanWriting(text){
-
   return text
     .toLowerCase()
     .replace(/[.,!?]/g,"")
@@ -771,524 +829,275 @@ function cleanWriting(text){
 }
 
 
-/* تحقق الكتابة */
+window.checkAnswer = function(){
 
-function checkAnswer(){
-
-  const answer =
-    document.getElementById("answer").value;
-
-  const correct =
-    lessons[current].sentence;
-
-  const result =
-    document.getElementById("result");
+  const answer = document.getElementById("answer").value;
+  const correct = lessons[current].sentence;
+  const result = document.getElementById("result");
 
   if(cleanWriting(answer) === cleanWriting(correct)){
-
-    result.innerHTML =
-      "🎉 ممتاز! إجابتك صحيحة";
-
-    result.style.color =
-      "#15803d";
-
+    result.innerHTML = "🎉 ممتاز! إجابتك صحيحة";
+    result.style.color = "#15803d";
   }else{
-
-    result.innerHTML =
-      "❌ يوجد خطأ، حاول مرة أخرى";
-
-    result.style.color =
-      "#dc2626";
+    result.innerHTML = "❌ يوجد خطأ، حاول مرة أخرى";
+    result.style.color = "#dc2626";
   }
-}
+};
 
 
-/* تجهيز النص للمقارنة الصوتية */
+/* =========================
+   مقارنة النطق
+========================= */
 
 function normalizeSpeech(text){
 
-  let value =
-    text.toLowerCase();
+  let value = text.toLowerCase();
 
-  /*
-    تحويل $20 إلى 20 dollars
-  */
-
-  value =
-    value.replace(/\$\s*20\b/g,"20 dollars");
-
-  /*
-    توحيد twenty و 20
-  */
-
-  value =
-    value.replace(/\btwenty\b/g,"20");
-
-  /*
-    bucks = dollars
-  */
-
-  value =
-    value.replace(/\bbucks?\b/g,"dollars");
-
-  /*
-    توحيد dollar / dollars
-  */
-
-  value =
-    value.replace(/\bdollar\b/g,"dollars");
-
-  value =
-    value.replace(/[^a-z0-9\s]/g," ");
-
-  value =
-    value.replace(/\s+/g," ").trim();
+  value = value.replace(/\$\s*20\b/g,"20 dollars");
+  value = value.replace(/\btwenty\b/g,"20");
+  value = value.replace(/\bbucks?\b/g,"dollars");
+  value = value.replace(/\bdollar\b/g,"dollars");
+  value = value.replace(/[^a-z0-9\s]/g," ");
+  value = value.replace(/\s+/g," ").trim();
 
   return value;
 }
 
 
-/* مسافة ليفنشتاين بالحروف */
-
 function levenshtein(a,b){
 
-  const matrix = [];
+  const matrix=[];
 
-  for(let i=0;i<=b.length;i++){
-    matrix[i] = [i];
-  }
-
-  for(let j=0;j<=a.length;j++){
-    matrix[0][j] = j;
-  }
+  for(let i=0;i<=b.length;i++) matrix[i]=[i];
+  for(let j=0;j<=a.length;j++) matrix[0][j]=j;
 
   for(let i=1;i<=b.length;i++){
 
     for(let j=1;j<=a.length;j++){
 
-      if(b.charAt(i-1) === a.charAt(j-1)){
-
-        matrix[i][j] =
-          matrix[i-1][j-1];
-
+      if(b.charAt(i-1)===a.charAt(j-1)){
+        matrix[i][j]=matrix[i-1][j-1];
       }else{
-
-        matrix[i][j] =
-          Math.min(
-            matrix[i-1][j-1] + 1,
-            matrix[i][j-1] + 1,
-            matrix[i-1][j] + 1
-          );
-
+        matrix[i][j]=Math.min(
+          matrix[i-1][j-1]+1,
+          matrix[i][j-1]+1,
+          matrix[i-1][j]+1
+        );
       }
-
     }
-
   }
 
   return matrix[b.length][a.length];
 }
 
 
-/* نسبة التطابق الجزئي */
-
 function speechSimilarity(spoken,correct){
 
-  const first =
-    normalizeSpeech(spoken);
+  const first=normalizeSpeech(spoken);
+  const second=normalizeSpeech(correct);
 
-  const second =
-    normalizeSpeech(correct);
+  if(first===second) return 100;
 
-  if(first === second){
-    return 100;
-  }
+  const distance=levenshtein(first,second);
+  const longest=Math.max(first.length,second.length);
 
-  const distance =
-    levenshtein(first,second);
-
-  const longest =
-    Math.max(first.length,second.length);
-
-  if(longest === 0){
-    return 100;
-  }
+  if(longest===0) return 100;
 
   return Math.max(
     0,
-    Math.round(
-      (1 - distance / longest) * 100
-    )
+    Math.round((1-distance/longest)*100)
   );
 }
 
 
-/* تشغيل التعرف الصوتي */
+/* =========================
+   التحدث
+========================= */
 
-function startSpeaking(){
+window.startSpeaking = function(){
 
   const SpeechRecognition =
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
 
   if(!SpeechRecognition){
-
-    alert(
-      "التعرف على الصوت غير مدعوم في هذا المتصفح."
-    );
-
+    alert("التعرف على الصوت غير مدعوم في هذا المتصفح.");
     return;
   }
 
-
   if(recognition){
-
-    try{
-      recognition.abort();
-    }catch(e){}
-
+    try{recognition.abort();}catch(e){}
   }
 
+  recognition=new SpeechRecognition();
+  recognition.lang="en-US";
+  recognition.interimResults=false;
+  recognition.maxAlternatives=5;
 
-  recognition =
-    new SpeechRecognition();
+  const box=document.getElementById("speechResult");
+  const button=document.getElementById("speakButton");
 
-  recognition.lang =
-    "en-US";
+  box.style.display="block";
+  box.className="";
 
-  recognition.interimResults =
-    false;
+  document.getElementById("speechTitle").innerText="🎙️ تحدث الآن";
+  document.getElementById("score").innerText="";
+  document.getElementById("heardText").innerText="أستمع إليك...";
+  document.getElementById("expectedText").innerText="";
+  document.getElementById("retryButton").style.display="none";
 
-  recognition.maxAlternatives =
-    5;
+  button.innerText="🔴 أستمع إليك الآن...";
 
+  recognition.onresult=function(event){
 
-  const box =
-    document.getElementById("speechResult");
+    const correct=lessons[current].sentence;
+    const alternatives=event.results[0];
 
-  const button =
-    document.getElementById("speakButton");
+    let bestText="";
+    let bestScore=-1;
 
+    for(let i=0;i<alternatives.length;i++){
 
-  box.style.display =
-    "block";
+      const text=alternatives[i].transcript;
+      const score=speechSimilarity(text,correct);
 
-  box.className =
-    "";
-
-  document.getElementById("speechTitle").innerText =
-    "🎙️ تحدث الآن";
-
-  document.getElementById("score").innerText =
-    "";
-
-  document.getElementById("heardText").innerText =
-    "أستمع إليك...";
-
-  document.getElementById("expectedText").innerText =
-    "";
-
-  document.getElementById("retryButton").style.display =
-    "none";
-
-  button.innerText =
-    "🔴 أستمع إليك الآن...";
-
-
-  recognition.onresult =
-    function(event){
-
-      const correct =
-        lessons[current].sentence;
-
-      let bestText = "";
-      let bestScore = -1;
-
-      const alternatives =
-        event.results[0];
-
-
-      for(
-        let i=0;
-        i<alternatives.length;
-        i++
-      ){
-
-        const text =
-          alternatives[i].transcript;
-
-        const score =
-          speechSimilarity(
-            text,
-            correct
-          );
-
-        if(score > bestScore){
-
-          bestScore =
-            score;
-
-          bestText =
-            text;
-        }
-
+      if(score>bestScore){
+        bestScore=score;
+        bestText=text;
       }
+    }
 
-      displaySpeechResult(
-        bestText,
-        bestScore
-      );
-    };
+    displaySpeechResult(bestText,bestScore);
+  };
 
 
-  recognition.onerror =
-    function(){
+  recognition.onerror=function(){
 
-      box.className =
-        "bad";
+    box.className="bad";
 
-      document.getElementById("speechTitle").innerText =
-        "❌ لم أسمع الجملة بوضوح";
+    document.getElementById("speechTitle").innerText=
+      "❌ لم أسمع الجملة بوضوح";
 
-      document.getElementById("score").innerText =
-        "";
+    document.getElementById("score").innerText="";
+    document.getElementById("heardText").innerText=
+      "اضغط حاول مرة أخرى.";
 
-      document.getElementById("heardText").innerText =
-        "اضغط حاول مرة أخرى.";
-
-      document.getElementById("retryButton").style.display =
-        "block";
-    };
+    document.getElementById("retryButton").style.display="block";
+  };
 
 
-  recognition.onend =
-    function(){
-
-      button.innerText =
-        "🎙️ تحدث بالجملة";
-    };
+  recognition.onend=function(){
+    button.innerText="🎙️ تحدث بالجملة";
+  };
 
 
   try{
-
     recognition.start();
-
-  }catch(error){
-
-    button.innerText =
-      "🎙️ تحدث بالجملة";
-
+  }catch(e){
+    button.innerText="🎙️ تحدث بالجملة";
   }
-}
+};
 
-
-/* إظهار نتيجة التحدث */
 
 function displaySpeechResult(spoken,score){
 
-  const box =
-    document.getElementById("speechResult");
+  const box=document.getElementById("speechResult");
+  const title=document.getElementById("speechTitle");
+  const scoreElement=document.getElementById("score");
+  const retry=document.getElementById("retryButton");
 
-  const title =
-    document.getElementById("speechTitle");
+  document.getElementById("heardText").innerText=spoken;
+  scoreElement.innerText=score+"% تطابق";
 
-  const scoreElement =
-    document.getElementById("score");
+  if(score>=90){
 
-  const retry =
-    document.getElementById("retryButton");
+    box.className="good";
+    title.innerText="✅ ممتاز! نطقك قريب جدًا";
+    scoreElement.style.color="#15803d";
+    retry.style.display="none";
+    document.getElementById("expectedText").innerText="";
 
+  }else if(score>=70){
 
-  document.getElementById("heardText").innerText =
-    spoken;
+    box.className="closeResult";
+    title.innerText="🟠 قريب جدًا — يوجد فرق بسيط";
+    scoreElement.style.color="#c2410c";
+    retry.style.display="block";
 
-  scoreElement.innerText =
-    score + "% تطابق";
+    document.getElementById("expectedText").innerText=
+      "الجملة: "+lessons[current].sentence;
 
+  }else{
 
-  /*
-    90 - 100 ممتاز
-    70 - 89 قريب
-    أقل من 70 حاول مرة أخرى
-  */
+    box.className="bad";
+    title.innerText="❌ حاول مرة أخرى";
+    scoreElement.style.color="#dc2626";
+    retry.style.display="block";
 
-  if(score >= 90){
-
-    box.className =
-      "good";
-
-    title.innerText =
-      "✅ ممتاز! نطقك قريب جدًا";
-
-    scoreElement.style.color =
-      "#15803d";
-
-    retry.style.display =
-      "none";
-
-    document.getElementById("expectedText").innerText =
-      "";
-
-  }
-
-  else if(score >= 70){
-
-    box.className =
-      "close";
-
-    title.innerText =
-      "🟠 قريب جدًا — يوجد فرق بسيط";
-
-    scoreElement.style.color =
-      "#c2410c";
-
-    retry.style.display =
-      "block";
-
-    document.getElementById("expectedText").innerText =
-      "الجملة: " + lessons[current].sentence;
-
-  }
-
-  else{
-
-    box.className =
-      "bad";
-
-    title.innerText =
-      "❌ حاول مرة أخرى";
-
-    scoreElement.style.color =
-      "#dc2626";
-
-    retry.style.display =
-      "block";
-
-    document.getElementById("expectedText").innerText =
-      "الجملة: " + lessons[current].sentence;
-
+    document.getElementById("expectedText").innerText=
+      "الجملة: "+lessons[current].sentence;
   }
 }
 
 
-/* تحميل صورة الجمل */
+/* =========================
+   تحميل صورة الجمل
+========================= */
 
-function downloadSentences(){
+window.downloadSentences = function(){
 
-  const link =
-    document.createElement("a");
+  const link=document.createElement("a");
 
-  link.href =
-    encodeURI("الجمل.jpeg");
-
-  link.download =
-    "English-Practice-1-5.jpeg";
+  link.href=encodeURI("الجمل.jpeg");
+  link.download="English-Practice-1-5.jpeg";
 
   document.body.appendChild(link);
-
   link.click();
-
   document.body.removeChild(link);
-}
+};
 
 
-/* التالي */
+/* =========================
+   التالي / السابق
+========================= */
 
-function nextSentence(){
+window.nextSentence = function(){
 
-  if(current < lessons.length - 1){
+  if(current < lessons.length-1){
 
     current++;
+    showLesson();
 
   }else{
 
-    current = 0;
-
-    alert(
-      "🎉 ممتاز! أنهيت الجمل الخمس"
-    );
-
+    document.getElementById("completeBox").style.display="block";
+    document.getElementById("completeBox").scrollIntoView({
+      behavior:"smooth",
+      block:"nearest"
+    });
   }
-
-  showLesson();
-}
+};
 
 
-/* السابق */
+window.previousSentence = function(){
 
-function previousSentence(){
-
-  if(current > 0){
-
+  if(current>0){
     current--;
-
   }else{
-
-    current =
-      lessons.length - 1;
-
+    current=lessons.length-1;
   }
 
   showLesson();
-}
-
-
-/* Enter للكتابة */
-
-document
-.getElementById("answer")
-.addEventListener(
-  "keydown",
-  function(event){
-
-    if(event.key === "Enter"){
-      checkAnswer();
-    }
-
-  }
-);
-/* زر إظهار وإخفاء الجملة */
-
-const originalShowLesson = showLesson;
-
-showLesson = function(){
-
-  originalShowLesson();
-
-  const sentence = document.getElementById("sentence");
-  const button = document.querySelector(".action.hide");
-
-  if(sentence.style.visibility === "hidden"){
-    button.innerHTML = "👁️ إظهار الجملة";
-  }else{
-    button.innerHTML = "🙈 إخفاء الجملة";
-  }
 };
 
 
-toggleSentence = function(){
-
-  const sentence = document.getElementById("sentence");
-  const arabic = document.getElementById("arabic");
-  const button = document.querySelector(".action.hide");
-
-  if(sentence.style.visibility === "hidden"){
-
-    sentence.style.visibility = "visible";
-    arabic.style.visibility = "visible";
-
-    button.innerHTML = "🙈 إخفاء الجملة";
-
-  }else{
-
-    sentence.style.visibility = "hidden";
-    arabic.style.visibility = "hidden";
-
-    button.innerHTML = "👁️ إظهار الجملة";
-
+/* Enter */
+document.getElementById("answer").addEventListener("keydown",function(event){
+  if(event.key==="Enter"){
+    window.checkAnswer();
   }
+});
 
-};
 </script>
 
 </body>
