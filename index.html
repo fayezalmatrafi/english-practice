@@ -656,7 +656,11 @@ body.dark .lessonWord{color:var(--gold2)}
 .speak{
   background:#fff0f0;
   color:#a12d2d;
+  touch-action:none;
+  user-select:none;
 }
+
+.speak.recording{background:#dc2626;color:#fff;transform:scale(.98)}
 
 body.dark .listen,
 body.dark .hideEnglish,
@@ -695,6 +699,9 @@ body.dark .speak{
   color:#fff;
   font-weight:900;
 }
+
+.writingActions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.resetButton{margin-top:9px;padding:13px;border:1px solid var(--border);border-radius:13px;background:var(--white);color:var(--text);font-weight:900}
 
 .answerResult{
   min-height:28px;
@@ -1379,6 +1386,21 @@ body.dark .speak{
           ☾
         </button>
 
+        <button id="mobileAdminButton"
+                class="headerButton hidden"
+                onclick="openAdmin(this)"
+                data-ar="المستخدمون"
+                data-en="Users">
+          المستخدمون
+        </button>
+
+        <button class="headerButton"
+                onclick="logout()"
+                data-ar="خروج"
+                data-en="Sign Out">
+          خروج
+        </button>
+
       </div>
 
     </header>
@@ -1530,22 +1552,22 @@ body.dark .speak{
 
 
             <button id="speakButton"
-                    class="actionButton speak"
-                    onclick="startSpeaking()">
+                    class="actionButton speak">
               🎙
-              <span data-ar="تحدث بالجملة"
-                    data-en="Speak">
-                تحدث بالجملة
+              <span id="speakButtonText"
+                    data-ar="اضغط مطولًا للتحدث"
+                    data-en="Hold to Speak">
+                اضغط مطولًا للتحدث
               </span>
             </button>
 
 
             <button class="actionButton"
-                    onclick="showEnglish()">
-              ↺
-              <span data-ar="إعادة العرض"
-                    data-en="Show English">
-                إعادة العرض
+                    onclick="downloadCurrentBundle()">
+              ⬇
+              <span data-ar="تحميل الجمل الخمس"
+                    data-en="Download 5 Sentences">
+                تحميل الجمل الخمس
               </span>
             </button>
 
@@ -1588,12 +1610,10 @@ body.dark .speak{
                    autocomplete="off"
                    placeholder="اكتب الجملة الإنجليزية">
 
-            <button class="checkButton"
-                    onclick="checkAnswer()"
-                    data-ar="تحقق من الإجابة"
-                    data-en="Check Answer">
-              تحقق من الإجابة
-            </button>
+            <div class="writingActions">
+              <button class="checkButton" onclick="checkAnswer()" data-ar="تحقق من الإجابة" data-en="Check Answer">تحقق من الإجابة</button>
+              <button class="resetButton" onclick="resetWriting()" data-ar="إعادة الضبط" data-en="Reset">إعادة الضبط</button>
+            </div>
 
             <div id="answerResult"
                  class="answerResult">
@@ -1611,7 +1631,7 @@ body.dark .speak{
               السابق
             </button>
 
-            <button class="navLessonButton"
+            <button id="nextSentenceButton" class="navLessonButton"
                     onclick="nextSentence()"
                     data-ar="التالي"
                     data-en="Next">
@@ -1846,7 +1866,8 @@ import {
   query,
   where,
   getDocs,
-  updateDoc
+  updateDoc,
+  deleteDoc
 }
 from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
@@ -2477,6 +2498,10 @@ function updateUserInterface(){
     "hidden",
     !isAdmin
   );
+
+  document
+  .getElementById("mobileAdminButton")
+  .classList.toggle("hidden",!isAdmin);
 }
 
 
@@ -2677,6 +2702,14 @@ function renderLesson(){
 
   document.getElementById("lessonCounter").textContent =
   `${current+1} / ${lessons.length}`;
+
+  const nextButton = document.getElementById("nextSentenceButton");
+  if(nextButton){
+    const endOfGroup = (current + 1) % 5 === 0;
+    nextButton.textContent = endOfGroup
+      ? (currentLanguage === "ar" ? "المجموعة الثانية" : "Second Group")
+      : (currentLanguage === "ar" ? "التالي" : "Next");
+  }
 
   document.getElementById("lessonModeTitle").textContent =
   mode === "learn"
@@ -2924,6 +2957,35 @@ window.checkAnswer = function(){
   }
 };
 
+window.resetWriting = function(){
+  const input = document.getElementById("answerInput");
+  input.value = "";
+  document.getElementById("answerResult").textContent = "";
+  input.focus();
+};
+
+window.downloadCurrentBundle = async function(){
+  try{
+    const imageUrl = new URL("الجمل.jpeg",window.location.href);
+    const response = await fetch(imageUrl);
+    if(!response.ok) throw new Error("Image download failed");
+    const blob = await response.blob();
+    const objectUrl = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = objectUrl;
+    link.download = "الجمل-الخمس-المجموعة-الأولى.jpeg";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(()=>URL.revokeObjectURL(objectUrl),1000);
+  }catch(error){
+    console.error(error);
+    alert(currentLanguage === "ar"
+      ? "تعذر تحميل صورة الجمل. تأكد من وجود ملف الجمل.jpeg."
+      : "Unable to download the sentences image.");
+  }
+};
+
 
 /* =========================
    مقارنة النطق
@@ -3142,6 +3204,21 @@ window.startSpeaking = function(){
   }
 };
 
+window.stopSpeaking = function(){
+  document.getElementById("speakButton")?.classList.remove("recording");
+  if(recognition){ try{ recognition.stop(); }catch(e){} }
+};
+
+const speakButton = document.getElementById("speakButton");
+if(speakButton){
+  const beginHold = event=>{ event.preventDefault(); speakButton.classList.add("recording"); startSpeaking(); };
+  const endHold = event=>{ event.preventDefault(); stopSpeaking(); };
+  speakButton.addEventListener("pointerdown",beginHold);
+  speakButton.addEventListener("pointerup",endHold);
+  speakButton.addEventListener("pointercancel",endHold);
+  speakButton.addEventListener("pointerleave",event=>{ if(event.buttons) endHold(event); });
+}
+
 
 function displaySpeechResult(
   spoken,
@@ -3223,8 +3300,10 @@ window.nextSentence = function(){
     current++;
 
   }else{
-
-    current = 0;
+    alert(currentLanguage === "ar"
+      ? "المجموعة الثانية لم تُضف بعد."
+      : "The second group has not been added yet.");
+    return;
   }
 
   if(mode === "practice"){
@@ -3460,18 +3539,7 @@ async function loadPendingUsers(){
 
   try{
 
-    const pendingQuery =
-    query(
-      collection(
-        db,
-        "users"
-      ),
-      where(
-        "status",
-        "==",
-        "pending"
-      )
-    );
+    const pendingQuery = query(collection(db,"users"));
 
     const snapshot =
     await getDocs(
@@ -3483,8 +3551,8 @@ async function loadPendingUsers(){
       container.innerHTML =
       `<div class="emptyState">${
         currentLanguage === "ar"
-        ? "لا توجد طلبات بانتظار الموافقة."
-        : "No pending requests."
+        ? "لا يوجد مستخدمون."
+        : "No users found."
       }</div>`;
 
       return;
@@ -3518,23 +3586,25 @@ async function loadPendingUsers(){
             ${escapeHtml(
               data.email || ""
             )}
+            <br>
+            ${currentLanguage === "ar" ? "الحالة: " : "Status: "}${escapeHtml(data.status || "pending")}
           </small>
 
           <div class="adminActions">
 
             <button class="approveButton">
               ${
-                currentLanguage === "ar"
-                ? "موافقة"
-                : "Approve"
+                data.status === "approved"
+                ? (currentLanguage === "ar" ? "مقبول" : "Approved")
+                : (currentLanguage === "ar" ? "موافقة" : "Approve")
               }
             </button>
 
             <button class="rejectButton">
               ${
                 currentLanguage === "ar"
-                ? "رفض"
-                : "Reject"
+                ? "حذف المستخدم"
+                : "Delete User"
               }
             </button>
 
@@ -3549,13 +3619,7 @@ async function loadPendingUsers(){
           "approved"
         );
 
-        row
-        .querySelector(".rejectButton")
-        .onclick =
-        ()=>setUserStatus(
-          userDocument.id,
-          "rejected"
-        );
+        row.querySelector(".rejectButton").onclick = ()=>deleteUserAccess(userDocument.id);
 
         container.appendChild(
           row
@@ -3573,6 +3637,20 @@ async function loadPendingUsers(){
       ? "تعذر تحميل طلبات المستخدمين."
       : "Unable to load user requests."
     }</div>`;
+  }
+}
+
+async function deleteUserAccess(uid){
+  const confirmed = confirm(currentLanguage === "ar"
+    ? "هل تريد حذف هذا المستخدم ومنع دخوله؟"
+    : "Delete this user and revoke access?");
+  if(!confirmed) return;
+  try{
+    await deleteDoc(doc(db,"users",uid));
+    await loadPendingUsers();
+  }catch(error){
+    console.error(error);
+    alert(currentLanguage === "ar" ? "تعذر حذف المستخدم." : "Unable to delete user.");
   }
 }
 
