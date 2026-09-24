@@ -1599,10 +1599,10 @@ body.dark .speak{
 
             <button id="retryButton"
                     class="retryButton hidden"
-                    onclick="startSpeaking()"
-                    data-ar="حاول مرة أخرى"
-                    data-en="Try Again">
-              حاول مرة أخرى
+                    onclick="resetSpeechAttempt()"
+                    data-ar="إعادة ضبط الصوت"
+                    data-en="Reset Speech">
+              إعادة ضبط الصوت
             </button>
 
           </div>
@@ -3314,6 +3314,26 @@ let activeSpeechPointer = null;
 let speechStopPending = false;
 let speechStarted = false;
 let speechResultTimer = null;
+window.resetSpeechAttempt = function(){
+  clearTimeout(speechResultTimer);
+  speechResultTimer = null;
+  if(recognition){
+    const previousRecognition = recognition;
+    recognition = null;
+    try{ previousRecognition.abort(); }catch(e){}
+  }
+  activeSpeechPointer = null;
+  speechStopPending = false;
+  speechStarted = false;
+  document.getElementById("speakButton")?.classList.remove("recording");
+  const box = document.getElementById("speechResult");
+  box.className = "speechResult";
+  document.getElementById("speechTitle").textContent = "";
+  document.getElementById("speechScore").textContent = "";
+  document.getElementById("heardText").textContent = "";
+  document.getElementById("expectedText").textContent = "";
+  document.getElementById("retryButton").classList.add("hidden");
+};
 window.stopSpeaking = function(){
   document.getElementById("speakButton")?.classList.remove("recording");
   speechStopPending = true;
