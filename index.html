@@ -2127,6 +2127,26 @@ const lessons = [
   {
     word:"after", type:"Preposition", meaning:"بعد",
     sentence:"Monday comes after Sunday.", arabic:"يأتي الاثنين بعد الأحد."
+  },
+  {
+    word:"afternoon", type:"Noun", meaning:"بعد الظهر",
+    sentence:"She called me in the afternoon.", arabic:"اتصلت بي بعد الظهر."
+  },
+  {
+    word:"again", type:"Adverb", meaning:"مجدداً / مرة أخرى",
+    sentence:"Come again tomorrow.", arabic:"تعال مرة أخرى غدًا."
+  },
+  {
+    word:"age", type:"Noun", meaning:"سن / عمر",
+    sentence:"What is your age?", arabic:"كم عمرك؟"
+  },
+  {
+    word:"ago", type:"Adverb", meaning:"قبل (في الماضي القريب)",
+    sentence:"He left ten minutes ago.", arabic:"غادر قبل عشر دقائق."
+  },
+  {
+    word:"agree", type:"Verb", meaning:"يوافق / يتفق مع",
+    sentence:"Do you agree?", arabic:"هل توافق؟"
   }
 
 ];
@@ -2890,8 +2910,8 @@ function renderLesson(){
     const endOfGroup = (current + 1) % 5 === 0;
     nextButton.textContent = endOfGroup && current + 1 < lessons.length
       ? (currentLanguage === "ar"
-        ? (current + 1 === 5 ? "المجموعة الثانية" : "المجموعة الثالثة")
-        : (current + 1 === 5 ? "Second Group" : "Third Group"))
+        ? (current + 1 === 5 ? "المجموعة الثانية" : current + 1 === 10 ? "المجموعة الثالثة" : "المجموعة الرابعة")
+        : (current + 1 === 5 ? "Second Group" : current + 1 === 10 ? "Third Group" : "Fourth Group"))
       : (currentLanguage === "ar" ? "التالي" : "Next");
   }
 
@@ -3661,8 +3681,8 @@ window.nextSentence = function(){
 
   }else{
     alert(currentLanguage === "ar"
-      ? "المجموعة الرابعة لم تُضاف بعد."
-      : "The fourth group has not been added yet.");
+      ? "المجموعة الخامسة لم تُضاف بعد."
+      : "The fifth group has not been added yet.");
     return;
   }
 
