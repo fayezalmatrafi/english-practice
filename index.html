@@ -1172,6 +1172,21 @@ body.dark #homeSection .dashboardCard{
   border-color:rgba(229,202,122,.26)
 }
 @media(max-width:900px){.desktopTopbar{padding:14px 15px;border-radius:19px}}
+
+/* Center the greeting and mute gold in the dark home view. */
+.heroDashboard{display:grid;place-items:center}
+.heroDashboardContent{width:100%;max-width:none;text-align:center}
+.heroDashboard h1{margin:0}
+body.dark #homeSection .dashboardCard{
+  background:linear-gradient(125deg,var(--cream2) 0%,var(--navy2) 80%,#343a39 100%);
+  border-color:rgba(229,202,122,.15)
+}
+body.dark #homeSection .dashboardCard .cardIcon{
+  background:linear-gradient(135deg,var(--navy2),#4b4a42)
+}
+@media(max-width:900px){
+  .mobileBottomNav{background:linear-gradient(110deg,var(--navy) 0%,var(--navy2) 68%,#665a43 100%)}
+}
 </style>
 </head>
 
@@ -2583,7 +2598,9 @@ function updateUserInterface(){
   document.getElementById("sideUsername").textContent =
   username;
 
-  const firstName = username.trim().split(/\s+/)[0];
+  const firstName = currentUserData.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase()
+    ? (currentLanguage === "ar" ? "فايز" : "Fayez")
+    : username.trim().split(/\s+/)[0];
   document.getElementById("welcomeName").textContent =
   currentLanguage === "ar"
   ? `مرحبًا ${firstName}`
