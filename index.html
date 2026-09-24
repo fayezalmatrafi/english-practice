@@ -1093,6 +1093,41 @@ body.dark .speak{
     grid-template-columns:repeat(2,1fr);
   }
 }
+
+/* Refined card layout and line icons, using the existing palette. */
+.uiIcon{width:22px;height:22px;flex:none;vertical-align:middle}
+.navIcon .uiIcon{width:20px;height:20px}
+.cardIcon .uiIcon{width:25px;height:25px}
+.dashboardCard,.lessonCard,.sideInfoCard{
+  border:1px solid var(--border);
+  border-radius:26px;
+  box-shadow:0 10px 30px rgba(11,21,51,.07);
+}
+.dashboardCard{min-height:168px;padding:24px;position:relative;overflow:hidden}
+.dashboardCard::after{
+  content:"";position:absolute;inset:auto -35px -55px auto;width:130px;height:130px;
+  border-radius:50%;background:rgba(199,163,74,.07);pointer-events:none
+}
+.cardIcon{width:54px;height:54px;border-radius:18px;background:rgba(199,163,74,.13)}
+.actionButton,.navLessonButton,.headerButton{
+  border-radius:16px;box-shadow:0 4px 13px rgba(11,21,51,.04);
+  transition:transform .18s ease,box-shadow .18s ease
+}
+.actionButton{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px}
+.actionButton:active,.navLessonButton:active,.dashboardCard:active{transform:scale(.98)}
+.actionButton:focus-visible,.navLessonButton:focus-visible,.dashboardCard:focus-visible,.navButton:focus-visible{
+  outline:3px solid var(--gold);outline-offset:3px
+}
+.lessonActions{gap:12px}
+.lessonCard{padding:clamp(20px,4vw,32px)}
+.sideInfoCard{padding:22px}
+body.dark .dashboardCard,body.dark .lessonCard,body.dark .sideInfoCard{
+  box-shadow:0 10px 30px rgba(0,0,0,.16)
+}
+@media(max-width:600px){
+  .dashboardCard{min-height:144px;padding:20px}
+  .lessonActions{gap:10px}
+}
 </style>
 </head>
 
@@ -1298,35 +1333,35 @@ body.dark .speak{
 
       <button class="navButton active"
               onclick="openSection('homeSection',this)">
-        <span class="navIcon">⌂</span>
+        <span class="navIcon"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10H3zM9 20v-7h6v7"/></svg></span>
         <span data-ar="الرئيسية" data-en="Home">الرئيسية</span>
       </button>
 
 
       <button class="navButton"
               onclick="startMode('learn',this)">
-        <span class="navIcon">◫</span>
+        <span class="navIcon"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-2.5-1.7-5.5-2-9-1.5v13c3.5-.5 6.5-.2 9 1.5m0-13c2.5-1.7 5.5-2 9-1.5v13c-3.5-.5-6.5-.2-9 1.5m0-13v13"/></svg></span>
         <span data-ar="التعلّم" data-en="Learn">التعلّم</span>
       </button>
 
 
       <button class="navButton"
               onclick="startMode('practice',this)">
-        <span class="navIcon">◎</span>
+        <span class="navIcon"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v4m-4 0h8"/></svg></span>
         <span data-ar="التدريب" data-en="Practice">التدريب</span>
       </button>
 
 
       <button class="navButton"
               onclick="openProgress(this)">
-        <span class="navIcon">↗</span>
+        <span class="navIcon"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M6 16v-5m6 5V5m6 11V9"/></svg></span>
         <span data-ar="التقدم" data-en="Progress">التقدم</span>
       </button>
 
 
       <button class="navButton"
               onclick="openAccount(this)">
-        <span class="navIcon">○</span>
+        <span class="navIcon"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
         <span data-ar="حسابي" data-en="Account">حسابي</span>
       </button>
 
@@ -1334,7 +1369,7 @@ body.dark .speak{
       <button id="adminNavButton"
               class="navButton hidden"
               onclick="openAdmin(this)">
-        <span class="navIcon">♙</span>
+        <span class="navIcon"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M17 5a3 3 0 0 1 0 6m1 4a5 5 0 0 1 3 5"/></svg></span>
         <span data-ar="إدارة المستخدمين"
               data-en="Users">
           إدارة المستخدمين
@@ -1446,7 +1481,7 @@ body.dark .speak{
         <button class="dashboardCard"
                 onclick="startMode('learn')">
 
-          <div class="cardIcon">◫</div>
+          <div class="cardIcon"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-2.5-1.7-5.5-2-9-1.5v13c3.5-.5 6.5-.2 9 1.5m0-13c2.5-1.7 5.5-2 9-1.5v13c-3.5-.5-6.5-.2-9 1.5m0-13v13"/></svg></div>
 
           <h3 data-ar="نتعلّم"
               data-en="Learn">
@@ -1464,7 +1499,7 @@ body.dark .speak{
         <button class="dashboardCard"
                 onclick="startMode('practice')">
 
-          <div class="cardIcon">◎</div>
+          <div class="cardIcon"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v4m-4 0h8"/></svg></div>
 
           <h3 data-ar="نتدرّب"
               data-en="Practice">
@@ -1482,7 +1517,7 @@ body.dark .speak{
         <button class="dashboardCard"
                 onclick="openProgress()">
 
-          <div class="cardIcon">↗</div>
+          <div class="cardIcon"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M6 16v-5m6 5V5m6 11V9"/></svg></div>
 
           <h3 data-ar="تقدمي"
               data-en="My Progress">
@@ -1539,7 +1574,7 @@ body.dark .speak{
 
             <button class="actionButton listen"
                     onclick="playSentence()">
-              🔊
+              <svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4zM17 9a5 5 0 0 1 0 6m2-9a9 9 0 0 1 0 12"/></svg>
               <span data-ar="استمع"
                     data-en="Listen">
                 استمع
@@ -1550,7 +1585,7 @@ body.dark .speak{
             <button id="hideButton"
                     class="actionButton hideEnglish"
                     onclick="toggleEnglish()">
-              ◉
+              <svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.5"/></svg>
               <span id="hideButtonText">
                 إخفاء الإنجليزية
               </span>
@@ -1560,7 +1595,7 @@ body.dark .speak{
             <button id="speakButton"
                     class="actionButton speak"
                      type="button">
-              🎙
+              <svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v4m-4 0h8"/></svg>
               <span id="speakButtonText"
                     data-ar="اضغط مطولًا للتحدث"
                     data-en="Hold to Speak">
@@ -1571,7 +1606,7 @@ body.dark .speak{
 
             <button id="downloadBundleButton" class="actionButton"
                     onclick="downloadCurrentBundle()">
-              ⬇
+              <svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m-4-4 4 4 4-4M4 18v3h16v-3"/></svg>
               <span data-ar="تحميل الجمل الخمس"
                     data-en="Download 5 Sentences">
                 تحميل الجمل الخمس
