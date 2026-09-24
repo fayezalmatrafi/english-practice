@@ -2596,10 +2596,11 @@ function updateUserInterface(){
   document.getElementById("sideUsername").textContent =
   username;
 
+  const firstName = username.trim().split(/\s+/)[0];
   document.getElementById("welcomeName").textContent =
   currentLanguage === "ar"
-  ? `مرحبًا ${username}`
-  : `Welcome ${username}`;
+  ? `مرحبًا ${firstName}`
+  : `Welcome ${firstName}`;
 
   document.getElementById("accountUsername").textContent =
   username;
