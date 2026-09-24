@@ -3145,14 +3145,19 @@ window.startSpeaking = function(){
   "en-US";
 
   recognition.interimResults =
-  false;
+  true;
 
   recognition.maxAlternatives =
   5;
 
+  const thisRecognition = recognition;
+  const targetSentence = lessons[current].sentence;
+  let heardText = "";
+  let receivedResult = false;
+  let recognitionError = false;
   recognition.onstart = function(){
     speechStarted = true;
-    if(speechStopPending){ try{ recognition.stop(); }catch(e){} }
+    if(speechStopPending){ try{ thisRecognition.stop(); }catch(e){} }
   };
 
   const box =
@@ -3176,50 +3181,57 @@ window.startSpeaking = function(){
   .getElementById("retryButton")
   .classList.add("hidden");
 
-  recognition.onresult =
-  function(event){
-
+  recognition.onresult = function(event){
     let bestText = "";
     let bestScore = -1;
-
-    for(
-      const alternative
-      of event.results[0]
-    ){
-
-      const text =
-      alternative.transcript;
-
-      const score =
-      speechSimilarity(
-        text,
-        lessons[current].sentence
-      );
-
-      if(score > bestScore){
-        bestScore = score;
-        bestText = text;
+    for(const result of event.results){
+      for(const alternative of result){
+        const candidate = alternative.transcript.trim();
+        const score = speechSimilarity(candidate,targetSentence);
+        if(score > bestScore){
+          bestScore = score;
+          bestText = candidate;
+        }
       }
     }
+    if(bestText){
+      heardText = bestText;
+      receivedResult = true;
+      if(speechStopPending || [...event.results].some(result=>result.isFinal)){
+        displaySpeechResult(bestText,bestScore);
+      }
+    }
+  };
 
-    displaySpeechResult(
-      bestText,
-      bestScore
-    );
+  recognition.onend = function(){
+    speechStarted = false;
+    if(thisRecognition !== recognition) return;
+    if(receivedResult && box.classList.contains("closeResult")){
+      displaySpeechResult(heardText,speechSimilarity(heardText,targetSentence));
+    }else if(!receivedResult && !recognitionError){
+      box.className = "speechResult bad";
+      document.getElementById("speechTitle").textContent =
+        currentLanguage === "ar"
+        ? "لم تُلتقط جملة. اضغط مطولًا، انتظر بدء التسجيل، ثم تحدث وارفع إصبعك."
+        : "No speech captured. Hold, wait for recording to start, speak, then release.";
+      document.getElementById("retryButton").classList.remove("hidden");
+    }
   };
 
 
   recognition.onerror =
-  function(){
+  function(event){
+    if(thisRecognition !== recognition) return;
     speechStarted = false;
+    recognitionError = true;
 
     box.className =
     "speechResult bad";
 
     document.getElementById("speechTitle").textContent =
     currentLanguage === "ar"
-    ? "لم أسمع الجملة بوضوح."
-    : "I couldn't hear the sentence clearly.";
+    ? (event.error === "not-allowed" ? "اسمح للمتصفح باستخدام الميكروفون ثم حاول مجددًا." : "تعذر التقاط الصوت. جرّب الضغط المطول والتحدث مرة أخرى.")
+    : (event.error === "not-allowed" ? "Allow microphone access and try again." : "Could not capture speech. Hold and speak again.");
 
     document
     .getElementById("retryButton")
