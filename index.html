@@ -1600,9 +1600,9 @@ body.dark .speak{
             <button id="retryButton"
                     class="retryButton hidden"
                     onclick="resetSpeechAttempt()"
-                    data-ar="إعادة ضبط الصوت"
-                    data-en="Reset Speech">
-              إعادة ضبط الصوت
+                    data-ar="إعادة ضبط الصفحة"
+                    data-en="Reset Page">
+              إعادة ضبط الصفحة
             </button>
 
           </div>
@@ -3326,13 +3326,8 @@ window.resetSpeechAttempt = function(){
   speechStopPending = false;
   speechStarted = false;
   document.getElementById("speakButton")?.classList.remove("recording");
-  const box = document.getElementById("speechResult");
-  box.className = "speechResult";
-  document.getElementById("speechTitle").textContent = "";
-  document.getElementById("speechScore").textContent = "";
-  document.getElementById("heardText").textContent = "";
-  document.getElementById("expectedText").textContent = "";
-  document.getElementById("retryButton").classList.add("hidden");
+  if("speechSynthesis" in window) speechSynthesis.cancel();
+  renderLesson();
 };
 window.stopSpeaking = function(){
   document.getElementById("speakButton")?.classList.remove("recording");
