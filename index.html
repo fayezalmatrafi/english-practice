@@ -51,16 +51,6 @@ button,input{font:inherit}
 button{cursor:pointer}
 button:disabled{opacity:.6;cursor:not-allowed}
 .hidden{display:none!important}
-#lessonSection[data-mode="practice"] #downloadBundleButton{display:none!important}
-
-/* =========================
-   صفحة عرض الجمل الخمس
-========================= */
-.bundleReview{max-width:980px;margin:24px auto;padding:24px;text-align:center;background:var(--white);border-radius:20px;box-shadow:var(--shadow)}
-.bundleReview h2{margin:0 0 20px;color:var(--text)}
-.bundleReview img{display:block;width:100%;height:auto;margin:auto;border-radius:12px}
-.bundleReviewActions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:22px}
-.bundleReviewActions .navLessonButton{min-width:150px}
 
 /* =========================
    صفحة الدخول
@@ -778,6 +768,7 @@ body.dark .speak{
   gap:10px;
   margin-top:18px;
 }
+.lessonNavigation.hasDownload{grid-template-columns:1fr 1.5fr 1fr}
 
 .navLessonButton{
   padding:12px;
@@ -1637,15 +1628,6 @@ body.dark #homeSection .dashboardCard .cardIcon{
     <section id="lessonSection"
              class="appSection">
 
-      <div id="bundleReview" class="bundleReview hidden">
-        <h2 id="bundleReviewTitle"></h2>
-        <img id="bundleReviewImage" alt="صفحة الجمل الخمس" />
-        <div class="bundleReviewActions">
-          <button class="navLessonButton" onclick="closeBundleReview()" data-ar="العودة للجملة الخامسة" data-en="Back to sentence five">العودة للجملة الخامسة</button>
-          <button class="navLessonButton" onclick="downloadCurrentBundle()" data-ar="تحميل الصفحة" data-en="Download page">تحميل الصفحة</button>
-          <button id="bundleReviewNext" class="navLessonButton" onclick="continueAfterBundle()"></button>
-        </div>
-      </div>
       <div class="lessonLayout">
 
         <div class="lessonCard">
@@ -1709,14 +1691,7 @@ body.dark #homeSection .dashboardCard .cardIcon{
             </button>
 
 
-            <button id="downloadBundleButton" class="actionButton"
-                    onclick="downloadCurrentBundle()">
-              <svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m-4-4 4 4 4-4M4 18v3h16v-3"/></svg>
-              <span data-ar="تحميل الجمل الخمس"
-                    data-en="Download 5 Sentences">
-                تحميل الجمل الخمس
-              </span>
-            </button>
+
 
           </div>
 
@@ -1769,7 +1744,7 @@ body.dark #homeSection .dashboardCard .cardIcon{
           </div>
 
 
-          <div class="lessonNavigation">
+          <div id="lessonNavigation" class="lessonNavigation">
 
             <button class="navLessonButton"
                     onclick="previousSentence()"
@@ -1777,6 +1752,11 @@ body.dark #homeSection .dashboardCard .cardIcon{
                     data-en="Previous">
               السابق
             </button>
+
+            <button id="groupDownloadButton" class="navLessonButton hidden"
+                    onclick="downloadCurrentBundle()"
+                    data-ar="تحميل الجمل الخمسة"
+                    data-en="Download 5 Sentences">تحميل الجمل الخمسة</button>
 
             <button id="nextSentenceButton" class="navLessonButton"
                     onclick="nextSentence()"
@@ -2923,14 +2903,11 @@ function renderLesson(){
   document.getElementById("lessonCounter").textContent =
   `${current + 1} / ${lessons.length}`;
 
-  const nextButton = document.getElementById("nextSentenceButton");
-  if(nextButton){
-    nextButton.textContent = (current + 1) % 5 === 0
-      ? (currentLanguage === "ar" ? "عرض جمل المجموعة" : "View group sentences")
-      : (currentLanguage === "ar" ? "التالي" : "Next");
-  }
-  document.getElementById("bundleReview").classList.add("hidden");
-  document.querySelector("#lessonSection .lessonLayout").classList.remove("hidden");
+  const groupEnd = (current + 1) % 5 === 0;
+  document.getElementById("nextSentenceButton").textContent =
+    currentLanguage === "ar" ? "التالي" : "Next";
+  document.getElementById("groupDownloadButton").classList.toggle("hidden", !groupEnd);
+  document.getElementById("lessonNavigation").classList.toggle("hasDownload", groupEnd);
 
   document.getElementById("lessonModeTitle").textContent =
   mode === "learn"
@@ -2948,7 +2925,6 @@ function renderLesson(){
   document.getElementById("lessonSection").dataset.mode = mode;
   showEnglish();
   document.getElementById("hideButton").classList.remove("hidden");
-  document.getElementById("downloadBundleButton").classList.toggle("hidden", mode !== "learn");
   document.getElementById("speakButton").classList.toggle("hidden", mode !== "practice");
   document.getElementById("speechResult").classList.toggle("hidden", mode !== "practice");
   document.getElementById("writingBox").classList.toggle("hidden", mode !== "practice");
@@ -3706,11 +3682,6 @@ function displaySpeechResult(
 
 window.nextSentence = function(){
 
-  if((current + 1) % 5 === 0){
-    showBundleReview();
-    return;
-  }
-
   if(current < lessons.length-1){
 
     current++;
@@ -3732,39 +3703,6 @@ window.nextSentence = function(){
   renderLesson();
 };
 
-
-function showBundleReview(){
-  const group = Math.floor(current / 5) + 1;
-  const image = document.getElementById("bundleReviewImage");
-  image.src = group === 1
-    ? new URL("الجمل.jpeg", window.location.href).href
-    : "data:image/jpeg;base64," + document.getElementById("group" + group + "ImageData").textContent.trim();
-  document.getElementById("bundleReviewTitle").textContent =
-    currentLanguage === "ar" ? "جمل المجموعة " + group : "Group " + group + " sentences";
-  const next = document.getElementById("bundleReviewNext");
-  next.textContent = current + 1 < lessons.length
-    ? (currentLanguage === "ar" ? "المجموعة التالية" : "Next group")
-    : (currentLanguage === "ar" ? "العودة للرئيسية" : "Back to home");
-  document.querySelector("#lessonSection .lessonLayout").classList.add("hidden");
-  document.getElementById("bundleReview").classList.remove("hidden");
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-
-window.closeBundleReview = function(){
-  document.getElementById("bundleReview").classList.add("hidden");
-  document.querySelector("#lessonSection .lessonLayout").classList.remove("hidden");
-};
-
-window.continueAfterBundle = function(){
-  closeBundleReview();
-  if(current + 1 < lessons.length){
-    current++;
-    if(mode === "practice") incrementStat(current,"training");
-    renderLesson();
-  }else{
-    openSection("homeSection");
-  }
-};
 
 window.previousSentence = function(){
 
