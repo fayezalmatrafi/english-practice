@@ -2814,8 +2814,8 @@ function renderLesson(){
 
   document.getElementById("lessonNumber").textContent =
   currentLanguage === "ar"
-  ? `الجملة ${(current % 5)+1} من ${Math.min(5,lessons.length-Math.floor(current/5)*5)}`
-  : `Sentence ${(current % 5)+1} of ${Math.min(5,lessons.length-Math.floor(current/5)*5)}`;
+  ? `الجملة ${current + 1} من ${lessons.length}`
+  : `Sentence ${current + 1} of ${lessons.length}`;
 
   document.getElementById("lessonWord").textContent =
   lesson.word;
@@ -2848,13 +2848,13 @@ function renderLesson(){
   document.getElementById("expectedText").textContent = "";
 
   const percent =
-  (((current % 5)+1) / Math.min(5,lessons.length-Math.floor(current/5)*5)) * 100;
+  ((current + 1) / lessons.length) * 100;
 
   document.getElementById("lessonProgressFill").style.width =
   percent + "%";
 
   document.getElementById("lessonCounter").textContent =
-  `${(current % 5)+1} / ${Math.min(5,lessons.length-Math.floor(current/5)*5)}`;
+  `${current + 1} / ${lessons.length}`;
 
   const nextButton = document.getElementById("nextSentenceButton");
   if(nextButton){
