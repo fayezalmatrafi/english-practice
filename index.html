@@ -1148,6 +1148,30 @@ body.dark .dashboardCard,body.dark .lessonCard,body.dark .sideInfoCard{
   .mobileNavButton.active{background:rgba(229,202,122,.14);color:var(--gold2)}
   .mobileNavButton:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
 }
+
+/* Navy and gold identity across the heading and learning cards. */
+.desktopTopbar{
+  padding:17px 20px;border-radius:22px;
+  background:linear-gradient(112deg,var(--navy) 0%,var(--navy2) 52%,#8b713e 100%);
+  box-shadow:0 10px 24px rgba(11,21,51,.11)
+}
+.desktopTopbar .pageHeading h2{color:#fff}
+.desktopTopbar .pageHeading small{color:var(--gold2)}
+.desktopTopbar .headerButton{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.22)}
+.heroDashboard{background:linear-gradient(120deg,var(--navy) 0%,var(--navy3) 58%,#8b713e 100%)}
+#homeSection .dashboardCard{
+  background:linear-gradient(125deg,var(--cream2) 0%,var(--cream2) 46%,rgba(199,163,74,.19) 100%);
+  border-color:rgba(199,163,74,.28)
+}
+#homeSection .dashboardCard .cardIcon{
+  background:linear-gradient(135deg,var(--navy2),#9b7a3e);
+  color:#fff
+}
+body.dark #homeSection .dashboardCard{
+  background:linear-gradient(125deg,var(--cream2) 0%,var(--navy2) 65%,#554829 100%);
+  border-color:rgba(229,202,122,.26)
+}
+@media(max-width:900px){.desktopTopbar{padding:14px 15px;border-radius:19px}}
 </style>
 </head>
 
