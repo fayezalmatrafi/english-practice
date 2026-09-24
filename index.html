@@ -1958,46 +1958,6 @@ const lessons = [
     meaning:"عبر",
     sentence:"Swim across the river.",
     arabic:"اسبح عبر النهر."
-  },
-
-  {
-    word:"action",
-    type:"Noun",
-    meaning:"فعل / عمل",
-    sentence:"We need action, not words.",
-    arabic:"نحتاج إلى أفعال، لا أقوال."
-  },
-
-  {
-    word:"activity",
-    type:"Noun",
-    meaning:"نشاط",
-    sentence:"Complete the activity.",
-    arabic:"أكمل النشاط."
-  },
-
-  {
-    word:"actor",
-    type:"Noun",
-    meaning:"ممثل",
-    sentence:"He became a famous actor.",
-    arabic:"أصبح ممثلًا مشهورًا."
-  },
-
-  {
-    word:"actress",
-    type:"Noun",
-    meaning:"ممثلة",
-    sentence:"She is an actress.",
-    arabic:"هي ممثلة."
-  },
-
-  {
-    word:"add",
-    type:"Verb",
-    meaning:"يضيف",
-    sentence:"Let me add water.",
-    arabic:"دعني أضيف الماء."
   }
 
 ];
@@ -2707,8 +2667,8 @@ function renderLesson(){
 
   document.getElementById("lessonNumber").textContent =
   currentLanguage === "ar"
-  ? `الجملة ${(current % 5)+1} من ${Math.min(5,lessons.length-Math.floor(current/5)*5)}`
-  : `Sentence ${(current % 5)+1} of ${Math.min(5,lessons.length-Math.floor(current/5)*5)}`;
+  ? `الجملة ${current+1} من ${lessons.length}`
+  : `Sentence ${current+1} of ${lessons.length}`;
 
   document.getElementById("lessonWord").textContent =
   lesson.word;
@@ -2741,18 +2701,18 @@ function renderLesson(){
   document.getElementById("expectedText").textContent = "";
 
   const percent =
-  (((current % 5)+1) / Math.min(5,lessons.length-Math.floor(current/5)*5)) * 100;
+  ((current+1) / lessons.length) * 100;
 
   document.getElementById("lessonProgressFill").style.width =
   percent + "%";
 
   document.getElementById("lessonCounter").textContent =
-  `${(current % 5)+1} / ${Math.min(5,lessons.length-Math.floor(current/5)*5)}`;
+  `${current+1} / ${lessons.length}`;
 
   const nextButton = document.getElementById("nextSentenceButton");
   if(nextButton){
     const endOfGroup = (current + 1) % 5 === 0;
-    nextButton.textContent = endOfGroup && current + 1 < lessons.length
+    nextButton.textContent = endOfGroup
       ? (currentLanguage === "ar" ? "المجموعة الثانية" : "Second Group")
       : (currentLanguage === "ar" ? "التالي" : "Next");
   }
@@ -3012,22 +2972,6 @@ window.resetWriting = function(){
 
 window.downloadCurrentBundle = async function(){
   try{
-    if(current >= 5){
-      const groupStart = Math.floor(current/5)*5;
-      const text = lessons.slice(groupStart,groupStart+5)
-        .map((lesson,index)=>`${groupStart+index+1}. ${lesson.sentence}\n${lesson.arabic}`)
-        .join("\n\n");
-      const blob = new Blob(["\uFEFF"+text],{type:"text/plain;charset=utf-8"});
-      const objectUrl = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = objectUrl;
-      link.download = "الجمل-الخمس-المجموعة-الثانية.txt";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      setTimeout(()=>URL.revokeObjectURL(objectUrl),1000);
-      return;
-    }
     const imageUrl = new URL("الجمل.jpeg",window.location.href);
     const response = await fetch(imageUrl);
     if(!response.ok) throw new Error("Image download failed");
@@ -3423,8 +3367,8 @@ window.nextSentence = function(){
 
   }else{
     alert(currentLanguage === "ar"
-      ? "وصلت إلى نهاية الجمل الحالية."
-      : "You reached the end of the current sentences.");
+      ? "المجموعة الثانية لم تُضف بعد."
+      : "The second group has not been added yet.");
     return;
   }
 
