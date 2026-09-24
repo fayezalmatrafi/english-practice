@@ -661,6 +661,7 @@ body.dark .lessonWord{color:var(--gold2)}
 }
 
 .speak.recording{background:#dc2626;color:#fff;transform:scale(.98)}
+#speakButton,#speakButton *{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none}
 
 body.dark .listen,
 body.dark .hideEnglish,
@@ -1240,6 +1241,10 @@ body.dark .speak{
           تسجيل الدخول
         </button>
 
+        <div id="forgotPasswordLink" class="switchAuth">
+          <button class="textButton" type="button" onclick="resetMyPassword()">نسيت كلمة المرور؟</button>
+        </div>
+
         <div id="authMessage"
              class="authMessage">
         </div>
@@ -1552,7 +1557,8 @@ body.dark .speak{
 
 
             <button id="speakButton"
-                    class="actionButton speak">
+                    class="actionButton speak"
+                     type="button">
               🎙
               <span id="speakButtonText"
                     data-ar="اضغط مطولًا للتحدث"
@@ -1853,6 +1859,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   signOut
 }
 from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
@@ -1866,8 +1873,7 @@ import {
   query,
   where,
   getDocs,
-  updateDoc,
-  deleteDoc
+  updateDoc
 }
 from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
@@ -3086,6 +3092,24 @@ function speechSimilarity(
    التحدث
 ========================= */
 
+window.resetMyPassword = async function(){
+  const email = document.getElementById("email").value.trim();
+  const message = document.getElementById("authMessage");
+  if(!email){
+    message.textContent = currentLanguage === "ar" ? "أدخل بريدك الإلكتروني أولًا." : "Enter your email first.";
+    return;
+  }
+  try{
+    await sendPasswordResetEmail(auth,email);
+    message.style.color = "#15803d";
+    message.textContent = currentLanguage === "ar" ? "إذا كان البريد مسجلًا، ستصلك رسالة إعادة تعيين كلمة المرور." : "If this email is registered, a reset link will be sent.";
+  }catch(error){
+    console.error(error);
+    message.style.color = "#dc2626";
+    message.textContent = currentLanguage === "ar" ? "تعذر إرسال الرابط. تحقق من البريد وحاول مجددًا." : "Unable to send the link. Check the email and try again.";
+  }
+};
+
 window.startSpeaking = function(){
 
   const SpeechRecognition =
@@ -3125,6 +3149,11 @@ window.startSpeaking = function(){
 
   recognition.maxAlternatives =
   5;
+
+  recognition.onstart = function(){
+    speechStarted = true;
+    if(speechStopPending){ try{ recognition.stop(); }catch(e){} }
+  };
 
   const box =
   document.getElementById(
@@ -3182,6 +3211,7 @@ window.startSpeaking = function(){
 
   recognition.onerror =
   function(){
+    speechStarted = false;
 
     box.className =
     "speechResult bad";
@@ -3200,23 +3230,47 @@ window.startSpeaking = function(){
   try{
     recognition.start();
   }catch(error){
+    speechStarted = false;
     console.error(error);
   }
 };
 
+let activeSpeechPointer = null;
+let speechStopPending = false;
+let speechStarted = false;
 window.stopSpeaking = function(){
   document.getElementById("speakButton")?.classList.remove("recording");
-  if(recognition){ try{ recognition.stop(); }catch(e){} }
+  speechStopPending = true;
+  if(recognition && speechStarted){
+    try{ recognition.stop(); }catch(e){}
+  }
 };
-
 const speakButton = document.getElementById("speakButton");
 if(speakButton){
-  const beginHold = event=>{ event.preventDefault(); speakButton.classList.add("recording"); startSpeaking(); };
-  const endHold = event=>{ event.preventDefault(); stopSpeaking(); };
+  const beginHold = event=>{
+    if(activeSpeechPointer !== null) return;
+    event.preventDefault();
+    activeSpeechPointer = event.pointerId;
+    speechStopPending = false;
+    speechStarted = false;
+    try{ speakButton.setPointerCapture(event.pointerId); }catch(e){}
+    speakButton.classList.add("recording");
+    startSpeaking();
+  };
+  const endHold = event=>{
+    if(event.pointerId !== activeSpeechPointer) return;
+    event.preventDefault();
+    activeSpeechPointer = null;
+    stopSpeaking();
+  };
   speakButton.addEventListener("pointerdown",beginHold);
   speakButton.addEventListener("pointerup",endHold);
   speakButton.addEventListener("pointercancel",endHold);
-  speakButton.addEventListener("pointerleave",event=>{ if(event.buttons) endHold(event); });
+  speakButton.addEventListener("lostpointercapture",endHold);
+  speakButton.addEventListener("contextmenu",event=>event.preventDefault());
+  speakButton.addEventListener("selectstart",event=>event.preventDefault());
+  speakButton.addEventListener("dragstart",event=>event.preventDefault());
+  window.addEventListener("blur",()=>{if(activeSpeechPointer !== null){activeSpeechPointer=null;stopSpeaking();}});
 }
 
 
@@ -3565,6 +3619,7 @@ async function loadPendingUsers(){
 
         const data =
         userDocument.data();
+        if(data.status === "deleted") return;
 
         const row =
         document.createElement(
@@ -3587,18 +3642,12 @@ async function loadPendingUsers(){
               data.email || ""
             )}
             <br>
-            ${currentLanguage === "ar" ? "الحالة: " : "Status: "}${escapeHtml(data.status || "pending")}
+            ${data.status === "approved" ? "" : (currentLanguage === "ar" ? "الحالة: " : "Status: ") + escapeHtml(data.status || "pending")}
           </small>
 
           <div class="adminActions">
 
-            <button class="approveButton">
-              ${
-                data.status === "approved"
-                ? (currentLanguage === "ar" ? "مقبول" : "Approved")
-                : (currentLanguage === "ar" ? "موافقة" : "Approve")
-              }
-            </button>
+            ${data.status === "approved" ? "" : `<button class="approveButton">${currentLanguage === "ar" ? "موافقة" : "Approve"}</button>`}
 
             <button class="rejectButton">
               ${
@@ -3611,13 +3660,8 @@ async function loadPendingUsers(){
           </div>
         `;
 
-        row
-        .querySelector(".approveButton")
-        .onclick =
-        ()=>setUserStatus(
-          userDocument.id,
-          "approved"
-        );
+        const approveButton = row.querySelector(".approveButton");
+        if(approveButton) approveButton.onclick = ()=>setUserStatus(userDocument.id,"approved");
 
         row.querySelector(".rejectButton").onclick = ()=>deleteUserAccess(userDocument.id);
 
@@ -3646,7 +3690,7 @@ async function deleteUserAccess(uid){
     : "Delete this user and revoke access?");
   if(!confirmed) return;
   try{
-    await deleteDoc(doc(db,"users",uid));
+    await updateDoc(doc(db,"users",uid),{status:"deleted"});
     await loadPendingUsers();
   }catch(error){
     console.error(error);
