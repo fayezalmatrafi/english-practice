@@ -3238,8 +3238,10 @@ window.startSpeaking = function(){
   recognition.onresult = function(event){
     let bestText = "";
     let bestScore = -1;
-    for(const result of event.results){
-      for(const alternative of result){
+    for(let i=0;i<event.results.length;i++){
+      const result = event.results[i];
+      for(let j=0;j<result.length;j++){
+        const alternative = result[j];
         const candidate = alternative.transcript.trim();
         const score = speechSimilarity(candidate,targetSentence);
         if(score > bestScore){
@@ -3251,7 +3253,9 @@ window.startSpeaking = function(){
     if(bestText){
       heardText = bestText;
       receivedResult = true;
-      if(speechStopPending || [...event.results].some(result=>result.isFinal)){
+      let hasFinal = false;
+      for(let i=0;i<event.results.length;i++) if(event.results[i].isFinal) hasFinal = true;
+      if(speechStopPending || hasFinal){
         displaySpeechResult(bestText,bestScore);
       }
     }
@@ -3298,15 +3302,35 @@ window.startSpeaking = function(){
   }catch(error){
     speechStarted = false;
     console.error(error);
+    box.className = "speechResult bad";
+    document.getElementById("speechTitle").textContent = currentLanguage === "ar"
+      ? "تعذر بدء التسجيل. تحقق من إذن الميكروفون والمتصفح."
+      : "Could not start recording. Check microphone permission and browser support.";
+    document.getElementById("retryButton").classList.remove("hidden");
   }
 };
 
 let activeSpeechPointer = null;
 let speechStopPending = false;
 let speechStarted = false;
+let speechResultTimer = null;
 window.stopSpeaking = function(){
   document.getElementById("speakButton")?.classList.remove("recording");
   speechStopPending = true;
+  const box = document.getElementById("speechResult");
+  if(box?.classList.contains("closeResult") && document.getElementById("speechScore").textContent === ""){
+    document.getElementById("speechTitle").textContent = currentLanguage === "ar" ? "جاري تحليل النطق..." : "Analyzing speech...";
+  }
+  clearTimeout(speechResultTimer);
+  const stoppedRecognition = recognition;
+  speechResultTimer = setTimeout(()=>{
+    if(recognition !== stoppedRecognition || !box?.classList.contains("closeResult") || document.getElementById("speechScore").textContent !== "") return;
+    box.className = "speechResult bad";
+    document.getElementById("speechTitle").textContent = currentLanguage === "ar"
+      ? "لم تصل نتيجة من المتصفح. افتح البرنامج في Chrome أو Safari وتحقق من إذن الميكروفون."
+      : "No result from the browser. Open in Chrome or Safari and check microphone permission.";
+    document.getElementById("retryButton").classList.remove("hidden");
+  },5000);
   if(recognition && speechStarted){
     try{ recognition.stop(); }catch(e){}
   }
