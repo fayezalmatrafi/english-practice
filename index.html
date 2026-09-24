@@ -1206,6 +1206,20 @@ body.dark #homeSection .dashboardCard .cardIcon{
   #homeSection .dashboardCard h3{font-size:clamp(13px,3.5vw,17px);margin:0;white-space:nowrap}
   #homeSection .dashboardCard p{display:none}
 }
+
+/* On phones, subpages use the full screen with a compact return control. */
+.mobileHomeButton{display:none}
+@media(max-width:900px){
+  #appPage.subpage .mobileBottomNav{display:none}
+  #appPage.subpage .mainArea{padding-bottom:24px}
+  #appPage.subpage .mobileHomeButton{
+    display:inline-flex;align-items:center;gap:6px;
+    margin-top:8px;padding:7px 10px;border:1px solid rgba(255,255,255,.28);
+    border-radius:10px;background:rgba(255,255,255,.12);color:#fff;
+    font-size:12px;font-weight:700
+  }
+  .mobileHomeButton .uiIcon{width:16px;height:16px}
+}
 </style>
 </head>
 
@@ -1488,6 +1502,7 @@ body.dark #homeSection .dashboardCard .cardIcon{
       <div class="pageHeading">
         <small>English Practice</small>
         <h2 id="headerTitle">الرئيسية</h2>
+        <button class="mobileHomeButton" type="button" onclick="openSection('homeSection')" data-ar="العودة للرئيسية" data-en="Back to Home"><svg class="uiIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10H3zM9 20v-7h6v7"/></svg><span data-ar="العودة للرئيسية" data-en="Back to Home">العودة للرئيسية</span></button>
       </div>
 
 
@@ -2704,6 +2719,8 @@ window.openSection = function(
   document
   .getElementById(sectionId)
   .classList.add("active");
+
+  document.getElementById("appPage").classList.toggle("subpage", sectionId !== "homeSection");
 
   document
   .querySelectorAll(".navButton")
