@@ -1187,6 +1187,25 @@ body.dark #homeSection .dashboardCard .cardIcon{
 @media(max-width:900px){
   .mobileBottomNav{background:linear-gradient(110deg,var(--navy) 0%,var(--navy2) 68%,#665a43 100%)}
 }
+
+/* Compact three-card row on phones, ordered right to left. */
+@media(max-width:900px){
+  #homeSection .actionGrid{
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:9px;direction:rtl
+  }
+  #homeSection .dashboardCard{
+    min-width:0;min-height:112px;padding:12px 7px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;border-radius:19px
+  }
+  #homeSection .dashboardCard .cardIcon{
+    width:42px;height:42px;margin:0 0 9px;border-radius:14px
+  }
+  #homeSection .dashboardCard .cardIcon .uiIcon{width:22px;height:22px}
+  #homeSection .dashboardCard h3{font-size:clamp(13px,3.5vw,17px);margin:0;white-space:nowrap}
+  #homeSection .dashboardCard p{display:none}
+}
 </style>
 </head>
 
