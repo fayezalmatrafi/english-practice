@@ -2910,7 +2910,7 @@ function renderLesson(){
 
   document.getElementById("lessonSection").dataset.mode = mode;
   showEnglish();
-  document.getElementById("hideButton").classList.toggle("hidden", mode !== "learn");
+  document.getElementById("hideButton").classList.remove("hidden");
   document.getElementById("downloadBundleButton").classList.toggle("hidden", mode !== "learn");
   document.getElementById("speakButton").classList.toggle("hidden", mode !== "practice");
   document.getElementById("speechResult").classList.toggle("hidden", mode !== "practice");
