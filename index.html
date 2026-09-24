@@ -962,17 +962,24 @@ body.dark .speak{
 
 .adminActions{
   display:flex;
+  flex-wrap:wrap;
   gap:8px;
 }
 
+.userProgressList{margin-top:12px}
+.adminRow .sentenceStat{margin-top:10px}
+
 .approveButton,
+.progressButton,
 .rejectButton{
-  flex:1;
+  flex:1 1 130px;
   padding:10px;
   border:0;
   border-radius:11px;
   font-weight:800;
 }
+
+.progressButton{background:#e0e7ff;color:#1e3a8a}
 
 .approveButton{
   background:#dcfce7;
@@ -2689,6 +2696,7 @@ function openApplication(){
   updateUserInterface();
 
   openSection("homeSection");
+  loadCloudStats();
 }
 
 
@@ -2710,6 +2718,7 @@ window.logout = async function(){
 
   currentUser = null;
   currentUserData = null;
+  statsSyncUid = null;
 
   document
   .getElementById("appPage")
@@ -3007,12 +3016,59 @@ function getStats(){
 }
 
 
-function saveStats(stats){
+let statsWriteQueue = Promise.resolve();
+let statsSyncUid = null;
 
-  localStorage.setItem(
-    getStatsKey(),
-    JSON.stringify(stats)
-  );
+function progressRef(uid){
+  return doc(db,"users",uid,"progress","current");
+}
+
+function saveStats(stats){
+  localStorage.setItem(getStatsKey(),JSON.stringify(stats));
+  if(!currentUser) return;
+  const uid = currentUser.uid;
+  const snapshot = stats.map(stat=>({...stat}));
+  statsWriteQueue = statsWriteQueue
+    .catch(()=>{})
+    .then(()=>setDoc(progressRef(uid),{
+      stats:snapshot,updatedAt:new Date()
+    },{merge:true}))
+    .catch(error=>console.error("Progress sync failed",error));
+}
+
+async function loadCloudStats(){
+  if(!currentUser || statsSyncUid === currentUser.uid) return;
+  const uid = currentUser.uid;
+  statsSyncUid = uid;
+  try{
+    const snapshot = await getDoc(progressRef(uid));
+    if(currentUser?.uid !== uid) return;
+    const local = getStats();
+    if(snapshot.exists() && Array.isArray(snapshot.data().stats)){
+      const remote = snapshot.data().stats;
+      const keys = ["training","listening","speechAttempts","speechCorrect",
+                    "writingAttempts","writingCorrect"];
+      const merged = lessons.map((_,i)=>{
+        const result = {};
+        keys.forEach(key=>{
+          result[key] = Math.max(
+            Number(local[i]?.[key]) || 0,
+            Number(remote[i]?.[key]) || 0
+          );
+        });
+        return result;
+      });
+      if(JSON.stringify(merged) !== JSON.stringify(local)) saveStats(merged);
+      else if(JSON.stringify(merged) !== JSON.stringify(remote)) saveStats(merged);
+      if(document.getElementById("progressSection").classList.contains("active"))
+        renderProgress();
+    }else{
+      saveStats(local);
+    }
+  }catch(error){
+    statsSyncUid = null;
+    console.error("Progress load failed",error);
+  }
 }
 
 
@@ -3661,15 +3717,7 @@ window.openProgress = function(
 };
 
 
-function renderProgress(){
-
-  const list =
-  document.getElementById(
-    "progressList"
-  );
-
-  const stats =
-  getStats();
+function renderProgress(stats = getStats(), list = document.getElementById("progressList")){
 
   list.innerHTML = "";
 
@@ -3777,7 +3825,7 @@ function statBox(
 
   return `
     <div class="statBox">
-      <strong>${number}</strong>
+      <strong>${escapeHtml(Number(number) || 0)}</strong>
       <small>${escapeHtml(label)}</small>
     </div>
   `;
@@ -3899,6 +3947,8 @@ async function loadPendingUsers(){
 
             ${data.status === "approved" ? "" : `<button class="approveButton">${currentLanguage === "ar" ? "موافقة" : "Approve"}</button>`}
 
+            <button class="progressButton" type="button">${currentLanguage === "ar" ? "متابعة التقدم" : "View Progress"}</button>
+
             <button class="rejectButton">
               ${
                 currentLanguage === "ar"
@@ -3909,6 +3959,13 @@ async function loadPendingUsers(){
 
           </div>
         `;
+
+        const progressPanel = document.createElement("div");
+        progressPanel.className = "hidden";
+        progressPanel.style.width = "100%";
+        row.appendChild(progressPanel);
+        row.querySelector(".progressButton").onclick =
+          ()=>showUserProgress(userDocument.id,data.username || data.email,progressPanel);
 
         const approveButton = row.querySelector(".approveButton");
         if(approveButton) approveButton.onclick = ()=>setUserStatus(userDocument.id,"approved");
@@ -3931,6 +3988,40 @@ async function loadPendingUsers(){
       ? "تعذر تحميل طلبات المستخدمين."
       : "Unable to load user requests."
     }</div>`;
+  }
+}
+
+async function showUserProgress(uid,name,panel){
+  if(currentUserData?.email?.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) return;
+  if(!panel.classList.contains("hidden")){
+    panel.classList.add("hidden");
+    return;
+  }
+  panel.classList.remove("hidden");
+  panel.innerHTML = '<div class="emptyState">' +
+    (currentLanguage === "ar" ? "جاري تحميل التقدم..." : "Loading progress...") +
+    '</div>';
+  try{
+    const snapshot = await getDoc(progressRef(uid));
+    if(!snapshot.exists() || !Array.isArray(snapshot.data().stats)){
+      panel.innerHTML = '<div class="emptyState">' +
+        (currentLanguage === "ar"
+          ? "لم يُزامن هذا المستخدم تقدمه بعد. يظهر بعد دخوله وتحديث البرنامج."
+          : "This user has not synced progress yet. It appears after signing in on the updated app.") +
+        '</div>';
+      return;
+    }
+    panel.innerHTML = '<h3>' +
+      (currentLanguage === "ar" ? "تقدم " : "Progress: ") +
+      escapeHtml(name) + '</h3><div class="userProgressList"></div>';
+    renderProgress(snapshot.data().stats,panel.querySelector(".userProgressList"));
+  }catch(error){
+    console.error(error);
+    panel.innerHTML = '<div class="emptyState">' +
+      (currentLanguage === "ar"
+        ? "تعذر عرض التقدم. تحقق من صلاحيات قاعدة البيانات."
+        : "Unable to load progress. Check database permissions.") +
+      '</div>';
   }
 }
 
