@@ -1568,7 +1568,7 @@ body.dark .speak{
             </button>
 
 
-            <button class="actionButton"
+            <button id="downloadBundleButton" class="actionButton"
                     onclick="downloadCurrentBundle()">
               ⬇
               <span data-ar="تحميل الجمل الخمس"
@@ -1608,7 +1608,7 @@ body.dark .speak{
           </div>
 
 
-          <div class="writingBox">
+          <div id="writingBox" class="writingBox">
 
             <input id="answerInput"
                    class="answerInput"
@@ -2770,11 +2770,12 @@ function renderLesson(){
       : "Practice"
     );
 
-  if(mode === "practice"){
-    hideEnglish();
-  }else{
-    showEnglish();
-  }
+  showEnglish();
+  document.getElementById("hideButton").classList.toggle("hidden", mode !== "learn");
+  document.getElementById("downloadBundleButton").classList.toggle("hidden", mode !== "learn");
+  document.getElementById("speakButton").classList.toggle("hidden", mode !== "practice");
+  document.getElementById("speechResult").classList.toggle("hidden", mode !== "practice");
+  document.getElementById("writingBox").classList.toggle("hidden", mode !== "practice");
 }
 
 
