@@ -2165,7 +2165,12 @@ const lessons = [
   { word:"April", type:"Noun", meaning:"أبريل", sentence:"She was born in April.", arabic:"ولدت في أبريل." },
   { word:"area", type:"Noun", meaning:"منطقة", sentence:"This area is quiet.", arabic:"هذه المنطقة هادئة." },
   { word:"arm", type:"Noun", meaning:"ذراع", sentence:"My arm hurts.", arabic:"ذراعي يؤلمني." },
-  { word:"around", type:"Adverb", meaning:"تقريبًا / حوالي", sentence:"He arrived around five o'clock.", arabic:"وصل حوالي الساعة الخامسة." }
+  { word:"around", type:"Adverb", meaning:"تقريبًا / حوالي", sentence:"He arrived around five o'clock.", arabic:"وصل حوالي الساعة الخامسة." },
+  { word:"around", type:"Preposition", meaning:"حول", sentence:"They walked around the lake.", arabic:"تجولوا حول البحيرة." },
+  { word:"arrive", type:"Verb", meaning:"يصل", sentence:"I'll wait until they arrive.", arabic:"سأنتظر حتى يصلوا." },
+  { word:"art", type:"Noun", meaning:"فن", sentence:"It's a beautiful piece of art.", arabic:"إنها قطعة فنية جميلة." },
+  { word:"article", type:"Noun", meaning:"مقالة", sentence:"I am writing an article.", arabic:"أنا أكتب مقالًا." },
+  { word:"artist", type:"Noun", meaning:"فنان", sentence:"He is a famous artist.", arabic:"إنه فنان مشهور." }
 
 ];
 
@@ -3232,6 +3237,20 @@ window.resetWriting = function(){
 
 window.downloadCurrentBundle = async function(){
   try{
+    if(current >= 40){
+      const response = await fetch(new URL("group9.jpg",window.location.href));
+      if(!response.ok) throw new Error("Image download failed");
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = "الجمل-الخمس-المجموعة-التاسعة.jpg";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(()=>URL.revokeObjectURL(objectUrl),1000);
+      return;
+    }
     if(current >= 35){
       const response = await fetch(new URL("group8.jpg",window.location.href));
       if(!response.ok) throw new Error("Image download failed");
@@ -3764,8 +3783,8 @@ window.nextSentence = function(){
 
   }else{
     alert(currentLanguage === "ar"
-      ? "المجموعة التاسعة لم تُضاف بعد."
-      : "The ninth group has not been added yet.");
+      ? "المجموعة العاشرة لم تُضاف بعد."
+      : "The tenth group has not been added yet.");
     return;
   }
 
