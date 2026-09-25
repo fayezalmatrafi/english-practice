@@ -2150,7 +2150,12 @@ const lessons = [
   { word:"airport", type:"Noun", meaning:"مطار", sentence:"Tom is waiting at the airport.", arabic:"توم ينتظر في المطار." },
   { word:"all", type:"Determiner", meaning:"كل / جميع", sentence:"All my plants have died.", arabic:"ماتت جميع نباتاتي." },
   { word:"also", type:"Adverb", meaning:"أيضًا / كذلك", sentence:"Tom was also there.", arabic:"توم كان أيضًا هناك." },
-  { word:"always", type:"Adverb", meaning:"دائمًا", sentence:"He is always laughing.", arabic:"إنه دائم الضحك." }
+  { word:"always", type:"Adverb", meaning:"دائمًا", sentence:"He is always laughing.", arabic:"إنه دائم الضحك." },
+  { word:"amazing", type:"Adjective", meaning:"مدهش / رائع", sentence:"The movie was amazing.", arabic:"كان الفيلم رائعًا." },
+  { word:"angry", type:"Adjective", meaning:"غاضب", sentence:"Our teacher was angry today.", arabic:"كان معلمنا غاضبًا اليوم." },
+  { word:"animal", type:"Noun", meaning:"حيوان", sentence:"Tom loves animals.", arabic:"توم يحب الحيوانات." },
+  { word:"another", type:"Adjective", meaning:"آخر / أخرى", sentence:"Let's go there another time.", arabic:"لنذهب هناك مرة أخرى." },
+  { word:"answer", type:"Noun", meaning:"جواب / إجابة", sentence:"They want answers.", arabic:"هم يريدون أجوبة." }
 
 ];
 
@@ -3217,6 +3222,20 @@ window.resetWriting = function(){
 
 window.downloadCurrentBundle = async function(){
   try{
+    if(current >= 25){
+      const response = await fetch(new URL("group6.jpg",window.location.href));
+      if(!response.ok) throw new Error("Image download failed");
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = "الجمل-الخمس-المجموعة-السادسة.jpg";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(()=>URL.revokeObjectURL(objectUrl),1000);
+      return;
+    }
     if(current >= 20){
       const response = await fetch(new URL("group5.jpg",window.location.href));
       if(!response.ok) throw new Error("Image download failed");
@@ -3707,8 +3726,8 @@ window.nextSentence = function(){
 
   }else{
     alert(currentLanguage === "ar"
-      ? "المجموعة السادسة لم تُضاف بعد."
-      : "The sixth group has not been added yet.");
+      ? "المجموعة السابعة لم تُضاف بعد."
+      : "The seventh group has not been added yet.");
     return;
   }
 
