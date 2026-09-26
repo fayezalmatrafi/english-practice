@@ -2175,7 +2175,12 @@ const lessons = [
   { word:"ask", type:"Verb", meaning:"يسأل", sentence:"Nobody asked him.", arabic:"لم يسأله أحد." },
   { word:"at", type:"Preposition", meaning:"في / عند", sentence:"I'll be at home all morning.", arabic:"سأكون في المنزل طوال الصباح." },
   { word:"August", type:"Noun", meaning:"أغسطس", sentence:"She was born in August.", arabic:"ولدت في أغسطس." },
-  { word:"aunt", type:"Noun", meaning:"عمة / خالة", sentence:"My aunt is older than my mother.", arabic:"عمتي أكبر من أمي." }
+  { word:"aunt", type:"Noun", meaning:"عمة / خالة", sentence:"My aunt is older than my mother.", arabic:"عمتي أكبر من أمي." },
+  { word:"baby", type:"Noun", meaning:"طفل رضيع", sentence:"The baby was born last night.", arabic:"وُلد الطفل الليلة الماضية." },
+  { word:"back", type:"Noun", meaning:"ظهر", sentence:"Do you sleep on your back or your front?", arabic:"هل تنام على ظهرك أم على بطنك؟" },
+  { word:"back", type:"Adverb", meaning:"إلى الخلف", sentence:"He turned and looked back.", arabic:"استدار ونظر إلى الخلف." },
+  { word:"bad", type:"Adjective", meaning:"سيئ", sentence:"I have some bad news for you.", arabic:"لدي بعض الأخبار السيئة لك." },
+  { word:"bag", type:"Noun", meaning:"حقيبة", sentence:"Here's your bag.", arabic:"هذه حقيبتك." }
 
 ];
 
@@ -3242,6 +3247,20 @@ window.resetWriting = function(){
 
 window.downloadCurrentBundle = async function(){
   try{
+    if(current >= 50){
+      const response = await fetch(new URL("group11.png",window.location.href));
+      if(!response.ok) throw new Error("Image download failed");
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = "الجمل-الخمس-المجموعة-الحادية-عشرة.png";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(()=>URL.revokeObjectURL(objectUrl),1000);
+      return;
+    }
     if(current >= 45){
       const response = await fetch(new URL("group10.jpg",window.location.href));
       if(!response.ok) throw new Error("Image download failed");
@@ -3802,8 +3821,8 @@ window.nextSentence = function(){
 
   }else{
     alert(currentLanguage === "ar"
-      ? "المجموعة الحادية عشرة لم تُضاف بعد."
-      : "The eleventh group has not been added yet.");
+      ? "المجموعة الثانية عشرة لم تُضاف بعد."
+      : "The twelfth group has not been added yet.");
     return;
   }
 
