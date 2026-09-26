@@ -2185,7 +2185,12 @@ const lessons = [
   { word:"banana", type:"Noun", meaning:"موزة", sentence:"Bananas are delicious.", arabic:"الموز لذيذ." },
   { word:"band", type:"Noun", meaning:"فرقة موسيقية", sentence:"He is a singer in a band.", arabic:"هو مغنٍ في فرقة موسيقية." },
   { word:"bank", type:"Noun", meaning:"بنك", sentence:"I don't have much money in the bank.", arabic:"ليس لدي مال كثير في البنك." },
-  { word:"bath", type:"Noun", meaning:"حمام", sentence:"It's the children's bath time.", arabic:"حان وقت استحمام الأطفال." }
+  { word:"bath", type:"Noun", meaning:"حمام", sentence:"It's the children's bath time.", arabic:"حان وقت استحمام الأطفال." },
+  { word:"bathroom", type:"Noun", meaning:"حمام", sentence:"I have to go to the bathroom.", arabic:"يجب عليّ الذهاب إلى الحمام." },
+  { word:"be", type:"Verb", meaning:"يكون", sentence:"I will be a doctor.", arabic:"سوف أكون طبيبًا." },
+  { word:"be", type:"Auxiliary verb", meaning:"فعل مساعد", sentence:"I am studying English.", arabic:"أنا أدرس الإنجليزية." },
+  { word:"beach", type:"Noun", meaning:"شاطئ", sentence:"He decided to go to the beach.", arabic:"قرر الذهاب إلى الشاطئ." },
+  { word:"beautiful", type:"Adjective", meaning:"جميل / جميلة", sentence:"You look beautiful today.", arabic:"تبدين جميلة اليوم." }
 
 ];
 
@@ -3252,6 +3257,20 @@ window.resetWriting = function(){
 
 window.downloadCurrentBundle = async function(){
   try{
+    if(current >= 60){
+      const response = await fetch(new URL("group13.jpg",window.location.href));
+      if(!response.ok) throw new Error("Image download failed");
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = "الجمل-الخمس-المجموعة-الثالثة-عشرة.jpg";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(()=>URL.revokeObjectURL(objectUrl),1000);
+      return;
+    }
     if(current >= 55){
       const response = await fetch(new URL("group12.png",window.location.href));
       if(!response.ok) throw new Error("Image download failed");
@@ -3840,8 +3859,8 @@ window.nextSentence = function(){
 
   }else{
     alert(currentLanguage === "ar"
-      ? "المجموعة الثالثة عشرة لم تُضاف بعد."
-      : "The thirteenth group has not been added yet.");
+      ? "المجموعة الرابعة عشرة لم تُضاف بعد."
+      : "The fourteenth group has not been added yet.");
     return;
   }
 
